@@ -1,0 +1,17 @@
+/* Write your global styles here, in PostCSS syntax */
+@tailwind base;
+
+input:-webkit-autofill {
+  -webkit-text-fill-color: theme(colors.blue.500);
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+@tailwind components;
+
+@tailwind utilities;
