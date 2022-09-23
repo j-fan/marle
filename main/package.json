@@ -1,0 +1,16 @@
+{
+  "name": "Origin Marle",
+  "version": "1.0.0",
+  "description": "Entry point for micro sites",
+  "scripts": {
+    "predeploy": "bash build.sh",
+    "deploy": "gh-pages --dotfiles -d dist",
+    "build": "echo No build for main"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "gh-pages": "^4.0.0"
+  }
+}
