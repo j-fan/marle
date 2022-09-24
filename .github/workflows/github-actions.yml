@@ -1,14 +1,34 @@
 name: Deploy Microsites
-on: [push]
+on:
+  push:
+    branches: [ master ]
+
 jobs:
-  Explore-GitHub-Actions:
+  Build-and-deploy:
     runs-on: ubuntu-latest
     steps:
     - name: Check out repository code
       uses: actions/checkout@v3
+
+    - name: Install Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
+
+    - uses: pnpm/action-setup@v2.0.1
+      name: Install pnpm
+      id: pnpm-install
+      with:
+        version: 7
+        run_install: false
+
+    - name: Install main
+    - run: cd main
+    - run: pnpm install --frozen-lockfile
+
     - name: Deploy with gh-pages
       run: |
         git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
-        npx gh-pages -d main/dist -u "github-actions-bot <support+actions@github.com>"
+        pnpm run deploy -- -u "github-actions-bot <support+actions@github.com>"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

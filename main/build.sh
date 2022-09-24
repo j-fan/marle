@@ -21,7 +21,7 @@ for path in ../*/docs; do
 
   if [ -f "../$subdir/package.json" ]; then
     pushd "$path"
-    pnpm install
+    pnpm install --frozen-lockfile
     pnpm build
     popd
     echo "Finished building $subdir"
