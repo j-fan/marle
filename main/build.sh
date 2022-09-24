@@ -10,19 +10,19 @@ rm -rf dist
 mkdir dist
 
 # Copy files into dist
-for path in ../*/docs; do
-  subdir=$(printf %s "$path" | sed -E 's$.+/(.+)/docs$\1$')
+for path in ../*/package.json; do
+  subdir="$(basename "${path%/*}")"
   echo
   echo "Processing $subdir"
 
   if [ "$subdir" == "main" ]; then
-    cp -rv "$path/"* "dist/"
+    cp -rv "../$subdir/docs/"* "dist/"
     touch dist/.nojekyll
     continue
   fi
 
   if [ -f "../$subdir/package.json" ]; then
-    pushd "$path"
+    pushd "../$subdir"
     pnpm install --frozen-lockfile
     pnpm build
     popd
@@ -30,7 +30,7 @@ for path in ../*/docs; do
     echo
   fi
 
-  cp -rv "$path" "dist/$subdir"
+  cp -rv "../$subdir/docs" "dist/$subdir"
 done
 
 for path in ../*/index.html; do
