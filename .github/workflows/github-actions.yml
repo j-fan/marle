@@ -23,11 +23,14 @@ jobs:
         run_install: false
 
     - name: Install main
-      run: cd main && pnpm install --frozen-lockfile
+      run: |
+        cd main
+        pnpm install --frozen-lockfile
 
     - name: Deploy with gh-pages
       run: |
         git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
+        cd main
         pnpm run deploy -- -u "github-actions-bot <support+actions@github.com>"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
