@@ -15,16 +15,15 @@ jobs:
       with:
         node-version: 16
 
-    - uses: pnpm/action-setup@v2.0.1
-      name: Install pnpm
+    - name: Install pnpm
+      uses: pnpm/action-setup@v2.0.1
       id: pnpm-install
       with:
         version: 7
         run_install: false
 
     - name: Install main
-    - run: cd main
-    - run: pnpm install --frozen-lockfile
+      run: cd main && pnpm install --frozen-lockfile
 
     - name: Deploy with gh-pages
       run: |
