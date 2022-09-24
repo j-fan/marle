@@ -31,6 +31,7 @@ jobs:
       run: |
         git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
         cd main
-        pnpm run deploy -- -u "github-actions-bot <support+actions@github.com>"
+        pnpm run predeploy
+        npx gh-pages --dotfiles -d dist -u "github-actions-bot <support+actions@github.com>"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

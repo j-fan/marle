@@ -12,6 +12,8 @@ mkdir dist
 # Copy files into dist
 for path in ../*/docs; do
   subdir=$(printf %s "$path" | sed -E 's$.+/(.+)/docs$\1$')
+  echo
+  echo "Processing $subdir"
 
   if [ "$subdir" == "main" ]; then
     cp -rv "$path/"* "dist/"
