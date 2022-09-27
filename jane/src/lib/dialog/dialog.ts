@@ -1,60 +1,20 @@
-import type { DialogMap } from "./types";
+import type { DialogMap, DialogNode, KeyBaseType } from "./types";
 
-export const example: DialogMap = {
-  key: {
-    text: "",
-    options: [
-      {
-        text: "",
-        nextKey: ""
-      }
-    ]
-  }
-};
+export const pickOption = <KeyT extends KeyBaseType>(
+  dialogData: DialogMap<KeyT>,
+  key: KeyT
+): DialogNode<KeyT> => {
+  const nextOption = dialogData[key];
 
-export const fabricOfDreamsDialog: DialogMap = {
-  start: {
-    text: "Do you ever dream? What is it like? I heard that humans do this when they sleep.",
-    options: [
-      {
-        text: "I think I dream, but I don’t remember them.",
-        nextKey: "forgotten_dream"
-      },
-      {
-        text: "Yes, I dream all the time",
-        nextKey: "always_dream"
-      },
-      {
-        text: "I don’t dream at all",
-        nextKey: "no_dream"
-      }
-    ]
-  },
-  forgotten_dream: {
-    text: "That's a shame. But perhaps you can help me with this new experience that I am having.",
-    options: [
-      {
-        text: "I can try...",
-        nextKey: ""
-      }
-    ]
-  },
-  always_dream: {
-    text: "Then you must be an expert. I wonder if you can help me interpret what I am seeing.",
-    options: [
-      {
-        text: "Ok, sure",
-        nextKey: ""
-      }
-    ]
-  },
-  no_dream: {
-    text: "That's very strange. In my notes about humans I thought that dreaming was a regular activity. But perhaps you can help with this issue I am having anyway.",
-    options: [
-      {
-        text: "I'll try to help.",
-        nextKey: ""
-      }
-    ]
+  if (nextOption === undefined) {
+    console.error(`Dialog key ${String(key)} is unknown in dialogData`);
+    return {
+      text: `Something went wrong with the dialog logic: "${String(
+        key
+      )}" key is unknown`,
+      options: []
+    };
   }
+
+  return nextOption;
 };

@@ -1,12 +1,17 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { fly } from "svelte/transition";
+  import { fade, fly } from "svelte/transition";
   import { bounceOut } from "svelte/easing";
-  import { fabricOfDreamsDialog } from "$lib/dialog/dialog";
+  import {
+    fabricOfDreamsDialog,
+    type FabricOfDreamsKey
+  } from "$lib/dialog/data";
   import Button from "./Button.svelte";
+  import { pickOption } from "$lib/dialog/dialog";
 
   let isIconVisible = false;
   let isChatVisible = false;
+  let currentDialogNode = fabricOfDreamsDialog.start;
 
   onMount(() => {
     isIconVisible = true;
@@ -16,7 +21,8 @@
     isChatVisible = !isChatVisible;
   };
 
-  const answerClick = (nextKey: string) => {
+  const answerClick = (nextKey: FabricOfDreamsKey) => {
+    currentDialogNode = pickOption(fabricOfDreamsDialog, nextKey);
     return (event: MouseEvent) => {
       event.stopPropagation();
     };
@@ -32,22 +38,26 @@
   >
     {#if isChatVisible}
       <div class="chat-wrapper" transition:fly={{ y: 20, duration: 300 }}>
-        <div class="chat-content">
-          <div class="dialog-item">
-            <h4>Marle</h4>
-            <p>
-              {fabricOfDreamsDialog.start.text}
-            </p>
+        {#key currentDialogNode}
+          <div class="chat-content" in:fade={{ duration: 400 }}>
+            <div class="dialog-item">
+              <h4>Marle</h4>
+              <p>
+                {currentDialogNode.text}
+              </p>
+            </div>
+            <div class="dialog-item">
+              {#if currentDialogNode.options.length > 0}
+                <h4>YOU</h4>
+              {/if}
+              {#each currentDialogNode.options as option}
+                <Button isFullWidth on:click={answerClick(option.nextKey)}
+                  >{option.text}</Button
+                >
+              {/each}
+            </div>
           </div>
-          <div class="dialog-item">
-            <h4>YOU</h4>
-            {#each fabricOfDreamsDialog.start.options as option}
-              <Button isFullWidth on:click={answerClick(option.nextKey)}
-                >{option.text}</Button
-              >
-            {/each}
-          </div>
-        </div>
+        {/key}
       </div>
     {/if}
   </div>

@@ -1,9 +1,14 @@
-export type DialogNode = {
+export type DialogNode<KeyT> = {
   text: string;
   options: Array<{
     text: string;
-    nextKey: string;
+    nextKey: KeyT;
   }>;
 };
 
-export type DialogMap = Record<string, DialogNode>;
+export type KeyBaseType = string | number | symbol;
+
+export type DialogMap<KeyT extends KeyBaseType> = Record<
+  KeyT,
+  DialogNode<KeyT>
+>;
