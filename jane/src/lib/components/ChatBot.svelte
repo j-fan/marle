@@ -40,13 +40,13 @@
       <div class="chat-wrapper" transition:fly={{ y: 20, duration: 300 }}>
         {#key currentDialogNode}
           <div class="chat-content" in:fade={{ duration: 400 }}>
-            <div class="dialog-item">
+            <div class="dialog-item left">
               <h4>Marle</h4>
               <p>
                 {currentDialogNode.text}
               </p>
             </div>
-            <div class="dialog-item">
+            <div class="dialog-item right">
               {#if currentDialogNode.options.length > 0}
                 <h4>YOU</h4>
               {/if}
@@ -109,12 +109,22 @@
   .chat-content {
     max-height: min(40vh, 400px);
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
   }
 
   .dialog-item {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+  }
+
+  .dialog-item.left {
+    align-items: start;
+  }
+
+  .dialog-item.right {
     align-items: end;
   }
 </style>
