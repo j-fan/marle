@@ -1,5 +1,7 @@
 <script type="ts">
   import ChatBot from "$lib/components/ChatBot.svelte";
+  import PixiWater from "$lib/components/PixiWater.svelte";
+  import { fade } from "svelte/transition";
   import { dreamImages, type DreamImageKey } from "./dream-images";
 
   let currentImageKey: DreamImageKey = "bluebird";
@@ -10,15 +12,19 @@
   };
 </script>
 
-<img
-  src={currentImage}
-  alt="neural network feature visualisation of blue birds"
-  on:click={() => {
-    goToImage("spots");
-  }}
-/>
-
-<ChatBot />
+<div class="full-size">
+  {#key currentImage}
+    <div class="full-size" in:fade>
+      <PixiWater
+        imageSrc={currentImage}
+        on:click={() => {
+          goToImage("spots");
+        }}
+      />
+    </div>
+  {/key}
+  <ChatBot />
+</div>
 
 <style>
   img {
@@ -28,5 +34,10 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  .full-size {
+    width: 100%;
+    height: 100%;
   }
 </style>
