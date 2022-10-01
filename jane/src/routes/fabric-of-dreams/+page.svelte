@@ -2,19 +2,23 @@
   import ChatBot from "$lib/components/ChatBot.svelte";
   import PixiWaterAsync from "$lib/components/PixiWaterAsync.svelte";
   import { fade } from "svelte/transition";
-  import { dreamImages, type DreamImageKey } from "./dream-images";
+  import { dreamImages } from "../../lib/stores/background-image/dream-images";
+  import { fabricOfDreamsDialog } from "$lib/dialog/dream-data";
+  import {
+    currentBgImage,
+    currentBgImageKey
+  } from "$lib/stores/background-image/store";
+  import { onMount } from "svelte";
 
-  let currentImageKey: DreamImageKey = "bluebird";
-  $: currentImage = dreamImages[currentImageKey];
   let displacePower = 20;
 
-  const goToImage = (key: DreamImageKey) => {
-    currentImageKey = key;
-  };
+  onMount(() => {
+    currentBgImage.set(dreamImages.noise);
+  });
 </script>
 
 <div class="full-size">
-  {#key currentImageKey}
+  {#key $currentBgImage}
     <div
       class="full-size"
       transition:fade={{ duration: 600 }}
@@ -29,28 +33,16 @@
       }}
     >
       <PixiWaterAsync
-        canvasId={currentImageKey}
-        imageSrc={currentImage}
+        canvasId={$currentBgImageKey}
+        imageSrc={$currentBgImage}
         {displacePower}
-        on:click={() => {
-          goToImage("spots");
-        }}
       />
     </div>
   {/key}
-  <ChatBot />
+  <ChatBot dialogData={fabricOfDreamsDialog} />
 </div>
 
 <style>
-  img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
   .full-size {
     width: 100%;
     height: 100%;

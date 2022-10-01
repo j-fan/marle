@@ -2,16 +2,17 @@
   import { onMount } from "svelte";
   import { fade, fly } from "svelte/transition";
   import { bounceOut } from "svelte/easing";
-  import {
-    fabricOfDreamsDialog,
-    type FabricOfDreamsKey
-  } from "$lib/dialog/data";
   import Button from "./Button.svelte";
   import { pickOption } from "$lib/dialog/dialog";
+  import type { DialogMap, Option } from "$lib/dialog/types";
+  import { base } from "$app/paths";
 
+  type T = $$Generic<string>;
+
+  export let dialogData: DialogMap<T>;
   let isIconVisible = false;
   let isChatVisible = false;
-  let currentDialogNode = fabricOfDreamsDialog.start;
+  let currentDialogNode = dialogData.start;
 
   onMount(() => {
     isIconVisible = true;
@@ -21,10 +22,11 @@
     isChatVisible = !isChatVisible;
   };
 
-  const answerClick = (nextKey: FabricOfDreamsKey) => {
-    currentDialogNode = pickOption(fabricOfDreamsDialog, nextKey);
+  const answerClick = (option: Option<T>) => {
     return (event: MouseEvent) => {
       event.stopPropagation();
+      currentDialogNode = pickOption(dialogData, option.nextKey);
+      option.onClick?.();
     };
   };
 </script>
@@ -35,9 +37,13 @@
     in:fly={{ y: 40, duration: 1000, easing: bounceOut }}
     on:click={toggleChat}
     on:introend={toggleChat}
+    style="background-image: url('{base}/img/marle_green.jpg')"
   >
     {#if isChatVisible}
-      <div class="chat-wrapper" transition:fly={{ y: 20, duration: 300 }}>
+      <div
+        class="chat-wrapper"
+        transition:fly={{ y: 20, duration: 300, delay: 500 }}
+      >
         {#key currentDialogNode}
           <div class="chat-content" in:fade={{ duration: 400 }}>
             <div class="dialog-item left">
@@ -51,7 +57,7 @@
                 <h4>YOU</h4>
               {/if}
               {#each currentDialogNode.options as option}
-                <Button isFullWidth on:click={answerClick(option.nextKey)}
+                <Button isFullWidth on:click={answerClick(option)}
                   >{option.text}</Button
                 >
               {/each}
@@ -72,12 +78,16 @@
     height: var(--marle-icon-size);
     width: var(--marle-icon-size);
     border-radius: 50%;
-    background: var(--accent-color);
     position: fixed;
     bottom: 0;
     left: 0;
     margin: 40px;
     cursor: pointer;
+    background-color: black;
+    background-size: 35px;
+    background-repeat: no-repeat;
+    background-position: center 3px;
+    border: 2px solid var(--accent-color);
   }
 
   .chat-wrapper {
@@ -87,7 +97,7 @@
     bottom: var(--marle-icon-size);
     margin-bottom: 1rem;
     border-radius: 1rem;
-    background-color: white;
+    background-color: black;
     cursor: default;
     padding: 1rem;
     color: var(--accent-color);
@@ -98,7 +108,7 @@
     position: absolute;
     height: 16px;
     width: 16px;
-    background-color: white;
+    background-color: black;
     border-right: 2px solid var(--accent-color);
     border-bottom: 2px solid var(--accent-color);
     bottom: -9px;
@@ -107,7 +117,7 @@
   }
 
   .chat-content {
-    max-height: min(40vh, 400px);
+    max-height: min(60vh, 400px);
     overflow-y: auto;
     display: flex;
     flex-direction: column;
