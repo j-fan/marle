@@ -4,7 +4,7 @@
   import { bounceOut } from "svelte/easing";
   import Button from "./Button.svelte";
   import { pickOption } from "$lib/dialog/dialog";
-  import type { DialogMap } from "$lib/dialog/types";
+  import type { DialogMap, Option } from "$lib/dialog/types";
 
   // Generics with defaults not supported yet, otherwise I would use `T extends string`
   export let dialogData: DialogMap<any>;
@@ -20,10 +20,11 @@
     isChatVisible = !isChatVisible;
   };
 
-  const answerClick = (nextKey: any) => {
-    currentDialogNode = pickOption(dialogData, nextKey);
+  const answerClick = (option: Option<any>) => {
     return (event: MouseEvent) => {
       event.stopPropagation();
+      currentDialogNode = pickOption(dialogData, option.nextKey);
+      option.onClick?.();
     };
   };
 </script>
@@ -50,7 +51,7 @@
                 <h4>YOU</h4>
               {/if}
               {#each currentDialogNode.options as option}
-                <Button isFullWidth on:click={answerClick(option.nextKey)}
+                <Button isFullWidth on:click={answerClick(option)}
                   >{option.text}</Button
                 >
               {/each}

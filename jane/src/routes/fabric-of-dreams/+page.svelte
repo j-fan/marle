@@ -2,19 +2,15 @@
   import ChatBot from "$lib/components/ChatBot.svelte";
   import PixiWaterAsync from "$lib/components/PixiWaterAsync.svelte";
   import { fade } from "svelte/transition";
-  import { dreamImages } from "./dream-images";
-  import { fabricOfDreamsDialog } from "$lib/dialog/data";
+  import { dreamImages } from "../../lib/stores/background-image/dream-images";
+  import { fabricOfDreamsDialog } from "$lib/dialog/dream-data";
   import {
     currentBgImage,
     currentBgImageKey
-  } from "$lib/stores/background-image-store";
+  } from "$lib/stores/background-image/store";
   import { onMount } from "svelte";
 
   let displacePower = 20;
-
-  const goToImage = () => {
-    currentBgImage.set(dreamImages.spots);
-  };
 
   onMount(() => {
     currentBgImage.set(dreamImages.bluebird);
@@ -40,9 +36,6 @@
         canvasId={$currentBgImageKey}
         imageSrc={$currentBgImage}
         {displacePower}
-        on:click={() => {
-          goToImage();
-        }}
       />
     </div>
   {/key}

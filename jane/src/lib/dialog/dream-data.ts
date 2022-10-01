@@ -1,16 +1,6 @@
 import type { DialogMap } from "./types";
-
-export const example: DialogMap<string> = {
-  key: {
-    text: "",
-    options: [
-      {
-        text: "",
-        nextKey: ""
-      }
-    ]
-  }
-};
+import { currentBgImage } from "$lib/stores/background-image/store";
+import { dreamImages } from "$lib/stores/background-image/dream-images";
 
 export type FabricOfDreamsKey =
   | "start"
@@ -25,7 +15,10 @@ export const fabricOfDreamsDialog: DialogMap<FabricOfDreamsKey> = {
     options: [
       {
         text: "I think I dream, but I don’t remember them.",
-        nextKey: "forgotten_dream"
+        nextKey: "forgotten_dream",
+        onClick: () => {
+          currentBgImage.set(dreamImages.spots);
+        }
       },
       {
         text: "Yes, I dream all the time",
