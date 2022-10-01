@@ -14,4 +14,6 @@ export type KeyBaseType = string | number | symbol;
 export type DialogMap<KeyT extends KeyBaseType> = Record<
   KeyT,
   DialogNode<KeyT>
->;
+> & {
+  start: DialogNode<KeyT>;
+};

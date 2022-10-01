@@ -6,8 +6,9 @@
   import { pickOption } from "$lib/dialog/dialog";
   import type { DialogMap, Option } from "$lib/dialog/types";
 
-  // Generics with defaults not supported yet, otherwise I would use `T extends string`
-  export let dialogData: DialogMap<any>;
+  type T = $$Generic<string>;
+
+  export let dialogData: DialogMap<T>;
   let isIconVisible = false;
   let isChatVisible = false;
   let currentDialogNode = dialogData.start;
@@ -20,7 +21,7 @@
     isChatVisible = !isChatVisible;
   };
 
-  const answerClick = (option: Option<any>) => {
+  const answerClick = (option: Option<T>) => {
     return (event: MouseEvent) => {
       event.stopPropagation();
       currentDialogNode = pickOption(dialogData, option.nextKey);
