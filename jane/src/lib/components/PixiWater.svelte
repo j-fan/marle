@@ -2,15 +2,41 @@
   import { onMount } from "svelte";
   import * as PIXI from "pixi.js";
   import { base } from "$app/paths";
+  import { tweened } from "svelte/motion";
+  import { sineInOut } from "svelte/easing";
 
   export let imageSrc: string;
+  export let displacePower = 20;
+  export let canvasId: string;
+
+  const app = new PIXI.Application({
+    resizeTo: document.body
+  });
+
+  const displacementSprite = PIXI.Sprite.from(
+    `${base}/img/displacement_map.jpeg`
+  );
+  displacementSprite.texture.baseTexture.wrapMode = PIXI.WRAP_MODES.REPEAT;
+  const displacementFilter = new PIXI.filters.DisplacementFilter(
+    displacementSprite
+  );
+
+  const tweenedDisplacePower = tweened(0, {
+    duration: 600,
+    easing: sineInOut
+  });
+
+  $: {
+    tweenedDisplacePower.set(displacePower);
+  }
+
+  $: {
+    displacementFilter.scale.x = $tweenedDisplacePower;
+    displacementFilter.scale.y = $tweenedDisplacePower;
+  }
 
   onMount(() => {
-    const domNode = document.getElementById("pixi-canvas")!;
-    const app = new PIXI.Application({
-      width: document.body.offsetWidth,
-      height: document.body.offsetHeight
-    });
+    const domNode = document.querySelector(`.${canvasId}`)!;
     domNode.appendChild(app.view);
 
     app.stage.interactive = true;
@@ -21,24 +47,11 @@
     const dreamTexture = PIXI.Sprite.from(imageSrc);
     container.addChild(dreamTexture);
 
-    const displacementSprite = PIXI.Sprite.from(
-      `${base}/img/displacement_map.jpeg`
-    );
-    // Make sure the sprite is wrapping.
-    displacementSprite.texture.baseTexture.wrapMode = PIXI.WRAP_MODES.REPEAT;
-    const displacementFilter = new PIXI.filters.DisplacementFilter(
-      displacementSprite
-    );
-
-    displacementFilter.padding = 10;
-    displacementSprite.position = dreamTexture.position;
-
     app.stage.addChild(displacementSprite);
-
     dreamTexture.filters = [displacementFilter];
-
-    displacementFilter.scale.x = 30;
-    displacementFilter.scale.y = 60;
+    displacementFilter.padding = 10;
+    displacementFilter.scale.x = displacePower;
+    displacementFilter.scale.y = displacePower;
 
     app.ticker.add(() => {
       // Offset the sprite position to make vFilterCoord update to larger value.
@@ -56,11 +69,13 @@
   });
 </script>
 
-<div id="pixi-canvas" on:click />
+<div class="{canvasId} pixi-canvas" on:click />
 
 <style>
-  #pixi-canvas {
+  .pixi-canvas {
     width: 100%;
     height: 100%;
+    position: absolute;
+    inset: 0;
   }
 </style>

@@ -1,22 +1,37 @@
 <script type="ts">
   import ChatBot from "$lib/components/ChatBot.svelte";
-  import PixiWater from "$lib/components/PixiWater.svelte";
+  import PixiWaterAsync from "$lib/components/PixiWaterAsync.svelte";
   import { fade } from "svelte/transition";
   import { dreamImages, type DreamImageKey } from "./dream-images";
 
   let currentImageKey: DreamImageKey = "bluebird";
   $: currentImage = dreamImages[currentImageKey];
+  let displacePower = 20;
 
   const goToImage = (key: DreamImageKey) => {
-    currentImage = dreamImages[key];
+    currentImageKey = key;
   };
 </script>
 
 <div class="full-size">
-  {#key currentImage}
-    <div class="full-size" in:fade>
-      <PixiWater
+  {#key currentImageKey}
+    <div
+      class="full-size"
+      transition:fade={{ duration: 600 }}
+      on:introstart={() => {
+        displacePower = 300;
+      }}
+      on:introend={() => {
+        displacePower = 20;
+      }}
+      on:outrostart={() => {
+        displacePower = 300;
+      }}
+    >
+      <PixiWaterAsync
+        canvasId={currentImageKey}
         imageSrc={currentImage}
+        {displacePower}
         on:click={() => {
           goToImage("spots");
         }}
