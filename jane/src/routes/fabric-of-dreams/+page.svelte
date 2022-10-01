@@ -3,6 +3,7 @@
   import PixiWaterAsync from "$lib/components/PixiWaterAsync.svelte";
   import { fade } from "svelte/transition";
   import { dreamImages, type DreamImageKey } from "./dream-images";
+  import { fabricOfDreamsDialog } from "$lib/dialog/data";
 
   let currentImageKey: DreamImageKey = "bluebird";
   $: currentImage = dreamImages[currentImageKey];
@@ -38,7 +39,7 @@
       />
     </div>
   {/key}
-  <ChatBot />
+  <ChatBot dialogData={fabricOfDreamsDialog} />
 </div>
 
 <style>

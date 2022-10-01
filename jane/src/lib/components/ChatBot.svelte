@@ -2,16 +2,15 @@
   import { onMount } from "svelte";
   import { fade, fly } from "svelte/transition";
   import { bounceOut } from "svelte/easing";
-  import {
-    fabricOfDreamsDialog,
-    type FabricOfDreamsKey
-  } from "$lib/dialog/data";
   import Button from "./Button.svelte";
   import { pickOption } from "$lib/dialog/dialog";
+  import type { DialogMap } from "$lib/dialog/types";
 
+  // Generics with defaults not supported yet, otherwise I would use `T extends string`
+  export let dialogData: DialogMap<any>;
   let isIconVisible = false;
   let isChatVisible = false;
-  let currentDialogNode = fabricOfDreamsDialog.start;
+  let currentDialogNode = dialogData.start;
 
   onMount(() => {
     isIconVisible = true;
@@ -21,8 +20,8 @@
     isChatVisible = !isChatVisible;
   };
 
-  const answerClick = (nextKey: FabricOfDreamsKey) => {
-    currentDialogNode = pickOption(fabricOfDreamsDialog, nextKey);
+  const answerClick = (nextKey: any) => {
+    currentDialogNode = pickOption(dialogData, nextKey);
     return (event: MouseEvent) => {
       event.stopPropagation();
     };
