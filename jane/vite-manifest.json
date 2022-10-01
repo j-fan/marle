@@ -1,11 +1,12 @@
 {
   "node_modules/.pnpm/@sveltejs+kit@1.0.0-next.504_svelte@3.50.1+vite@3.1.3/node_modules/@sveltejs/kit/src/runtime/client/start.js": {
-    "file": "_app/immutable/start-b0254d10.js",
+    "file": "_app/immutable/start-b466a161.js",
     "src": "node_modules/.pnpm/@sveltejs+kit@1.0.0-next.504_svelte@3.50.1+vite@3.1.3/node_modules/@sveltejs/kit/src/runtime/client/start.js",
     "isEntry": true,
     "imports": [
-      "_index-526ed830.js",
-      "_singletons-d98d34c5.js",
+      "_preload-helper-aa6bc0ce.js",
+      "_index-b5490c0e.js",
+      "_singletons-6775e3d9.js",
       "_paths-47524592.js"
     ],
     "dynamicImports": [
@@ -16,44 +17,32 @@
     ]
   },
   "src/routes/+layout.svelte": {
-    "file": "_app/immutable/components/pages/_layout.svelte-60ec06eb.js",
+    "file": "_app/immutable/components/pages/_layout.svelte-387ab3ed.js",
     "src": "src/routes/+layout.svelte",
     "isEntry": true,
     "imports": [
-      "_index-526ed830.js"
+      "_index-b5490c0e.js"
     ],
     "css": [
       "_app/immutable/assets/_layout-641fbf3d.css"
     ]
   },
   "node_modules/.pnpm/@sveltejs+kit@1.0.0-next.504_svelte@3.50.1+vite@3.1.3/node_modules/@sveltejs/kit/src/runtime/components/error.svelte": {
-    "file": "_app/immutable/components/error.svelte-277f767a.js",
+    "file": "_app/immutable/components/error.svelte-54b26448.js",
     "src": "node_modules/.pnpm/@sveltejs+kit@1.0.0-next.504_svelte@3.50.1+vite@3.1.3/node_modules/@sveltejs/kit/src/runtime/components/error.svelte",
     "isEntry": true,
     "imports": [
-      "_index-526ed830.js",
-      "_singletons-d98d34c5.js"
+      "_index-b5490c0e.js",
+      "_singletons-6775e3d9.js"
     ]
   },
   "src/routes/+page.svelte": {
-    "file": "_app/immutable/components/pages/_page.svelte-1a452011.js",
+    "file": "_app/immutable/components/pages/_page.svelte-874f443f.js",
     "src": "src/routes/+page.svelte",
     "isEntry": true,
     "imports": [
-      "_index-526ed830.js",
+      "_index-b5490c0e.js",
       "_paths-47524592.js"
-    ]
-  },
-  "src/routes/fabric-of-dreams/+page.svelte": {
-    "file": "_app/immutable/components/pages/fabric-of-dreams/_page.svelte-6ea3243f.js",
-    "src": "src/routes/fabric-of-dreams/+page.svelte",
-    "isEntry": true,
-    "imports": [
-      "_index-526ed830.js",
-      "_paths-47524592.js"
-    ],
-    "css": [
-      "_app/immutable/assets/_page-dc3af425.css"
     ]
   },
   "src/routes/+layout.ts": {
@@ -64,24 +53,56 @@
       "__layout-1daba58d.js"
     ]
   },
-  "_singletons-d98d34c5.js": {
-    "file": "_app/immutable/chunks/singletons-d98d34c5.js",
+  "src/routes/fabric-of-dreams/+page.svelte": {
+    "file": "_app/immutable/components/pages/fabric-of-dreams/_page.svelte-e42b8b07.js",
+    "src": "src/routes/fabric-of-dreams/+page.svelte",
+    "isEntry": true,
     "imports": [
-      "_index-526ed830.js",
+      "_index-b5490c0e.js",
+      "__page-c5bd4c95.js"
+    ]
+  },
+  "_singletons-6775e3d9.js": {
+    "file": "_app/immutable/chunks/singletons-6775e3d9.js",
+    "imports": [
+      "_index-924782f9.js",
       "_paths-47524592.js"
     ]
   },
   "_paths-47524592.js": {
     "file": "_app/immutable/chunks/paths-47524592.js"
   },
-  "_index-526ed830.js": {
-    "file": "_app/immutable/chunks/index-526ed830.js"
+  "_preload-helper-aa6bc0ce.js": {
+    "file": "_app/immutable/chunks/preload-helper-aa6bc0ce.js"
+  },
+  "_index-b5490c0e.js": {
+    "file": "_app/immutable/chunks/index-b5490c0e.js"
+  },
+  "_index-924782f9.js": {
+    "file": "_app/immutable/chunks/index-924782f9.js",
+    "imports": [
+      "_index-b5490c0e.js"
+    ]
   },
   "__layout-1daba58d.js": {
     "file": "_app/immutable/chunks/_layout-1daba58d.js"
   },
+  "__page-c5bd4c95.js": {
+    "file": "_app/immutable/chunks/_page-c5bd4c95.js",
+    "imports": [
+      "_index-b5490c0e.js",
+      "_preload-helper-aa6bc0ce.js",
+      "_paths-47524592.js"
+    ],
+    "dynamicImports": [
+      "src/lib/components/PixiWater.svelte"
+    ],
+    "css": [
+      "_app/immutable/assets/_page-7c815865.css"
+    ]
+  },
   ".svelte-kit/generated/nodes/0.js": {
-    "file": "_app/immutable/chunks/0-4d3afd09.js",
+    "file": "_app/immutable/chunks/0-589aa54d.js",
     "src": ".svelte-kit/generated/nodes/0.js",
     "isDynamicEntry": true,
     "imports": [
@@ -90,7 +111,7 @@
     ]
   },
   ".svelte-kit/generated/nodes/1.js": {
-    "file": "_app/immutable/chunks/1-98ce0cb5.js",
+    "file": "_app/immutable/chunks/1-2e788cfe.js",
     "src": ".svelte-kit/generated/nodes/1.js",
     "isDynamicEntry": true,
     "imports": [
@@ -98,7 +119,7 @@
     ]
   },
   ".svelte-kit/generated/nodes/2.js": {
-    "file": "_app/immutable/chunks/2-9e5f2a59.js",
+    "file": "_app/immutable/chunks/2-cebdd400.js",
     "src": ".svelte-kit/generated/nodes/2.js",
     "isDynamicEntry": true,
     "imports": [
@@ -106,19 +127,37 @@
     ]
   },
   ".svelte-kit/generated/nodes/3.js": {
-    "file": "_app/immutable/chunks/3-07caaa16.js",
+    "file": "_app/immutable/chunks/3-0b22e1ce.js",
     "src": ".svelte-kit/generated/nodes/3.js",
     "isDynamicEntry": true,
     "imports": [
-      "src/routes/fabric-of-dreams/+page.svelte"
+      "__page-c5bd4c95.js"
+    ]
+  },
+  "src/lib/components/PixiWater.svelte": {
+    "file": "_app/immutable/chunks/PixiWater-733c9593.js",
+    "src": "src/lib/components/PixiWater.svelte",
+    "isDynamicEntry": true,
+    "imports": [
+      "_index-b5490c0e.js",
+      "_paths-47524592.js",
+      "_index-924782f9.js",
+      "__page-c5bd4c95.js"
+    ],
+    "css": [
+      "_app/immutable/assets/PixiWater-0f3a4b40.css"
     ]
   },
   "src/routes/+layout.css": {
     "file": "_app/immutable/assets/_layout-641fbf3d.css",
     "src": "src/routes/+layout.css"
   },
-  "src/routes/fabric-of-dreams/+page.css": {
-    "file": "_app/immutable/assets/_page-dc3af425.css",
-    "src": "src/routes/fabric-of-dreams/+page.css"
+  "_page.css": {
+    "file": "_app/immutable/assets/_page-7c815865.css",
+    "src": "_page.css"
+  },
+  "src/lib/components/PixiWater.css": {
+    "file": "_app/immutable/assets/PixiWater-0f3a4b40.css",
+    "src": "src/lib/components/PixiWater.css"
   }
 }
