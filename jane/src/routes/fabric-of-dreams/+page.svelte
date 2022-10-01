@@ -13,7 +13,7 @@
   let displacePower = 20;
 
   onMount(() => {
-    currentBgImage.set(dreamImages.bluebird);
+    currentBgImage.set(dreamImages.noise);
   });
 </script>
 
