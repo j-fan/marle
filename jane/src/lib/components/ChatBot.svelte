@@ -26,6 +26,7 @@
     return (event: MouseEvent) => {
       event.stopPropagation();
       currentDialogNode = pickOption(dialogData, option.nextKey);
+      currentDialogNode.onMount?.();
       option.onClick?.();
     };
   };
@@ -117,7 +118,7 @@
   }
 
   .chat-content {
-    max-height: min(60vh, 400px);
+    max-height: min(60vh, 450px);
     overflow-y: auto;
     display: flex;
     flex-direction: column;

@@ -7,6 +7,7 @@ export type Option<KeyT> = {
 export type DialogNode<KeyT> = {
   text: string;
   options: Array<Option<KeyT>>;
+  onMount?: () => void;
 };
 
 export type KeyBaseType = string | number | symbol;
@@ -16,4 +17,5 @@ export type DialogMap<KeyT extends KeyBaseType> = Record<
   DialogNode<KeyT>
 > & {
   start: DialogNode<KeyT>;
+  end: DialogNode<KeyT>;
 };

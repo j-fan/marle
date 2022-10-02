@@ -8,12 +8,16 @@
     currentBgImage,
     currentBgImageKey
   } from "$lib/stores/background-image/store";
-  import { onMount } from "svelte";
+  import { onDestroy, onMount } from "svelte";
 
   let displacePower = 20;
 
   onMount(() => {
-    currentBgImage.set(dreamImages.noise);
+    currentBgImage.set(dreamImages.black);
+  });
+
+  onDestroy(() => {
+    currentBgImage.set(dreamImages.black);
   });
 </script>
 
