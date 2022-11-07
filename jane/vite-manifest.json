@@ -1,12 +1,12 @@
 {
   "node_modules/.pnpm/@sveltejs+kit@1.0.0-next.504_svelte@3.50.1+vite@3.1.3/node_modules/@sveltejs/kit/src/runtime/client/start.js": {
-    "file": "_app/immutable/start-3d30e10c.js",
+    "file": "_app/immutable/start-23f6de1c.js",
     "src": "node_modules/.pnpm/@sveltejs+kit@1.0.0-next.504_svelte@3.50.1+vite@3.1.3/node_modules/@sveltejs/kit/src/runtime/client/start.js",
     "isEntry": true,
     "imports": [
       "_preload-helper-aa6bc0ce.js",
       "_index-54603ac6.js",
-      "_singletons-33d6ab80.js",
+      "_singletons-022d9a74.js",
       "_paths-47524592.js"
     ],
     "dynamicImports": [
@@ -28,12 +28,12 @@
     ]
   },
   "node_modules/.pnpm/@sveltejs+kit@1.0.0-next.504_svelte@3.50.1+vite@3.1.3/node_modules/@sveltejs/kit/src/runtime/components/error.svelte": {
-    "file": "_app/immutable/components/error.svelte-9da45744.js",
+    "file": "_app/immutable/components/error.svelte-dab23921.js",
     "src": "node_modules/.pnpm/@sveltejs+kit@1.0.0-next.504_svelte@3.50.1+vite@3.1.3/node_modules/@sveltejs/kit/src/runtime/components/error.svelte",
     "isEntry": true,
     "imports": [
       "_index-54603ac6.js",
-      "_singletons-33d6ab80.js"
+      "_singletons-022d9a74.js"
     ]
   },
   "src/routes/+page.svelte": {
@@ -62,8 +62,8 @@
       "__page-1607c6b4.js"
     ]
   },
-  "_singletons-33d6ab80.js": {
-    "file": "_app/immutable/chunks/singletons-33d6ab80.js",
+  "_singletons-022d9a74.js": {
+    "file": "_app/immutable/chunks/singletons-022d9a74.js",
     "imports": [
       "_index-8b9fe784.js",
       "_paths-47524592.js"
@@ -112,7 +112,7 @@
     ]
   },
   ".svelte-kit/generated/nodes/1.js": {
-    "file": "_app/immutable/chunks/1-368f8c18.js",
+    "file": "_app/immutable/chunks/1-97602ebb.js",
     "src": ".svelte-kit/generated/nodes/1.js",
     "isDynamicEntry": true,
     "imports": [
@@ -149,16 +149,16 @@
       "_app/immutable/assets/PixiWater-0f3a4b40.css"
     ]
   },
-  "src/routes/+layout.css": {
-    "file": "_app/immutable/assets/_layout-3fdd5cd0.css",
-    "src": "src/routes/+layout.css"
+  "src/lib/components/PixiWater.css": {
+    "file": "_app/immutable/assets/PixiWater-0f3a4b40.css",
+    "src": "src/lib/components/PixiWater.css"
   },
   "_page.css": {
     "file": "_app/immutable/assets/_page-73f633e0.css",
     "src": "_page.css"
   },
-  "src/lib/components/PixiWater.css": {
-    "file": "_app/immutable/assets/PixiWater-0f3a4b40.css",
-    "src": "src/lib/components/PixiWater.css"
+  "src/routes/+layout.css": {
+    "file": "_app/immutable/assets/_layout-3fdd5cd0.css",
+    "src": "src/routes/+layout.css"
   }
 }
