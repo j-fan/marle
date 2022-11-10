@@ -1,5 +1,5 @@
 <script>
-  // @ts-nocheck
+  // @ts-nocheck - The code is provided by SoundCloud to expose functionalites available from the embedded iframe
   import { onMount } from "svelte";
 
   // Expose the SoundCloud object globally: https://developers.soundcloud.com/docs/api/html5-widget#api
