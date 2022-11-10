@@ -6,8 +6,7 @@
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="content-security-policy" content="">
 		<link href="/marle/jane/_app/immutable/assets/_layout-3fdd5cd0.css" rel="stylesheet">
-		<link href="/marle/jane/_app/immutable/assets/_page-73f633e0.css" rel="stylesheet">
-		<link href="/marle/jane/_app/immutable/assets/PixiWater-0f3a4b40.css" rel="stylesheet">
+		<link href="/marle/jane/_app/immutable/assets/_page-cbef2450.css" rel="stylesheet">
 		<link rel="modulepreload" href="/marle/jane/_app/immutable/start-e4598788.js">
 		<link rel="modulepreload" href="/marle/jane/_app/immutable/chunks/index-54603ac6.js">
 		<link rel="modulepreload" href="/marle/jane/_app/immutable/chunks/singletons-471e64eb.js">
@@ -17,17 +16,19 @@
 		<link rel="modulepreload" href="/marle/jane/_app/immutable/components/pages/_layout.svelte-9f1a6c4b.js">
 		<link rel="modulepreload" href="/marle/jane/_app/immutable/modules/pages/_layout.ts-b8ee4d7c.js">
 		<link rel="modulepreload" href="/marle/jane/_app/immutable/chunks/_layout-1daba58d.js">
-		<link rel="modulepreload" href="/marle/jane/_app/immutable/components/pages/fabric-of-dreams/_page.svelte-9890f986.js">
-		<link rel="modulepreload" href="/marle/jane/_app/immutable/chunks/_page-5a19cf55.js">
+		<link rel="modulepreload" href="/marle/jane/_app/immutable/components/pages/your-face/_page.svelte-6f2a5e41.js">
   </head>
   <body>
     <div>
 
 
-<div class="pixi-loading svelte-ctzf6s"><h2>Loading assets: 0 / 8</h2></div>
+<h2>Your face</h2>
+<div class="container svelte-10u81q1"><video id="webcam-video" autoplay muted playsinline class="svelte-10u81q1"></video>
+  <canvas id="face-debug" class="svelte-10u81q1"></canvas>
+</div>
 
 
-		<script type="module" data-sveltekit-hydrate="qkb5y1">
+		<script type="module" data-sveltekit-hydrate="8xlw16">
 			import { start } from "/marle/jane/_app/immutable/start-e4598788.js";
 
 			start({
@@ -35,14 +36,14 @@
 				hydrate: {
 					status: 200,
 					error: null,
-					node_ids: [0, 3],
+					node_ids: [0, 4],
 					params: {},
-					route: {"id":"/fabric-of-dreams"},
+					route: {"id":"/your-face"},
 					data: [null,null],
 					form: null
 				},
 				paths: {"base":"/marle/jane","assets":"/marle/jane"},
-				target: document.querySelector('[data-sveltekit-hydrate="qkb5y1"]').parentNode,
+				target: document.querySelector('[data-sveltekit-hydrate="8xlw16"]').parentNode,
 				trailing_slash: "never"
 			});
 		</script>
