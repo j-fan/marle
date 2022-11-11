@@ -10,6 +10,7 @@
   import { onMount } from "svelte";
 
   let isDetectionReady = false;
+  let webcamRef: HTMLVideoElement | null;
 
   onMount(async () => {
     await initCamera();
@@ -17,8 +18,12 @@
 
     const loop = async () => {
       frame = requestAnimationFrame(loop);
-      if (isDetectionReady) {
-        await runDetections({ height: 400, width: 600, showDebug: true });
+      if (isDetectionReady && webcamRef) {
+        await runDetections({
+          height: webcamRef.clientHeight,
+          width: webcamRef.clientWidth,
+          showDebug: true
+        });
       }
     };
 
@@ -35,9 +40,9 @@
   };
 </script>
 
-<h2>Your face</h2>
 <div class="container">
   <video
+    bind:this={webcamRef}
     id={WEBCAM_VIDEO_ID}
     autoplay
     muted
@@ -54,8 +59,8 @@
 
   canvas,
   video {
-    width: 600px;
-    height: 400px;
+    width: 100%;
+    height: 100%;
   }
 
   canvas {
