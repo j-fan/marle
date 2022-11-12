@@ -7,9 +7,12 @@
   } from "$lib/face-detection/faceDetect";
   import { initCamera } from "$lib/face-detection/webcam";
   import { onMount } from "svelte";
+  import { fade } from "svelte/transition";
 
-  let isDetectionReady = false;
+  let modelsLoaded = false;
+  let detectionReady = false;
   let webcamRef: HTMLVideoElement | null;
+  let fps = 0;
 
   const getCanvasDimensions = () => {
     let height = 0;
@@ -42,13 +45,21 @@
     let frame: number;
 
     const loop = async () => {
+      const t0 = performance.now();
+
       frame = requestAnimationFrame(loop);
-      if (isDetectionReady && webcamRef) {
-        await runDetections({
+      if (modelsLoaded && webcamRef) {
+        const result = await runDetections({
           ...getCanvasDimensions(),
           showDebug: true
         });
+
+        if (result && !detectionReady) {
+          detectionReady = true;
+        }
       }
+
+      fps = 1000 / (performance.now() - t0);
     };
 
     loop();
@@ -60,11 +71,18 @@
 
   const startDetection = async () => {
     await startFaceDetect();
-    isDetectionReady = true;
+    modelsLoaded = true;
   };
 </script>
 
 <div class="container">
+  {#if !detectionReady}
+    <h3 class="loading-label" transition:fade={{ duration: 400 }}>
+      Loading face detection...
+    </h3>
+  {:else}
+    <h3 class="fps-label" transition:fade={{ duration: 400 }}>FPS: {fps}</h3>
+  {/if}
   <video
     bind:this={webcamRef}
     id={WEBCAM_VIDEO_ID}
@@ -81,8 +99,28 @@
     position: relative;
     width: 100%;
     height: 100%;
+    display: flex;
+    background-color: black;
   }
 
+  h3 {
+    font-family: "Courier New", Courier, monospace;
+    color: #00ff00;
+    text-shadow: 0px 0px 6px black;
+  }
+
+  .loading-label {
+    position: absolute;
+    align-self: center;
+    width: 100%;
+    text-align: center;
+  }
+
+  .fps-label {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
   canvas,
   video {
     min-width: 100%;

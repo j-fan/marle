@@ -1,11 +1,14 @@
 import * as faceApi from "@vladmandic/face-api";
 import { TinyFaceDetectorOptions } from "@vladmandic/face-api";
+import { base } from "$app/paths";
 
 export const WEBCAM_VIDEO_ID = "webcam-video";
 export const FACE_CANVAS_ID = "face-debug";
 
 let detector: TinyFaceDetectorOptions;
 let netsLoaded = false;
+
+const MODELS_PATH = `${base}/models`;
 
 type FaceDetectOptions = {
   showDebug?: boolean;
@@ -27,10 +30,10 @@ type AllFaceData = faceApi.WithFaceExpressions<
 >;
 
 const startFaceDetect = async (): Promise<void> => {
-  await faceApi.nets.tinyFaceDetector.loadFromUri("./models");
-  await faceApi.nets.ageGenderNet.loadFromUri("./models");
-  await faceApi.nets.faceLandmark68TinyNet.loadFromUri("./models");
-  await faceApi.nets.faceExpressionNet.loadFromUri("./models");
+  await faceApi.nets.tinyFaceDetector.loadFromUri(MODELS_PATH);
+  await faceApi.nets.ageGenderNet.loadFromUri(MODELS_PATH);
+  await faceApi.nets.faceLandmark68TinyNet.loadFromUri(MODELS_PATH);
+  await faceApi.nets.faceExpressionNet.loadFromUri(MODELS_PATH);
 
   const inputSize = 512;
   const scoreThreshold = 0.5;
@@ -44,8 +47,6 @@ const startFaceDetect = async (): Promise<void> => {
 const runDetections = async (
   options: FaceDetectOptions
 ): Promise<AllFaceData | undefined> => {
-  const t0 = performance.now();
-
   if (!netsLoaded) {
     return undefined;
   }
@@ -67,8 +68,7 @@ const runDetections = async (
     );
     const resizedResults = faceApi.resizeResults(result, dimensions);
 
-    const fps = 1000 / (performance.now() - t0);
-    drawFaceData(canvasElement, resizedResults, fps);
+    drawFaceData(canvasElement, resizedResults);
   }
 
   return result;
@@ -78,7 +78,6 @@ const runDetections = async (
 function drawFaceData(
   canvas: HTMLCanvasElement,
   person: AllFaceData,
-  fps: number,
   color = "#00FF00"
 ) {
   const ctx = canvas.getContext("2d");
@@ -102,12 +101,9 @@ function drawFaceData(
   ctx.stroke();
   ctx.globalAlpha = 1;
 
-  // draw FPS
+  // draw text labels
   ctx.font = "20px monospace";
   ctx.fillStyle = color;
-  ctx.fillText(`FPS: ${fps}`, 10, 25);
-
-  // draw text labels
   const expression = Object.entries(person.expressions).sort(
     (a, b) => b[1] - a[1]
   );
