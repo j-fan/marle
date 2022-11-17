@@ -1,12 +1,13 @@
 <script type="ts">
   import PixiWaterAsync from "$lib/components/PixiWaterAsync.svelte";
+  import { yourFaceDialog } from "$lib/dialog/your-face-dialog";
+  import ChatBot from "$lib/components/ChatBot.svelte";
   import {
     FACE_CANVAS_ID,
     runDetections,
     startFaceDetect,
     WEBCAM_VIDEO_ID
   } from "$lib/face-detection/faceDetect";
-  import { initCamera } from "$lib/face-detection/webcam";
   import { onMount } from "svelte";
   import { fade } from "svelte/transition";
 
@@ -60,9 +61,7 @@
     return { height, width };
   };
 
-  onMount(async () => {
-    await initCamera();
-
+  onMount(() => {
     // runDetectionLoop();
 
     return () => {
@@ -104,6 +103,7 @@
       />
     </div>
   {/if}
+  <ChatBot dialogData={yourFaceDialog} />
 </div>
 
 <style>

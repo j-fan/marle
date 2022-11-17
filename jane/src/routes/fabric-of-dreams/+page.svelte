@@ -3,7 +3,7 @@
   import PixiWaterAsync from "$lib/components/PixiWaterAsync.svelte";
   import { fade } from "svelte/transition";
   import { dreamImages } from "../../lib/stores/background-image/dream-images";
-  import { fabricOfDreamsDialog } from "$lib/dialog/dream-data";
+  import { fabricOfDreamsDialog } from "$lib/dialog/fabric-of-dreams-dialog";
   import {
     currentBgImage,
     currentBgImageKey
