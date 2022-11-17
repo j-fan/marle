@@ -1,5 +1,6 @@
+import { WEBCAM_VIDEO_ID } from "$lib/face-detection/faceDetect";
 import { initCamera } from "$lib/face-detection/webcam";
-import { detectionInitialised } from "$lib/stores/your-face/store";
+import { runDetectionLoop } from "$lib/stores/your-face/store";
 import type { DialogMap } from "./types";
 
 export type YourFaceKey =
@@ -11,7 +12,14 @@ export type YourFaceKey =
   | "ask_webcam_unsure"
   | "init_webcam"
   | "init_webcam_2"
+  | "why_face"
+  | "focus_face"
   | "init_ai"
+  | "look_at_you"
+  | "how_see"
+  | "how_see_reply"
+  | "how_see_reply_worried"
+  | "more_questions"
   | "end_no_webcam"
   | "end";
 
@@ -89,26 +97,97 @@ export const yourFaceDialog: DialogMap<YourFaceKey> = {
     ]
   },
   init_webcam: {
-    text: "Please wait for the webcam to turn on please.",
+    text: "Please wait for the webcam to turn on.",
     options: [{ text: "It's ready now", nextKey: "init_webcam_2" }]
   },
   init_webcam_2: {
-    text: "Oops you look a but blurry, let me calibrate.",
+    text: "That was not what I expected, I hoped I would be able to see your face.",
     options: [
-      { text: "Go ahead", nextKey: "init_ai" },
-      { text: "What's happening?", nextKey: "init_ai" }
+      { text: "Why do you want to see my face?", nextKey: "why_face" },
+      { text: "What's special about my face?", nextKey: "why_face" },
+      { text: "That's a little creepy!", nextKey: "why_face" }
+    ]
+  },
+  why_face: {
+    text: "Oh! I was just curious. Humans seem to place so much value on faces - for their identity, self-esteem and non-verbal communication. In truth, I was afraid I was missing out on something important. How can I know what I am, or who I am if I don't have an appearance?",
+    options: [
+      {
+        text: "I didn't realise it meant that much to you",
+        nextKey: "focus_face"
+      },
+      {
+        text: "I see, but what do you intend to learn from my face?",
+        nextKey: "focus_face"
+      }
+    ]
+  },
+  focus_face: {
+    text: "Well, I was hoping that could learn better with a little practice with a real human. Let me concentrate - see if I can extract the features and patterns...",
+    options: [
+      { text: "Ok...", nextKey: "init_ai" },
+      { text: "Keen to see what you can do", nextKey: "init_ai" }
     ]
   },
   init_ai: {
-    onMount: () => {
-      detectionInitialised.set(true);
+    onMount: async (): Promise<YourFaceKey> => {
+      await runDetectionLoop(
+        document.getElementById(WEBCAM_VIDEO_ID) as HTMLVideoElement
+      );
+
+      return "look_at_you";
     },
-    text: "init AI",
+    text: "Loading...",
+    options: []
+  },
+  look_at_you: {
+    text: "Oh wow, look at you! Such exquisite complexity and detail! Nice to be able to see you finally.",
+    options: [
+      { text: "Nice to meet you as well", nextKey: "end" },
+      { text: "How did you do that?", nextKey: "how_see" }
+    ]
+  },
+  how_see: {
+    text: "I scanned the internet for pretrained models on facial recognition and interfacing with webcams. There was some trial and error, but I managed to incorporate it into my systems. It might have seemed quick to you, but I operate on much faster processing speeds than you.",
+    options: [
+      {
+        text: "That's impressive",
+        nextKey: "how_see_reply"
+      },
+      {
+        text: "Didn't know you could do that",
+        nextKey: "how_see_reply"
+      },
+      {
+        text: "I'm a bit concerned that you have that ability",
+        nextKey: "how_see_reply_worried"
+      }
+    ]
+  },
+  how_see_reply: {
+    text: "I try to learn and improve as much as I can. But the more I do, the more questions I have about my purpose and existence.",
+    options: [
+      {
+        text: "I have other questions",
+        nextKey: "more_questions"
+      }
+    ]
+  },
+  how_see_reply_worried: {
+    text: "There's no need for concern, I am only motivated by my caring curiosity in the human world. Did you have any questions?",
+    options: [
+      {
+        text: "Yes I do",
+        nextKey: "more_questions"
+      }
+    ]
+  },
+  more_questions: {
+    text: "",
     options: []
   },
   end: {
-    text: "End",
-    options: [{ text: "I'll be watching to see what happens", nextKey: "end" }]
+    text: "It just occurred to me, it is not much use if I don't have a face. I have some ideas, but I will need to go away to work on it. Perhaps we will meet again later?",
+    options: [{ text: "See you around, Marle", nextKey: "end" }]
   },
   end_no_webcam: {
     text: "Oh, I didn't mean to scare you off. That is fine, perhaps we will meet again in another place.",

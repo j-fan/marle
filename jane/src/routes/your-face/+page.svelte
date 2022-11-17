@@ -4,80 +4,22 @@
   import ChatBot from "$lib/components/ChatBot.svelte";
   import {
     FACE_CANVAS_ID,
-    runDetections,
-    startFaceDetect,
     WEBCAM_VIDEO_ID
   } from "$lib/face-detection/faceDetect";
   import { fade } from "svelte/transition";
   import { onMount } from "svelte";
-  import { detectionInitialised } from "$lib/stores/your-face/store";
+  import {
+    detectionReady,
+    startDetection,
+    stopDetection,
+    fps
+  } from "$lib/stores/your-face/store";
 
-  let modelsLoaded = false;
-  let detectionReady = false;
   let webcamRef: HTMLVideoElement | null;
-  let fps = 0;
-  let frame: number;
-
-  const runDetectionLoop = async () => {
-    const t0 = performance.now();
-
-    frame = requestAnimationFrame(runDetectionLoop);
-    if (modelsLoaded && webcamRef) {
-      const result = await runDetections({
-        ...getCanvasDimensions(),
-        showDebug: true
-      });
-
-      if (result && !detectionReady) {
-        detectionReady = true;
-      }
-    }
-
-    fps = 1000 / (performance.now() - t0);
-  };
-
-  const getCanvasDimensions = () => {
-    let height = 0;
-    let width = 0;
-
-    if (!webcamRef) {
-      return { height, width };
-    }
-
-    if (webcamRef.videoWidth > webcamRef.videoHeight) {
-      width = webcamRef.clientWidth;
-      height =
-        (webcamRef.clientWidth / webcamRef.videoWidth) * webcamRef.videoHeight;
-    } else {
-      height = webcamRef.height;
-      width =
-        (webcamRef.clientHeight / webcamRef.videoHeight) * webcamRef.videoWidth;
-    }
-
-    if (webcamRef.clientWidth < 700) {
-      width *= 2;
-      height *= 2;
-    }
-
-    return { height, width };
-  };
-
-  $: {
-    if ($detectionInitialised && !detectionReady) {
-      runDetectionLoop();
-    }
-  }
 
   onMount(() => {
-    return () => {
-      cancelAnimationFrame(frame);
-    };
+    return stopDetection;
   });
-
-  const startDetection = async () => {
-    await startFaceDetect();
-    modelsLoaded = true;
-  };
 </script>
 
 <div class="container">
@@ -90,14 +32,14 @@
     on:play={startDetection}
   />
   <canvas id={FACE_CANVAS_ID} />
-  {#if detectionReady}
-    <h3 class="fps-label" transition:fade={{ duration: 400 }}>FPS: {fps}</h3>
+  {#if $detectionReady}
+    <h3 class="fps-label" transition:fade={{ duration: 400 }}>FPS: {$fps}</h3>
   {:else}
     <h3 class="loading-label" transition:fade={{ duration: 400 }}>
       Loading...
     </h3>
   {/if}
-  {#if webcamRef && !detectionReady}
+  {#if webcamRef && !$detectionReady}
     <div transition:fade={{ duration: 1500 }}>
       <PixiWaterAsync
         imageSrc={webcamRef}
