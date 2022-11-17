@@ -1,4 +1,5 @@
 import { initCamera } from "$lib/face-detection/webcam";
+import { detectionInitialised } from "$lib/stores/your-face/store";
 import type { DialogMap } from "./types";
 
 export type YourFaceKey =
@@ -10,6 +11,7 @@ export type YourFaceKey =
   | "ask_webcam_unsure"
   | "init_webcam"
   | "init_webcam_2"
+  | "init_ai"
   | "end_no_webcam"
   | "end";
 
@@ -93,9 +95,16 @@ export const yourFaceDialog: DialogMap<YourFaceKey> = {
   init_webcam_2: {
     text: "Oops you look a but blurry, let me calibrate.",
     options: [
-      { text: "Go ahead", nextKey: "end" },
-      { text: "What's happening?", nextKey: "end" }
+      { text: "Go ahead", nextKey: "init_ai" },
+      { text: "What's happening?", nextKey: "init_ai" }
     ]
+  },
+  init_ai: {
+    onMount: () => {
+      detectionInitialised.set(true);
+    },
+    text: "init AI",
+    options: []
   },
   end: {
     text: "End",

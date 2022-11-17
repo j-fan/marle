@@ -8,8 +8,9 @@
     startFaceDetect,
     WEBCAM_VIDEO_ID
   } from "$lib/face-detection/faceDetect";
-  import { onMount } from "svelte";
   import { fade } from "svelte/transition";
+  import { onMount } from "svelte";
+  import { detectionInitialised } from "$lib/stores/your-face/store";
 
   let modelsLoaded = false;
   let detectionReady = false;
@@ -61,9 +62,13 @@
     return { height, width };
   };
 
-  onMount(() => {
-    // runDetectionLoop();
+  $: {
+    if ($detectionInitialised && !detectionReady) {
+      runDetectionLoop();
+    }
+  }
 
+  onMount(() => {
     return () => {
       cancelAnimationFrame(frame);
     };
@@ -76,13 +81,6 @@
 </script>
 
 <div class="container">
-  {#if !detectionReady}
-    <h3 class="loading-label" transition:fade={{ duration: 400 }}>
-      Loading face detection...
-    </h3>
-  {:else}
-    <h3 class="fps-label" transition:fade={{ duration: 400 }}>FPS: {fps}</h3>
-  {/if}
   <video
     bind:this={webcamRef}
     id={WEBCAM_VIDEO_ID}
@@ -92,12 +90,19 @@
     on:play={startDetection}
   />
   <canvas id={FACE_CANVAS_ID} />
-  {#if webcamRef}
-    <div transition:fade>
+  {#if detectionReady}
+    <h3 class="fps-label" transition:fade={{ duration: 400 }}>FPS: {fps}</h3>
+  {:else}
+    <h3 class="loading-label" transition:fade={{ duration: 400 }}>
+      Loading...
+    </h3>
+  {/if}
+  {#if webcamRef && !detectionReady}
+    <div transition:fade={{ duration: 1500 }}>
       <PixiWaterAsync
         imageSrc={webcamRef}
         canvasId="prelude"
-        displacePower={1000}
+        displacePower={500}
         isGrayscale
         fitToWindow
       />
@@ -144,6 +149,9 @@
   canvas {
     position: absolute;
     inset: 0;
+  }
+
+  video {
     filter: grayscale();
   }
 </style>
