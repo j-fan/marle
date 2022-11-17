@@ -1,4 +1,5 @@
 <script type="ts">
+  import PixiWaterAsync from "$lib/components/PixiWaterAsync.svelte";
   import {
     FACE_CANVAS_ID,
     runDetections,
@@ -13,6 +14,25 @@
   let detectionReady = false;
   let webcamRef: HTMLVideoElement | null;
   let fps = 0;
+  let frame: number;
+
+  const runDetectionLoop = async () => {
+    const t0 = performance.now();
+
+    frame = requestAnimationFrame(runDetectionLoop);
+    if (modelsLoaded && webcamRef) {
+      const result = await runDetections({
+        ...getCanvasDimensions(),
+        showDebug: true
+      });
+
+      if (result && !detectionReady) {
+        detectionReady = true;
+      }
+    }
+
+    fps = 1000 / (performance.now() - t0);
+  };
 
   const getCanvasDimensions = () => {
     let height = 0;
@@ -42,27 +62,8 @@
 
   onMount(async () => {
     await initCamera();
-    let frame: number;
 
-    const loop = async () => {
-      const t0 = performance.now();
-
-      frame = requestAnimationFrame(loop);
-      if (modelsLoaded && webcamRef) {
-        const result = await runDetections({
-          ...getCanvasDimensions(),
-          showDebug: true
-        });
-
-        if (result && !detectionReady) {
-          detectionReady = true;
-        }
-      }
-
-      fps = 1000 / (performance.now() - t0);
-    };
-
-    loop();
+    // runDetectionLoop();
 
     return () => {
       cancelAnimationFrame(frame);
@@ -92,6 +93,17 @@
     on:play={startDetection}
   />
   <canvas id={FACE_CANVAS_ID} />
+  {#if webcamRef}
+    <div transition:fade>
+      <PixiWaterAsync
+        imageSrc={webcamRef}
+        canvasId="prelude"
+        displacePower={1000}
+        isGrayscale
+        fitToWindow
+      />
+    </div>
+  {/if}
 </div>
 
 <style>
@@ -132,5 +144,6 @@
   canvas {
     position: absolute;
     inset: 0;
+    filter: grayscale();
   }
 </style>

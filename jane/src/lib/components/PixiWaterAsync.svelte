@@ -1,7 +1,11 @@
 <script type="ts">
-  export let imageSrc: string;
+  import type * as PIXI from "pixi.js";
+
+  export let imageSrc: PIXI.SpriteSource;
   export let displacePower = 20;
   export let canvasId: string;
+  export let isGrayscale = false;
+  export let fitToWindow = false;
 </script>
 
 <!-- 
@@ -16,6 +20,8 @@
     {imageSrc}
     {displacePower}
     {canvasId}
+    {isGrayscale}
+    {fitToWindow}
     on:click
   />
 {/await}
