@@ -8,6 +8,8 @@ export type YourFaceKey =
   | "body_appreciate"
   | "ask_webcam"
   | "ask_webcam_unsure"
+  | "init_webcam"
+  | "init_webcam_2"
   | "end_no_webcam"
   | "end";
 
@@ -53,13 +55,13 @@ export const yourFaceDialog: DialogMap<YourFaceKey> = {
   ask_webcam: {
     onMount: async () => {
       const camSuceeded = await initCamera();
-      return camSuceeded ? undefined : "end_no_webcam";
+      return camSuceeded ? "init_webcam" : "end_no_webcam";
     },
     text: "Do you mind if I take a look at you? You just need to accept the camera permission above.",
     options: [
       {
         text: "Alright, let's have a go",
-        nextKey: "end"
+        nextKey: "ask_webcam"
       },
       {
         text: "No. I don't feel comfortable with this",
@@ -70,13 +72,13 @@ export const yourFaceDialog: DialogMap<YourFaceKey> = {
   ask_webcam_unsure: {
     onMount: async () => {
       const camSuceeded = await initCamera();
-      return camSuceeded ? undefined : "end_no_webcam";
+      return camSuceeded ? "init_webcam" : "end_no_webcam";
     },
     text: "Don't worry it won't hurt. Let's try it out, you just need to accept the camera permission above.",
     options: [
       {
         text: "Alright, I will try",
-        nextKey: "end"
+        nextKey: "ask_webcam_unsure"
       },
       {
         text: "No. I don't feel comfortable with this",
@@ -84,8 +86,19 @@ export const yourFaceDialog: DialogMap<YourFaceKey> = {
       }
     ]
   },
+  init_webcam: {
+    text: "Please wait for the webcam to turn on please.",
+    options: [{ text: "It's ready now", nextKey: "init_webcam_2" }]
+  },
+  init_webcam_2: {
+    text: "Oops you look a but blurry, let me calibrate.",
+    options: [
+      { text: "Go ahead", nextKey: "end" },
+      { text: "What's happening?", nextKey: "end" }
+    ]
+  },
   end: {
-    text: "One day, who knows, I'll be amongst galaxies created from data.",
+    text: "End",
     options: [{ text: "I'll be watching to see what happens", nextKey: "end" }]
   },
   end_no_webcam: {
