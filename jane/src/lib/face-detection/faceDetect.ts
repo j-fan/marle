@@ -111,22 +111,23 @@ function drawFaceData(
   ctx.fillText(
     `gender: ${Math.round(100 * person.genderProbability)}% ${person.gender}`,
     person.detection.box.x,
-    person.detection.box.bottom + 74
-  );
-  ctx.fillText(
-    `expression: ${Math.round(100 * expression[0][1])}% ${expression[0][0]}`,
-    person.detection.box.x,
-    person.detection.box.bottom + 56
+    person.detection.box.bottom + 20
   );
   ctx.fillText(
     `age: ${Math.round(person.age)} years`,
     person.detection.box.x,
     person.detection.box.bottom + 38
   );
+
   ctx.fillText(
     `roll:${person.angle.roll}° pitch:${person.angle.pitch}° yaw:${person.angle.yaw}°`,
     person.detection.box.x,
-    person.detection.box.bottom + 20
+    person.detection.box.top - 8
+  );
+  ctx.fillText(
+    `expression: ${Math.round(100 * expression[0][1])}% ${expression[0][0]}`,
+    person.detection.box.x,
+    person.detection.box.top - 28
   );
 
   // draw face points for each face

@@ -23,10 +23,13 @@
   };
 
   const answerClick = (option: Option<T>) => {
-    return (event: MouseEvent) => {
+    return async (event: MouseEvent) => {
       event.stopPropagation();
       currentDialogNode = pickOption(dialogData, option.nextKey);
-      currentDialogNode.onMount?.();
+      const mountResult = await currentDialogNode.onMount?.();
+      if (mountResult) {
+        currentDialogNode = pickOption(dialogData, mountResult);
+      }
       option.onClick?.();
     };
   };

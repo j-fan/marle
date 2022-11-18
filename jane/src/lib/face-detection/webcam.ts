@@ -1,4 +1,4 @@
-const initCamera = async (): Promise<void> => {
+const initCamera = async (): Promise<boolean> => {
   const videoElement = document.getElementById(
     "webcam-video"
   ) as HTMLVideoElement;
@@ -6,15 +6,17 @@ const initCamera = async (): Promise<void> => {
   const getWebcam = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: true,
+        video: true
       });
       videoElement.srcObject = stream;
+      return true;
     } catch (err) {
       alert(`Could not start webcam. ${err}`);
+      return false;
     }
   };
 
-  await getWebcam();
+  return getWebcam();
 };
 
 export { initCamera };

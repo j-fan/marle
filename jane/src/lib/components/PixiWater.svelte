@@ -5,9 +5,11 @@
   import { tweened } from "svelte/motion";
   import { sineInOut } from "svelte/easing";
 
-  export let imageSrc: string;
+  export let imageSrc: PIXI.SpriteSource;
   export let displacePower = 20;
   export let canvasId: string;
+  export let isGrayscale = false;
+  export let fitToWindow = false;
 
   const app = new PIXI.Application({
     resizeTo: document.body
@@ -45,6 +47,10 @@
     app.stage.addChild(container);
 
     const dreamTexture = PIXI.Sprite.from(imageSrc);
+    if (fitToWindow) {
+      dreamTexture.width = window.innerWidth;
+      dreamTexture.height = window.innerHeight;
+    }
     container.addChild(dreamTexture);
 
     app.stage.addChild(displacementSprite);
@@ -69,7 +75,11 @@
   });
 </script>
 
-<div class="{canvasId} pixi-canvas" on:click />
+<div
+  class="{canvasId} pixi-canvas"
+  on:click
+  style={isGrayscale ? "filter: grayscale();" : undefined}
+/>
 
 <style>
   .pixi-canvas {
