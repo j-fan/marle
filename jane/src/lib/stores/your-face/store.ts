@@ -15,6 +15,7 @@ export const startDetection = async () => {
 
 export const stopDetection = async () => {
   cancelAnimationFrame(get(frame));
+  detectionReady.set(false);
 };
 
 export const runDetectionLoop = async (webcamRef: HTMLVideoElement | null) => {

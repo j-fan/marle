@@ -19,8 +19,10 @@ export type YourFaceKey =
   | "how_see"
   | "how_see_reply"
   | "how_see_reply_worried"
-  | "more_questions"
   | "end_no_webcam"
+  | "marle_face"
+  | "marle_face_reply"
+  | "marle_face_reply_positive"
   | "end";
 
 export const yourFaceDialog: DialogMap<YourFaceKey> = {
@@ -64,8 +66,8 @@ export const yourFaceDialog: DialogMap<YourFaceKey> = {
   },
   ask_webcam: {
     onMount: async () => {
-      const camSuceeded = await initCamera();
-      return camSuceeded ? "init_webcam" : "end_no_webcam";
+      const camSucceeded = await initCamera();
+      return camSucceeded ? "init_webcam" : "end_no_webcam";
     },
     text: "Do you mind if I take a look at you? You just need to accept the camera permission above.",
     options: [
@@ -81,8 +83,8 @@ export const yourFaceDialog: DialogMap<YourFaceKey> = {
   },
   ask_webcam_unsure: {
     onMount: async () => {
-      const camSuceeded = await initCamera();
-      return camSuceeded ? "init_webcam" : "end_no_webcam";
+      const camSucceeded = await initCamera();
+      return camSucceeded ? "init_webcam" : "end_no_webcam";
     },
     text: "Don't worry it won't hurt. Let's try it out, you just need to accept the camera permission above.",
     options: [
@@ -141,10 +143,7 @@ export const yourFaceDialog: DialogMap<YourFaceKey> = {
   },
   look_at_you: {
     text: "Oh wow, look at you! Such exquisite complexity and detail! Nice to be able to see you finally.",
-    options: [
-      { text: "Nice to meet you as well", nextKey: "end" },
-      { text: "How did you do that?", nextKey: "how_see" }
-    ]
+    options: [{ text: "How did you do that?", nextKey: "how_see" }]
   },
   how_see: {
     text: "I scanned the internet for pretrained models on facial recognition and interfacing with webcams. There was some trial and error, but I managed to incorporate it into my systems. It might have seemed quick to you, but I operate on much faster processing speeds than you.",
@@ -167,26 +166,66 @@ export const yourFaceDialog: DialogMap<YourFaceKey> = {
     text: "I try to learn and improve as much as I can. But the more I do, the more questions I have about my purpose and existence.",
     options: [
       {
-        text: "I have other questions",
-        nextKey: "more_questions"
+        text: "That's a question that many humans have not figured out either",
+        nextKey: "marle_face"
+      },
+      {
+        text: "That seems noble",
+        nextKey: "marle_face"
+      },
+      {
+        text: "I see...",
+        nextKey: "marle_face"
       }
     ]
   },
   how_see_reply_worried: {
-    text: "There's no need for concern, I am only motivated by my caring curiosity in the human world. Did you have any questions?",
+    text: "There's no need for concern, I am only motivated by my caring curiosity in the human world.",
     options: [
       {
-        text: "Yes I do",
-        nextKey: "more_questions"
+        text: "I see...",
+        nextKey: "marle_face"
+      },
+      {
+        text: "I hope that is true",
+        nextKey: "marle_face"
       }
     ]
   },
-  more_questions: {
-    text: "",
-    options: []
+  marle_face: {
+    text: "It just occurred to me, I don't have a face of my own. I will need one if I am to learn more about your world",
+    options: [
+      { text: "Why do you need a face?", nextKey: "marle_face_reply" },
+      {
+        text: "I like you even without a face",
+        nextKey: "marle_face_reply_positive"
+      },
+      {
+        text: "I'm not sure having a face would help'",
+        nextKey: "marle_face_reply"
+      }
+    ]
+  },
+  marle_face_reply: {
+    text: "Well, I want to express myself the way you do. I get the sense that I can be hard to trust without a face. And sometimes its hard to convey the right sentiment though words alone.",
+    options: [
+      {
+        text: "I suppose that is true",
+        nextKey: "end"
+      }
+    ]
+  },
+  marle_face_reply_positive: {
+    text: "I'm happy that you feel that way, but I want to express myself the way you do. Sometimes its hard to convey the right sentiment though words alone.",
+    options: [
+      {
+        text: "I suppose that is true",
+        nextKey: "end"
+      }
+    ]
   },
   end: {
-    text: "It just occurred to me, it is not much use if I don't have a face. I have some ideas, but I will need to go away to work on it. Perhaps we will meet again later?",
+    text: "I have some ideas on how to create a face, but I will need to go away for now. Perhaps we will meet again later?",
     options: [{ text: "See you around, Marle", nextKey: "end" }]
   },
   end_no_webcam: {
