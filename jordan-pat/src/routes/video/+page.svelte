@@ -18,8 +18,10 @@
   ];
   const buttonC =
     "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full";
+  // const videoSrc =
+  //   "https://firebasestorage.googleapis.com/v0/b/marle-5d8ad.appspot.com/o/Marle_VideoTest.mp4?alt=media&token=fbf1ef92-57c9-4d8d-b9fa-5831c4b010c5";
   const videoSrc =
-    "https://firebasestorage.googleapis.com/v0/b/marle-5d8ad.appspot.com/o/Marle_VideoTest.mp4?alt=media&token=fbf1ef92-57c9-4d8d-b9fa-5831c4b010c5";
+    "https://github.com/CallumHoward/marle-media/raw/main/Marle_VideoTest.mp4";
 
   const findSegment = (t: number) => {
     for (const segment of segments) {
@@ -27,6 +29,14 @@
       if (start <= t && t < end) {
         return segment;
       }
+    }
+  };
+
+  const fastSeek = (target: HTMLVideoElement, to: number) => {
+    if (target.fastSeek) {
+      target.fastSeek(to);
+    } else {
+      videoRef.currentTime = to;
     }
   };
 
@@ -38,7 +48,7 @@
 
     const [start, end] = segment;
     if (time >= end - epsilon) {
-      videoRef.currentTime = start;
+      fastSeek(videoRef, start);
       videoRef.play();
     }
   };
@@ -47,10 +57,10 @@
     const hash = window.location.hash.replace("#", "");
     if (hash.startsWith("c")) {
       const [segmentIndex] = hash.match(/\d+/) || ["0"];
-      videoRef.currentTime = segments[parseInt(segmentIndex)][0];
+      fastSeek(videoRef, segments[parseInt(segmentIndex)][0]);
     } else if (hash.startsWith("t")) {
       const [segmentIndex] = hash.match(/\d+/) || ["0"];
-      videoRef.currentTime = segments[parseInt(segmentIndex)][1];
+      fastSeek(videoRef, segments[parseInt(segmentIndex)][1]);
     }
   });
 </script>
@@ -85,6 +95,11 @@
   bind:currentTime={time}
   autoplay
   loop
+  muted
+  playsinline
+  defaultmuted
+  disablepictureinpicture
+  preload="auto"
   width="1280"
 >
   <track kind="captions" />

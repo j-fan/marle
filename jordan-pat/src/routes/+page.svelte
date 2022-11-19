@@ -1,5 +1,5 @@
 <script lang="ts">
-  import {base} from "$app/paths";
+  import { base } from "$app/paths";
   const segments = [
     [0, 1.3],
     [5.2, 6.4],
