@@ -1,4 +1,5 @@
 <script lang="ts">
+  import {base} from "$app/paths";
   const segments = [
     [0, 1.3],
     [5.2, 6.4],
@@ -11,6 +12,6 @@
 </script>
 
 {#each segments as _, i}
-  <a class={buttonC} href="/video#c{i}">{i}</a>
-  <a class={buttonC} href="/video#t{i}">T{i}</a>
+  <a class={buttonC} href="{base}/video#c{i}">{i}</a>
+  <a class={buttonC} href="{base}/video#t{i}">T{i}</a>
 {/each}

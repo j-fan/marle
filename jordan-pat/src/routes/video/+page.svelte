@@ -18,7 +18,8 @@
   ];
   const buttonC =
     "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full";
-  const videoSrc = "https://firebasestorage.googleapis.com/v0/b/marle-5d8ad.appspot.com/o/Marle_VideoTest.mp4?alt=media&token=fbf1ef92-57c9-4d8d-b9fa-5831c4b010c5";
+  const videoSrc =
+    "https://firebasestorage.googleapis.com/v0/b/marle-5d8ad.appspot.com/o/Marle_VideoTest.mp4?alt=media&token=fbf1ef92-57c9-4d8d-b9fa-5831c4b010c5";
 
   const findSegment = (t: number) => {
     for (const segment of segments) {
@@ -61,16 +62,16 @@
 
 {#each segments as [start, end], i}
   <button
+    id="c{i}"
     class={buttonC}
-    href="#c{i}"
     on:click={() => {
       time = start;
       window.location.hash = `c${i}`;
     }}>{i}</button
   >
   <button
+    id="t{i}"
     class={buttonC}
-    href="#t{i}"
     on:click={() => {
       time = end;
       window.location.hash = `t${i}`;

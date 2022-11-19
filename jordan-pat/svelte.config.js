@@ -15,7 +15,7 @@ const config = {
 
   kit: {
     paths: {
-      base: dev ? "" : "/marle/callum",
+      base: dev ? "" : "/marle/jordan-pat",
     },
     adapter: adapter({
       // default options are shown. On some platforms
