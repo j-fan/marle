@@ -5,7 +5,6 @@
   export let displacePower = 20;
   export let canvasId: string;
   export let isGrayscale = false;
-  export let fitToWindow = false;
 </script>
 
 <!-- 
@@ -21,7 +20,6 @@
     {displacePower}
     {canvasId}
     {isGrayscale}
-    {fitToWindow}
     on:click
   />
 {/await}
