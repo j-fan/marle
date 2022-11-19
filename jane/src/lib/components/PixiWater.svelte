@@ -4,12 +4,12 @@
   import { base } from "$app/paths";
   import { tweened } from "svelte/motion";
   import { sineInOut } from "svelte/easing";
+  import { getFilledDimensions } from "$lib/stores/your-face/store";
 
   export let imageSrc: PIXI.SpriteSource;
   export let displacePower = 20;
   export let canvasId: string;
   export let isGrayscale = false;
-  export let fitToWindow = false;
 
   const app = new PIXI.Application({
     resizeTo: document.body
@@ -47,9 +47,25 @@
     app.stage.addChild(container);
 
     const dreamTexture = PIXI.Sprite.from(imageSrc);
-    if (fitToWindow) {
-      dreamTexture.width = window.innerWidth;
-      dreamTexture.height = window.innerHeight;
+    if (typeof imageSrc === "object" && "clientHeight" in imageSrc) {
+      const { width, height } = getFilledDimensions(
+        imageSrc.clientWidth,
+        imageSrc.clientHeight,
+        window.innerWidth,
+        window.innerHeight
+      );
+      dreamTexture.width = width;
+      dreamTexture.height = height;
+    } else if (typeof imageSrc === "string") {
+      // assume that all images are 16:9 ratio for simplicity
+      const { width, height } = getFilledDimensions(
+        16,
+        9,
+        window.innerWidth,
+        window.innerHeight
+      );
+      dreamTexture.width = width;
+      dreamTexture.height = height;
     }
     container.addChild(dreamTexture);
 

@@ -28,7 +28,7 @@ export const runDetectionLoop = async (webcamRef: HTMLVideoElement | null) => {
   );
   if (modelsLoaded && webcamRef) {
     const result = await runDetections({
-      ...getCanvasDimensions(webcamRef),
+      ...getCanvasDimensionsFromVideo(webcamRef),
       showDebug: true
     });
 
@@ -40,27 +40,41 @@ export const runDetectionLoop = async (webcamRef: HTMLVideoElement | null) => {
   fps.set(1000 / (performance.now() - t0));
 };
 
-const getCanvasDimensions = (webcamRef: HTMLVideoElement | null) => {
-  let height = 0;
-  let width = 0;
-
+const getCanvasDimensionsFromVideo = (webcamRef: HTMLVideoElement | null) => {
   if (!webcamRef) {
-    return { height, width };
+    return { height: 0, width: 0 };
   }
 
-  if (webcamRef.videoWidth > webcamRef.videoHeight) {
-    width = webcamRef.clientWidth;
-    height =
-      (webcamRef.clientWidth / webcamRef.videoWidth) * webcamRef.videoHeight;
-  } else {
-    height = webcamRef.height;
-    width =
-      (webcamRef.clientHeight / webcamRef.videoHeight) * webcamRef.videoWidth;
-  }
+  let { width, height } = getFilledDimensions(
+    webcamRef.videoWidth,
+    webcamRef.videoHeight,
+    webcamRef.clientWidth,
+    webcamRef.clientHeight
+  );
 
   if (webcamRef.clientWidth < 700) {
     width *= 2;
     height *= 2;
+  }
+
+  return { height, width };
+};
+
+export const getFilledDimensions = (
+  originalWidth: number,
+  originalHeight: number,
+  targetWidth: number,
+  targetHeight: number
+) => {
+  let height = 0;
+  let width = 0;
+
+  if (targetWidth > targetHeight) {
+    width = targetWidth;
+    height = (targetWidth / originalWidth) * originalHeight;
+  } else {
+    height = targetHeight;
+    width = (targetHeight / originalHeight) * originalWidth;
   }
 
   return { height, width };

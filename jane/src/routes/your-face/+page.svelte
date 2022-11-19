@@ -46,7 +46,6 @@
         canvasId="prelude"
         displacePower={500}
         isGrayscale
-        fitToWindow
       />
     </div>
   {/if}
