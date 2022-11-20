@@ -1,4 +1,5 @@
 <script type="ts">
+  import { base } from "$app/paths";
   import SoundCloud from "$lib/components/SoundCloud.svelte";
   import {
     SoundCloudEvent,
@@ -41,14 +42,17 @@
     scrolling="no"
     frameborder="no"
     title="SoundCloud"
-    src="https://w.soundcloud.com/player/?url=https://soundcloud.com/durdenhauer/praise-the-lord-durdenhauer-edit&color=0066CC&show_artwork=true&buying=false&sharing=false&show_playcount=false&download=false"
+    allow="autoplay"
+    src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1528939585&color=0066CC&show_artwork=true&buying=false&sharing=false&show_playcount=false&download=false"
   />
-  {#if songInfo}
-    <img
-      src={songInfo.artwork_url.replace("-large.jpg", "-t500x500.jpg")}
-      alt="song cover art"
-    />
-  {/if}
+  <div class="music-player-wrapper">
+    <div
+      class="music-player"
+      style="background-image: url('{base}/rest-here.jpg')"
+    >
+      <div class="player-controls" />
+    </div>
+  </div>
   <p>Play progress: {progress}</p>
   <button
     type="button"
@@ -65,8 +69,7 @@
   }
 
   iframe {
-    width: 500px;
-    height: 100px;
+    display: none;
   }
 
   .container {
@@ -75,5 +78,33 @@
     align-items: flex-start;
     gap: 2rem;
     padding: 2rem;
+  }
+
+  .music-player-wrapper {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .music-player {
+    width: min(100%, 70vh);
+    aspect-ratio: 0.8;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: relative;
+    box-sizing: border-box;
+    padding: 1rem;
+  }
+
+  .player-controls {
+    position: absolute;
+    border: 2px solid red;
+    height: 13%;
+    width: 60%;
+    bottom: 7%;
+    right: 7%;
   }
 </style>
