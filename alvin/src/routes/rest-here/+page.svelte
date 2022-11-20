@@ -44,6 +44,7 @@
 </script>
 
 <svelte:head>
+  <title>Rest Here Weary Traveller - Alvin Zhong</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link
     rel="preconnect"
@@ -66,7 +67,7 @@
     frameborder="no"
     title="SoundCloud"
     allow="autoplay"
-    src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1528939585&color=0066CC&show_artwork=true&buying=false&sharing=false&show_playcount=false&download=false"
+    src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1528939585"
   />
   <div class="music-player-wrapper">
     <div
@@ -157,6 +158,7 @@
     position: relative;
     box-sizing: border-box;
     padding: 1rem;
+    user-select: none;
   }
 
   .player-controls {
@@ -185,6 +187,7 @@
     background: transparent;
     cursor: pointer;
     height: 90%;
+    user-select: none;
   }
 
   button:hover {
@@ -219,6 +222,7 @@
 
   .song-title p {
     white-space: nowrap;
+    user-select: none;
   }
 
   .track {
@@ -230,10 +234,13 @@
     display: flex;
     align-items: center;
     position: relative;
+    user-select: none;
   }
 
   .track-thumb {
     position: absolute;
+    cursor: not-allowed;
+    user-select: none;
   }
 
   .timestamp {
