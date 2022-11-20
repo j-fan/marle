@@ -143,7 +143,10 @@
     id="t{i}"
     class={buttonC}
     style = "display:{(currSegment == i) && !transition ? 'block' : 'none'}; 
-    transform: translate({innerWidth/2 *butt_offsets[i][0]}px,{innerHeight*aspect_w/aspect_h < innerWidth ? innerHeight/2 *butt_offsets[i][1] : (innerWidth * aspect_h/aspect_w)/2 *butt_offsets[i][1]}px)"
+    transform: translate(
+      {innerHeight*aspect_w/aspect_h > innerWidth ? innerWidth/2 *butt_offsets[i][0] : (innerHeight * aspect_w/aspect_h)/2 *butt_offsets[i][0]}px,
+    {innerHeight*aspect_w/aspect_h < innerWidth ? innerHeight/2 *butt_offsets[i][1] : (innerWidth * aspect_h/aspect_w)/2 *butt_offsets[i][1]}px
+    )"
     on:click={() => {
       time = end;
       window.location.hash = `t${i}`;
