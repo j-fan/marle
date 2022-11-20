@@ -1,4 +1,36 @@
 <script lang="ts">
+  /*
+    Johan Karlsson, 2021
+    https://twitter.com/DonKarlssonSan
+    MIT License, see Details View
+
+    steps is how many pixels wide each square is
+    If steps === 4
+    We need 8 bits total:
+    0123 4567
+
+    8 bit unsigned integer: 0-255
+    first four bits are columns
+    next four bits are rows
+
+    0 1 2 3
+    4
+    5
+    6
+    7
+
+    10001000 (binary) = 136 (decimal)
+    with AND logic becomes:
+    0 1 2 3
+    4 1 0 0 0
+    5 0 0 0 0
+    6 0 0 0 0
+    7 0 0 0 0
+
+    A pixel in the upper left
+  */
+
+  import { onInterval } from "$lib/utils";
   import { onMount } from "svelte";
 
   let canvas: HTMLCanvasElement;
@@ -14,11 +46,6 @@
     }
     ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
     resize();
-    window.addEventListener("resize", () => {
-      resize();
-      draw();
-    });
-    canvas.addEventListener("click", draw);
   };
 
   const resize = () => {
@@ -30,10 +57,10 @@
     ctx.fillStyle = "white";
     ctx.fillRect(0, 0, w, h);
     ctx.fillStyle = "black";
-    const size = 20;
+    const size = 40;
     const cols = Math.ceil(w / size);
     const rows = Math.ceil(h / size);
-    const steps = 10; // per side
+    const steps = 9; // per side
 
     // If each square is 10 x 10 -> we need 20 bits
     const maxVal = Math.pow(2, steps * 2);
@@ -98,9 +125,15 @@
   onMount(() => {
     setup();
     draw();
+    onInterval(draw, 200)
   });
 </script>
 
-<h1>Welcome to SvelteKit</h1>
-<p class="text-3xl font-bold underline">Foo bar baz</p>
-<canvas id="canvas" bind:this={canvas} />
+<svelte:window
+  on:resize={() => {
+    resize();
+    draw();
+  }}
+/>
+
+<canvas id="canvas" bind:this={canvas} on:click={draw} />
