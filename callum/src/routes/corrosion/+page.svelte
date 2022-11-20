@@ -36,9 +36,16 @@
   let canvas: HTMLCanvasElement;
   let ctx: CanvasRenderingContext2D;
   let w: number, h: number;
-  let mask = 50;
+  let mask = 80;
+  let mousePos = { x: 0, y: 0 };
 
   const operators = "^|&";
+
+  const handleMouseMove = (event: MouseEvent) => {
+    mousePos.x = event.clientX;
+    mousePos.y = event.clientY;
+    mask -= 0.05;
+  };
 
   const setup = () => {
     if (!canvas) {
@@ -72,13 +79,16 @@
     const maskMaxC = cols - maskMinC;
     const maskMinR = (rows * mask) / 100 / 2;
     const maskMaxR = rows - maskMinR;
-    const feather = 3;
+    const radius = (cols * (100 - mask)) / 100 / 2;
+    const originC = Math.ceil(mousePos.x / size);
+    const originR = Math.ceil(mousePos.y / size);
+    const feather = 5;
 
     for (let col = maskMinC; col < maskMaxC; col++) {
-      const randR = Math.round(Math.random() * feather);
+      const randR = Math.round((Math.random() - 0.5) * feather);
       for (let row = maskMinR + randR; row < maskMaxR - randR; row++) {
-        const randC = Math.round(Math.random() * feather);
-        if (col - maskMinC < randC || col > maskMaxC - randC) {
+        const randC = Math.round((Math.random() - 0.5) * feather);
+        if (!inCircle(originC, originR, radius, col + randC, row + randR)) {
           continue;
         }
         const x = col * size;
@@ -87,9 +97,9 @@
       }
     }
 
-    const x = cols * 0.5 * size;
-    const y = rows * 0.5 * size
-    drawSquare(x, y, size, maxVal, operatorIndex, steps);
+    // const x = cols * 0.5 * size;
+    // const y = rows * 0.5 * size;
+    // drawSquare(originC, originR, size, maxVal, operatorIndex, steps);
   };
 
   const drawSquare = (
@@ -138,35 +148,58 @@
     return operations[operator](a, b);
   };
 
-  const inCircle = (centerX: number, centerY: number, radius: number, x: number, y: number) =>
-    (centerX - x) * (centerX - x) + (centerY - y) * (centerY - y) <= radius * radius
+  const inCircle = (
+    centerX: number,
+    centerY: number,
+    radius: number,
+    x: number,
+    y: number,
+  ) =>
+    (centerX - x) * (centerX - x) + (centerY - y) * (centerY - y) <=
+    radius * radius;
 
   onMount(() => {
     setup();
     draw();
     onInterval(() => {
-    if (mask <= -30) {
-      mask = 100;
-    } else {
-      mask -= 2;
-    }
+      // if (mask <= -50) {
+      //   mask = 80;
+      // } else {
+      //   mask -= 1;
+      // }
       draw();
-    }, 300)
+    }, 100);
   });
 </script>
 
 <svelte:window
+  on:mousemove={handleMouseMove}
   on:resize={() => {
     resize();
     draw();
   }}
 />
 
-<input id="mask" type="range" name="mask" bind:value={mask} min={0} max={100} />
-<label for="mask">Mask {mask}%</label>
-<canvas id="canvas" bind:this={canvas} on:click={draw} />
+<canvas id="canvas" class="fixed" bind:this={canvas} on:click={draw} />
 <div class="absolute">
-  <h2 class="relative italic font-serif text-4xl weight font-black">
+  <div id="debug" class="hidden">
+    <input
+      id="mask"
+      type="range"
+      name="mask"
+      bind:value={mask}
+      min={0}
+      max={100}
+    />
+    <label for="mask">Mask {mask}%</label>
+  </div>
+  <h2 class="relative italic font-serif text-4xl weight font-black mx-32 my-32">
     I can feel my mind expanding...
   </h2>
+  <img
+    id="silhouette"
+    class="fixed bottom-0 m-auto left-0 right-0 opacity-70 hue-rotate-30"
+    alt="silhouette"
+    src="https://raw.githubusercontent.com/CallumHoward/marle-media/main/silhouette.png"
+  />
 </div>
