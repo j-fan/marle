@@ -105,7 +105,11 @@
         </div>
         <div class="button-wrapper">
           {#if paused}
-            <button type="button" on:click={toggleAudio}>
+            <button
+              type="button"
+              on:click={toggleAudio}
+              class={songInfo ? undefined : "loading"}
+            >
               <img
                 src="{base}/play-button.png"
                 class="pause-play-btn"
@@ -113,7 +117,11 @@
               />
             </button>
           {:else}
-            <button type="button" on:click={toggleAudio}>
+            <button
+              type="button"
+              on:click={toggleAudio}
+              class={songInfo ? undefined : "loading"}
+            >
               <img
                 src="{base}/pause-button.png"
                 class="pause-play-btn"
@@ -198,8 +206,15 @@
     transform: scale(1);
   }
 
+  button.loading {
+    cursor: not-allowed;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
   .time-info {
     width: 72%;
+    overflow: hidden;
   }
 
   .song-title {
