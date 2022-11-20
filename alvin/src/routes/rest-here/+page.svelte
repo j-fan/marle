@@ -8,16 +8,21 @@
     type SoundCloudWidget
   } from "$lib/components/SoundCloud.types";
   import { onMount } from "svelte";
+  import { millisecondsToTimestamp } from "./utils";
 
   let soundCloudWidget: SoundCloudWidget;
   let paused = true;
   let progress = 0;
+  let currentTime = "0:00";
   let songInfo: SongInfo | undefined;
 
   onMount(async () => {
     soundCloudWidget = window.SC.Widget("soundcloud");
     soundCloudWidget.bind(SoundCloudEvent.PLAY_PROGRESS, (progressObj) => {
-      progress = (progressObj as PlayProgress).relativePosition || 0;
+      const progressInfo = progressObj as PlayProgress;
+      progress = progressInfo.relativePosition || 0;
+
+      currentTime = millisecondsToTimestamp(progressInfo.currentPosition);
     });
 
     soundCloudWidget.bind(SoundCloudEvent.READY, () => {
@@ -30,10 +35,14 @@
       soundCloudWidget.unbind(SoundCloudEvent.PLAY_PROGRESS);
     };
   });
+
+  const toggleAudio = () => {
+    soundCloudWidget.toggle();
+    paused = !paused;
+  };
 </script>
 
 <div class="container">
-  Rest here weary traveller
   <SoundCloud />
   <iframe
     id="soundcloud"
@@ -50,17 +59,57 @@
       class="music-player"
       style="background-image: url('{base}/rest-here.jpg')"
     >
-      <div class="player-controls" />
+      <div class="player-controls">
+        <div class="time-info">
+          <div class="song-title">
+            {#if songInfo}
+              <div>
+                <p>{songInfo.title}</p>
+                <p>{songInfo.title}</p>
+              </div>
+            {:else}
+              <p>Loading...</p>
+            {/if}
+          </div>
+          <div class="track" style="background-image: url('{base}/track.png')">
+            <img
+              class="track-thumb"
+              src="{base}/track-thumb.png"
+              alt="track thumb"
+              width="28px"
+              height="28px"
+              style="left: {progress}%"
+            />
+          </div>
+          <div class="timestamp">
+            <p>{currentTime}</p>
+            <p>
+              {songInfo ? millisecondsToTimestamp(songInfo.duration) : "0:00"}
+            </p>
+          </div>
+        </div>
+        <div class="button-wrapper">
+          {#if paused}
+            <button type="button" on:click={toggleAudio}>
+              <img
+                src="{base}/play-button.png"
+                class="pause-play-btn"
+                alt="play"
+              />
+            </button>
+          {:else}
+            <button type="button" on:click={toggleAudio}>
+              <img
+                src="{base}/pause-button.png"
+                class="pause-play-btn"
+                alt="pause"
+              />
+            </button>
+          {/if}
+        </div>
+      </div>
     </div>
   </div>
-  <p>Play progress: {progress}</p>
-  <button
-    type="button"
-    on:click={() => {
-      soundCloudWidget.toggle();
-      paused = !paused;
-    }}>{paused ? "Play" : "Pause"}</button
-  >
 </div>
 
 <style>
@@ -70,14 +119,6 @@
 
   iframe {
     display: none;
-  }
-
-  .container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 2rem;
-    padding: 2rem;
   }
 
   .music-player-wrapper {
@@ -101,10 +142,92 @@
 
   .player-controls {
     position: absolute;
-    border: 2px solid red;
     height: 13%;
     width: 60%;
-    bottom: 7%;
+    bottom: 6%;
     right: 7%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .button-wrapper {
+    flex-shrink: 0;
+    height: 100%;
+  }
+
+  .pause-play-btn {
+    aspect-ratio: 1;
+    height: 100%;
+  }
+
+  button {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    height: 90%;
+  }
+
+  button:hover {
+    transform: scale(1.1);
+  }
+
+  button:active {
+    transform: scale(1);
+  }
+
+  .time-info {
+    width: 100%;
+  }
+
+  .song-title {
+    height: 25px;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    font-size: 1rem;
+  }
+
+  .song-title div {
+    display: flex;
+    gap: 1rem;
+    width: 200%;
+    height: 30px;
+
+    position: absolute;
+    animation: marquee 10s linear infinite;
+  }
+
+  .song-title p {
+    white-space: nowrap;
+  }
+
+  .track {
+    width: 100%;
+    height: 28px;
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+
+  .track-thumb {
+    position: absolute;
+  }
+
+  .timestamp {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+  }
+
+  @keyframes marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(calc(-100% - 1rem));
+    }
   }
 </style>
