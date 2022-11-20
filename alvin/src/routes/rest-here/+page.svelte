@@ -1,5 +1,6 @@
 <script type="ts">
   import { base } from "$app/paths";
+  import Marquee from "$lib/components/Marquee.svelte";
   import SoundCloud from "$lib/components/SoundCloud.svelte";
   import {
     SoundCloudEvent,
@@ -78,10 +79,9 @@
         <div class="time-info">
           <div class="song-title">
             {#if songInfo}
-              <div>
+              <Marquee speed={window.innerWidth < 800 ? 15 : 40} pauseOnHover>
                 <p>{songInfo.title}</p>
-                <p>{songInfo.title}</p>
-              </div>
+              </Marquee>
             {:else}
               <p>Loading...</p>
             {/if}
@@ -199,30 +199,19 @@
   }
 
   .time-info {
-    width: 100%;
+    width: 72%;
   }
 
   .song-title {
     height: 25px;
     width: 100%;
-    overflow: hidden;
-    position: relative;
     font-size: 1rem;
-  }
-
-  .song-title div {
-    display: flex;
-    gap: 1rem;
-    width: 200%;
-    height: 30px;
-
-    position: absolute;
-    animation: marquee 10s linear infinite;
   }
 
   .song-title p {
     white-space: nowrap;
     user-select: none;
+    padding: 0 1rem;
   }
 
   .track {
@@ -247,14 +236,5 @@
     display: flex;
     justify-content: space-between;
     font-size: 0.75rem;
-  }
-
-  @keyframes marquee {
-    0% {
-      transform: translateX(0);
-    }
-    100% {
-      transform: translateX(calc(-100% - 1rem));
-    }
   }
 </style>
