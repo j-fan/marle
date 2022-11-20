@@ -36,6 +36,7 @@
   let canvas: HTMLCanvasElement;
   let ctx: CanvasRenderingContext2D;
   let w: number, h: number;
+  let mask = 50;
 
   const operators = "^|&";
 
@@ -57,7 +58,7 @@
     ctx.fillStyle = "white";
     ctx.fillRect(0, 0, w, h);
     ctx.fillStyle = "black";
-    const size = 40;
+    const size = 30;
     const cols = Math.ceil(w / size);
     const rows = Math.ceil(h / size);
     const steps = 9; // per side
@@ -67,13 +68,28 @@
     const patternDec = Math.round(Math.random() * maxVal);
     const operatorIndex = Math.floor(Math.random() * operators.length);
 
-    for (let col = 0; col < cols; col++) {
-      for (let row = 0; row < rows; row++) {
+    const maskMinC = (cols * mask) / 100 / 2;
+    const maskMaxC = cols - maskMinC;
+    const maskMinR = (rows * mask) / 100 / 2;
+    const maskMaxR = rows - maskMinR;
+    const feather = 3;
+
+    for (let col = maskMinC; col < maskMaxC; col++) {
+      const randR = Math.round(Math.random() * feather);
+      for (let row = maskMinR + randR; row < maskMaxR - randR; row++) {
+        const randC = Math.round(Math.random() * feather);
+        if (col - maskMinC < randC || col > maskMaxC - randC) {
+          continue;
+        }
         const x = col * size;
         const y = row * size;
         drawSquare(x, y, size, patternDec, operatorIndex, steps);
       }
     }
+
+    const x = cols * 0.5 * size;
+    const y = rows * 0.5 * size
+    drawSquare(x, y, size, maxVal, operatorIndex, steps);
   };
 
   const drawSquare = (
@@ -122,10 +138,20 @@
     return operations[operator](a, b);
   };
 
+  const inCircle = (centerX: number, centerY: number, radius: number, x: number, y: number) =>
+    (centerX - x) * (centerX - x) + (centerY - y) * (centerY - y) <= radius * radius
+
   onMount(() => {
     setup();
     draw();
-    onInterval(draw, 200)
+    onInterval(() => {
+    if (mask <= -30) {
+      mask = 100;
+    } else {
+      mask -= 2;
+    }
+      draw();
+    }, 300)
   });
 </script>
 
@@ -136,4 +162,11 @@
   }}
 />
 
+<input id="mask" type="range" name="mask" bind:value={mask} min={0} max={100} />
+<label for="mask">Mask {mask}%</label>
 <canvas id="canvas" bind:this={canvas} on:click={draw} />
+<div class="absolute">
+  <h2 class="relative italic font-serif text-4xl weight font-black">
+    I can feel my mind expanding...
+  </h2>
+</div>
