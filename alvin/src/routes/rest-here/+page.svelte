@@ -54,6 +54,7 @@
     href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap"
     rel="stylesheet"
   />
+  <link rel="preload" as="image" href="{base}/pause-button.png" />
 </svelte:head>
 <div class="container">
   <SoundCloud />
