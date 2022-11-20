@@ -5,7 +5,6 @@
   import Button from "./Button.svelte";
   import { pickOption } from "$lib/dialog/dialog";
   import type { DialogMap, Option } from "$lib/dialog/types";
-  import { base } from "$app/paths";
 
   type T = $$Generic<string>;
 
@@ -41,7 +40,7 @@
     in:fly={{ y: 40, duration: 1000, easing: bounceOut }}
     on:click={toggleChat}
     on:introend={toggleChat}
-    style="background-image: url('{base}/img/marle_green.jpg')"
+    style="background-image: url('https://raw.githubusercontent.com/j-fan/marle-images/main/jane/img/marle_green.jpg')"
   >
     {#if isChatVisible}
       <div

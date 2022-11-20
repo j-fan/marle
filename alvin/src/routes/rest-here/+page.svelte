@@ -1,5 +1,4 @@
 <script type="ts">
-  import { base } from "$app/paths";
   import Marquee from "$lib/components/Marquee.svelte";
   import SoundCloud from "$lib/components/SoundCloud.svelte";
   import {
@@ -56,7 +55,11 @@
     href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap"
     rel="stylesheet"
   />
-  <link rel="preload" as="image" href="{base}/pause-button.png" />
+  <link
+    rel="preload"
+    as="image"
+    href="https://raw.githubusercontent.com/j-fan/marle-images/main/alvin/pause-button.png"
+  />
 </svelte:head>
 <div class="container">
   <SoundCloud />
@@ -73,7 +76,7 @@
   <div class="music-player-wrapper">
     <div
       class="music-player"
-      style="background-image: url('{base}/rest-here.jpg')"
+      style="background-image: url('https://raw.githubusercontent.com/j-fan/marle-images/main/alvin/rest-here.jpg')"
     >
       <div class="player-controls">
         <div class="time-info">
@@ -86,10 +89,13 @@
               <p>Loading...</p>
             {/if}
           </div>
-          <div class="track" style="background-image: url('{base}/track.png')">
+          <div
+            class="track"
+            style="background-image: url('https://raw.githubusercontent.com/j-fan/marle-images/main/alvin/track.png')"
+          >
             <img
               class="track-thumb"
-              src="{base}/track-thumb.png"
+              src="https://raw.githubusercontent.com/j-fan/marle-images/main/alvin/track-thumb.png"
               alt="track thumb"
               width="28px"
               height="28px"
@@ -111,7 +117,7 @@
               class={songInfo ? undefined : "loading"}
             >
               <img
-                src="{base}/play-button.png"
+                src="https://raw.githubusercontent.com/j-fan/marle-images/main/alvin/play-button.png"
                 class="pause-play-btn"
                 alt="play"
               />
@@ -123,7 +129,7 @@
               class={songInfo ? undefined : "loading"}
             >
               <img
-                src="{base}/pause-button.png"
+                src="https://raw.githubusercontent.com/j-fan/marle-images/main/alvin/pause-button.png"
                 class="pause-play-btn"
                 alt="pause"
               />
