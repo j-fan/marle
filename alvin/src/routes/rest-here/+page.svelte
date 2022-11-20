@@ -158,6 +158,7 @@
     position: relative;
     box-sizing: border-box;
     padding: 1rem;
+    user-select: none;
   }
 
   .player-controls {
@@ -186,6 +187,7 @@
     background: transparent;
     cursor: pointer;
     height: 90%;
+    user-select: none;
   }
 
   button:hover {
@@ -220,6 +222,7 @@
 
   .song-title p {
     white-space: nowrap;
+    user-select: none;
   }
 
   .track {
@@ -231,10 +234,13 @@
     display: flex;
     align-items: center;
     position: relative;
+    user-select: none;
   }
 
   .track-thumb {
     position: absolute;
+    cursor: not-allowed;
+    user-select: none;
   }
 
   .timestamp {
