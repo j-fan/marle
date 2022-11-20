@@ -33,6 +33,7 @@
 
     return () => {
       soundCloudWidget.unbind(SoundCloudEvent.PLAY_PROGRESS);
+      paused = true;
     };
   });
 
@@ -224,6 +225,7 @@
     height: 28px;
     background-position: center;
     background-size: cover;
+    background-repeat-y: no-repeat;
     display: flex;
     align-items: center;
     position: relative;
