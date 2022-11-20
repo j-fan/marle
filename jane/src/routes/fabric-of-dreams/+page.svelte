@@ -22,6 +22,9 @@
   });
 </script>
 
+<svelte:head>
+  <title>Fabric of Dreams - Jane Fan</title>
+</svelte:head>
 <PreloadPixi>
   <div class="full-size">
     {#key $currentBgImage}
