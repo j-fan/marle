@@ -42,6 +42,18 @@
   };
 </script>
 
+<svelte:head>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin="anonymous"
+  />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap"
+    rel="stylesheet"
+  />
+</svelte:head>
 <div class="container">
   <SoundCloud />
   <iframe
@@ -115,6 +127,11 @@
 <style>
   :global(body) {
     background-color: white;
+  }
+
+  .container {
+    font-family: "DM Serif Display", serif;
+    font-weight: bold;
   }
 
   iframe {
