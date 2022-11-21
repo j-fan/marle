@@ -1,0 +1,5 @@
+{
+  "trailingComma": "none",
+  "pluginSearchDirs": ["."],
+  "overrides": [{ "files": "*.svelte", "options": { "parser": "svelte" } }]
+}
