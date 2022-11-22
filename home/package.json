@@ -30,6 +30,6 @@
   },
   "type": "module",
   "dependencies": {
-    "pixi.js": "^6.5.4"
+    "babylonjs": "^5.33.1"
   }
 }
