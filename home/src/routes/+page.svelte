@@ -116,11 +116,6 @@
         particle = particles[index];
         position = particle.position;
 
-        // Start in random position
-        if (particle.age === 0) {
-          particle.position.addInPlace(flowField[index]);
-        }
-
         // rotate around Y axis and 0,0,0
         const rotPower =
           1 /
@@ -139,8 +134,6 @@
         particle.position.addInPlace(
           position.multiply(new BABYLON.Vector3(-0.001, -0.001, -0.001))
         );
-
-        particle.age++;
       }
     };
 
