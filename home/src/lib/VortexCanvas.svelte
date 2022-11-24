@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import * as BABYLON from "babylonjs";
+  import { fade } from "svelte/transition";
 
   export let onAnimationComplete: (() => void) | undefined = undefined;
   let animationCompleted = false;
@@ -43,9 +44,9 @@
     particleSystem.particleEmitterType = emitterType;
 
     // Colors of all particles
-    particleSystem.color1 = new BABYLON.Color4(0.99, 0, 0.1, 1.0);
-    particleSystem.color2 = new BABYLON.Color4(0.2, 0.5, 1.0, 1.0);
-    particleSystem.colorDead = new BABYLON.Color4(0, 0, 0.2, 0.0);
+    particleSystem.color1 = new BABYLON.Color4(1, 0, 0, 1.0);
+    particleSystem.color2 = new BABYLON.Color4(1, 1, 1, 1.0);
+    particleSystem.colorDead = new BABYLON.Color4(0, 0, 0, 0.0);
 
     // Size of each particle (random between...
     particleSystem.minSize = 0.1;
@@ -61,26 +62,10 @@
     // Blend mode : BLENDMODE_ONEONE, or BLENDMODE_STANDARD
     particleSystem.blendMode = BABYLON.ParticleSystem.BLENDMODE_ONEONE;
 
-    // Set the gravity of all particles
-    particleSystem.gravity = new BABYLON.Vector3(0, -10, 0);
-
-    // Direction of each particle after it has been emitted
-    particleSystem.direction1 = new BABYLON.Vector3(-1, 4, 1);
-    particleSystem.direction2 = new BABYLON.Vector3(1, 4, -1);
-
-    // Angular speed, in radians
-    particleSystem.minAngularSpeed = 0;
-    particleSystem.maxAngularSpeed = Math.PI;
-
-    // Speed
-    particleSystem.minEmitPower = 0;
-    particleSystem.maxEmitPower = 0;
-    particleSystem.updateSpeed = 0.005;
-
     // Particle texture and behaviour
     particleSystem.isAnimationSheetEnabled = true;
     particleSystem.particleTexture = new BABYLON.Texture(
-      "https://raw.githubusercontent.com/j-fan/marle-images/main/home/sprite-glyphs.jpg",
+      "https://raw.githubusercontent.com/j-fan/marle-images/main/home/sprite-glyphs.png",
       scene,
       true,
       false
@@ -188,7 +173,7 @@
   });
 </script>
 
-<canvas bind:this={canvasRef} />
+<canvas bind:this={canvasRef} out:fade={{ duration: 500 }} />
 
 <style>
   canvas {
