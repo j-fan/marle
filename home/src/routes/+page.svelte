@@ -35,12 +35,6 @@
       scene
     );
 
-    //Texture of each particle
-    particleSystem.particleTexture = new BABYLON.Texture(
-      "https://raw.githubusercontent.com/j-fan/marle-images/main/home/flare.jpg",
-      scene
-    );
-
     // Where the particles come from
     particleSystem.emitter = emitter;
     particleSystem.particleEmitterType = emitterType;
@@ -79,6 +73,19 @@
     particleSystem.minEmitPower = 0;
     particleSystem.maxEmitPower = 0;
     particleSystem.updateSpeed = 0.005;
+
+    // Particle texture and behaviour
+    particleSystem.isAnimationSheetEnabled = true;
+    particleSystem.particleTexture = new BABYLON.Texture(
+      "https://raw.githubusercontent.com/j-fan/marle-images/main/home/sprite-glyphs.jpg",
+      scene,
+      true,
+      false
+    );
+    particleSystem.startSpriteCellID = 0;
+    particleSystem.endSpriteCellID = 16;
+    particleSystem.spriteCellHeight = 128;
+    particleSystem.spriteCellWidth = 128;
 
     // Noise
     // const noiseTexture = new BABYLON.NoiseProceduralTexture(
@@ -121,6 +128,12 @@
       for (let index = 0; index < particles.length; index++) {
         particle = particles[index];
         position = particle.position;
+
+        if (particle.age === 0) {
+          particle.particleSystem.startSpriteCellID = Math.round(
+            Math.random() * 15
+          );
+        }
 
         agePowerFactor =
           particle.age < ATTRACTION_DELAY
