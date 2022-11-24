@@ -96,15 +96,26 @@
     // particleSystem.noiseTexture = noiseTexture;
     // particleSystem.noiseStrength = new BABYLON.Vector3(100, 100, 100);
 
-    const flowField: Array<BABYLON.Vector3> = [];
+    const NOISE_POWER = 0.002; // How much noise contributes to particle movement
+    const ROTATION_POWER = 0.1; // Speed of spin
+    const ATTRACTION_POWER = -0.001; // power of the atracttive force to the center. Positive values push outwrds
+
+    const flowField: Array<Array<BABYLON.Vector3>> = [];
 
     for (let x = 0; x < numParticles; x++) {
+      const row: Array<BABYLON.Vector3> = [];
+      flowField.push(row);
+
       for (let y = 0; y < numParticles; y++) {
         const angle = noise3D(x, y, 0);
         const rotQuart = BABYLON.Quaternion.RotationAxis(BABYLON.Axis.Z, angle);
-        const vector = new BABYLON.Vector3(1, 1, 1);
+        const vector = new BABYLON.Vector3(
+          NOISE_POWER,
+          NOISE_POWER,
+          NOISE_POWER
+        );
         vector.applyRotationQuaternionInPlace(rotQuart);
-        flowField.push(vector);
+        row.push(vector);
       }
     }
 
@@ -116,8 +127,16 @@
         particle = particles[index];
         position = particle.position;
 
+        const x = Math.abs(Math.round(position.x));
+        const y = Math.abs(Math.round(position.y));
+
+        if (x < 200 && y < 200 && x >= 0 && y >= 0) {
+          const flowFieldForce = flowField[x][y];
+          particle.position.addInPlace(flowFieldForce);
+        }
+
         // rotate around Y axis and 0,0,0
-        const rotPower =
+        const rotForce =
           1 /
           BABYLON.Vector3.DistanceSquared(
             particle.position,
@@ -126,13 +145,19 @@
 
         const rotQuart = BABYLON.Quaternion.RotationAxis(
           BABYLON.Axis.Y,
-          0.1 * rotPower
+          ROTATION_POWER * rotForce
         );
         particle.position.applyRotationQuaternionInPlace(rotQuart);
 
         // Pull back to the center
         particle.position.addInPlace(
-          position.multiply(new BABYLON.Vector3(-0.001, -0.001, -0.001))
+          position.multiply(
+            new BABYLON.Vector3(
+              ATTRACTION_POWER,
+              ATTRACTION_POWER,
+              ATTRACTION_POWER
+            )
+          )
         );
       }
     };
