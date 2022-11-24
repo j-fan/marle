@@ -21,9 +21,21 @@
   <span> ver 1.0.0 </span>
   <p class="command">Begin your experience by choosing one of these options:</p>
   <div class="button-wrapper">
-    <Button>G1</Button>
-    <Button>G2</Button>
-    <Button>G3</Button>
+    <Button
+      href="https://j-fan.github.io/marle/jane/your-face"
+      imgSrc="https://github.com/j-fan/marle-images/raw/main/home/glyph-1-red.png"
+      alt="option 1"
+    />
+    <Button
+      href="https://j-fan.github.io/marle/callum/corrosion"
+      imgSrc="https://github.com/j-fan/marle-images/raw/main/home/glyph-2-red.png"
+      alt="option 2"
+    />
+    <Button
+      href="https://j-fan.github.io/marle/jane/fabric-of-dreams"
+      imgSrc="https://github.com/j-fan/marle-images/raw/main/home/glyph-3-red.png"
+      alt="option 3"
+    />
   </div>
 </div>
 
@@ -77,7 +89,7 @@
 
   @media (max-width: 600px) {
     img {
-      width: 90%;
+      width: 100%;
     }
     span {
       font-size: 1rem;

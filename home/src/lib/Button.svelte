@@ -1,7 +1,14 @@
 <script lang="ts">
+  export let href: string;
+  export let imgSrc: string;
+  export let alt: string;
 </script>
 
-<button type="button"><slot /></button>
+<button type="button">
+  <a {href}>
+    <img src={imgSrc} {alt} />
+  </a>
+</button>
 
 <style>
   button {
@@ -14,6 +21,11 @@
   }
 
   button:hover {
-    background-color: rgb(255 0 0 / 20%);
+    background-color: rgb(255, 198, 198);
+  }
+
+  img {
+    width: 40px;
+    height: 40px;
   }
 </style>
