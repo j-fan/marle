@@ -122,12 +122,22 @@
         }
 
         // rotate around Y axis and 0,0,0
-        const rotQuart = BABYLON.Quaternion.RotationAxis(BABYLON.Axis.Y, 0.01);
+        const rotPower =
+          1 /
+          BABYLON.Vector3.DistanceSquared(
+            particle.position,
+            BABYLON.Vector3.Zero()
+          );
+
+        const rotQuart = BABYLON.Quaternion.RotationAxis(
+          BABYLON.Axis.Y,
+          0.1 * rotPower
+        );
         particle.position.applyRotationQuaternionInPlace(rotQuart);
 
         // Pull back to the center
         particle.position.addInPlace(
-          position.multiply(new BABYLON.Vector3(-0.002, -0.002, -0.002))
+          position.multiply(new BABYLON.Vector3(-0.001, -0.001, -0.001))
         );
 
         particle.age++;
