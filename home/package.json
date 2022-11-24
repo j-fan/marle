@@ -30,6 +30,7 @@
   },
   "type": "module",
   "dependencies": {
-    "babylonjs": "^5.33.1"
+    "babylonjs": "^5.33.1",
+    "simplex-noise": "^4.0.1"
   }
 }

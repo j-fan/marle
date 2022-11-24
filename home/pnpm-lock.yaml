@@ -11,6 +11,7 @@ specifiers:
   eslint-plugin-svelte3: ^4.0.0
   prettier: ^2.6.2
   prettier-plugin-svelte: ^2.7.0
+  simplex-noise: ^4.0.1
   svelte: ^3.44.0
   svelte-check: ^2.7.1
   svelte-preprocess: ^4.10.6
@@ -20,6 +21,7 @@ specifiers:
 
 dependencies:
   babylonjs: 5.33.1
+  simplex-noise: 4.0.1
 
 devDependencies:
   '@sveltejs/adapter-static': 1.0.0-next.42
@@ -1463,6 +1465,10 @@ packages:
     resolution: {integrity: sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==}
     engines: {node: '>=8'}
     dev: true
+
+  /simplex-noise/4.0.1:
+    resolution: {integrity: sha512-zl/+bdSqW7HJOQ0oDbxrNYaF4F5ik0i7M6YOYmEoIJNtg16NpvWaTTM1Y7oV/7T0jFljawLgYPS81Uu2rsfo1A==}
+    dev: false
 
   /sirv/2.0.2:
     resolution: {integrity: sha512-4Qog6aE29nIjAOKe/wowFTxOdmbEZKb+3tsLljaBRzJwtqto0BChD2zzH0LhgCSXiI+V7X+Y45v14wBZQ1TK3w==}
