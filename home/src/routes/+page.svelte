@@ -1,20 +1,18 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import * as BABYLON from "babylonjs";
-  import { createNoise3D } from "simplex-noise";
 
   let canvasRef: HTMLCanvasElement | null = null;
   const numParticles = 200;
 
   onMount(() => {
-    const noise3D = createNoise3D();
     const engine = new BABYLON.Engine(canvasRef, true);
     const scene = new BABYLON.Scene(engine);
 
     // Setup environment
     const camera = new BABYLON.ArcRotateCamera(
       "ArcRotateCamera",
-      1,
+      0,
       0,
       20,
       new BABYLON.Vector3(0, 0, 0),
@@ -96,56 +94,52 @@
     // particleSystem.noiseTexture = noiseTexture;
     // particleSystem.noiseStrength = new BABYLON.Vector3(100, 100, 100);
 
-    const NOISE_POWER = 0.002; // How much noise contributes to particle movement
+    const NOISE_POWER = 0.004; // How much noise contributes to particle movement
     const ROTATION_POWER = 0.1; // Speed of spin
-    const ATTRACTION_POWER = -0.001; // power of the atracttive force to the center. Positive values push outwrds
+    const ATTRACTION_POWER = -0.001; // power of the atracttive force to the center. Positive values push outwards
+    const ATTRACTION_DELAY = 700;
 
-    const flowField: Array<Array<BABYLON.Vector3>> = [];
+    const randomVelocity: Array<BABYLON.Vector3> = [];
 
     for (let x = 0; x < numParticles; x++) {
-      const row: Array<BABYLON.Vector3> = [];
-      flowField.push(row);
-
-      for (let y = 0; y < numParticles; y++) {
-        const angle = noise3D(x, y, 0);
-        const rotQuart = BABYLON.Quaternion.RotationAxis(BABYLON.Axis.Z, angle);
-        const vector = new BABYLON.Vector3(
-          NOISE_POWER,
-          NOISE_POWER,
-          NOISE_POWER
-        );
-        vector.applyRotationQuaternionInPlace(rotQuart);
-        row.push(vector);
-      }
+      const vector = new BABYLON.Vector3(
+        NOISE_POWER * (Math.random() - 0.5),
+        NOISE_POWER * (Math.random() - 0.5),
+        NOISE_POWER * (Math.random() - 0.5)
+      );
+      randomVelocity.push(vector);
     }
 
+    // Declare variables outside loop to reduce overhead of garbage collection
     let particle: BABYLON.Particle;
     let position: BABYLON.Vector3;
+    let agePowerFactor: number;
+    let rotForce: number;
+    let rotQuart: BABYLON.Quaternion;
 
     particleSystem.updateFunction = (particles) => {
       for (let index = 0; index < particles.length; index++) {
         particle = particles[index];
         position = particle.position;
 
-        const x = Math.abs(Math.round(position.x));
-        const y = Math.abs(Math.round(position.y));
+        agePowerFactor =
+          particle.age < ATTRACTION_DELAY
+            ? 0
+            : (particle.age - ATTRACTION_DELAY) / 2000;
 
-        if (x < 200 && y < 200 && x >= 0 && y >= 0) {
-          const flowFieldForce = flowField[x][y];
-          particle.position.addInPlace(flowFieldForce);
-        }
+        particle.position.addInPlace(randomVelocity[index]);
 
         // rotate around Y axis and 0,0,0
-        const rotForce =
+        rotForce =
           1 /
           BABYLON.Vector3.DistanceSquared(
             particle.position,
             BABYLON.Vector3.Zero()
           );
 
-        const rotQuart = BABYLON.Quaternion.RotationAxis(
+        rotQuart = BABYLON.Quaternion.RotationAxis(
           BABYLON.Axis.Y,
-          ROTATION_POWER * rotForce
+          ROTATION_POWER * rotForce * agePowerFactor
         );
         particle.position.applyRotationQuaternionInPlace(rotQuart);
 
@@ -153,12 +147,14 @@
         particle.position.addInPlace(
           position.multiply(
             new BABYLON.Vector3(
-              ATTRACTION_POWER,
-              ATTRACTION_POWER,
-              ATTRACTION_POWER
+              ATTRACTION_POWER * agePowerFactor,
+              ATTRACTION_POWER * agePowerFactor,
+              ATTRACTION_POWER * agePowerFactor
             )
           )
         );
+
+        particle.age++;
       }
     };
 
