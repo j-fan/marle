@@ -3,18 +3,19 @@
   import * as BABYLON from "babylonjs";
 
   let canvasRef: HTMLCanvasElement | null = null;
-  const numParticles = 200;
+  const numParticles = 400;
 
   onMount(() => {
     const engine = new BABYLON.Engine(canvasRef, true);
     const scene = new BABYLON.Scene(engine);
+    scene.clearColor = new BABYLON.Color4(0, 0, 0, 1);
 
     // Setup environment
     const camera = new BABYLON.ArcRotateCamera(
       "ArcRotateCamera",
       0,
       0,
-      20,
+      12,
       new BABYLON.Vector3(0, 0, 0),
       scene
     );
@@ -40,7 +41,7 @@
     particleSystem.particleEmitterType = emitterType;
 
     // Colors of all particles
-    particleSystem.color1 = new BABYLON.Color4(0.7, 0.8, 1.0, 1.0);
+    particleSystem.color1 = new BABYLON.Color4(0.99, 0, 0.1, 1.0);
     particleSystem.color2 = new BABYLON.Color4(0.2, 0.5, 1.0, 1.0);
     particleSystem.colorDead = new BABYLON.Color4(0, 0, 0.2, 0.0);
 
@@ -86,20 +87,6 @@
     particleSystem.endSpriteCellID = 16;
     particleSystem.spriteCellHeight = 128;
     particleSystem.spriteCellWidth = 128;
-
-    // Noise
-    // const noiseTexture = new BABYLON.NoiseProceduralTexture(
-    //   "perlin",
-    //   256,
-    //   scene
-    // );
-    // noiseTexture.animationSpeedFactor = 5;
-    // noiseTexture.persistence = 2;
-    // noiseTexture.brightness = 0.5;
-    // noiseTexture.octaves = 2;
-
-    // particleSystem.noiseTexture = noiseTexture;
-    // particleSystem.noiseStrength = new BABYLON.Vector3(100, 100, 100);
 
     const NOISE_POWER = 0.004; // How much noise contributes to particle movement
     const ROTATION_POWER = 0.1; // Speed of spin
@@ -200,5 +187,6 @@
   canvas {
     width: 100%;
     height: 100%;
+    pointer-events: none;
   }
 </style>
