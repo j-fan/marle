@@ -8,7 +8,7 @@ export const FACE_CANVAS_ID = "face-debug";
 let detector: TinyFaceDetectorOptions;
 let netsLoaded = false;
 
-const MODELS_PATH = `${base}/models`;
+const MODELS_PATH = `https://raw.githubusercontent.com/j-fan/marle-images/main/jane/models`;
 
 type FaceDetectOptions = {
   showDebug?: boolean;

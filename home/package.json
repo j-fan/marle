@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "export NODE_ENV=development && vite dev --port 10487",
+    "dev": "export NODE_ENV=development && vite dev --port 10489",
     "build": "vite build",
     "preview": "vite preview",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
@@ -30,6 +30,7 @@
   },
   "type": "module",
   "dependencies": {
-    "pixi.js": "^6.5.4"
+    "babylonjs": "^5.33.1",
+    "simplex-noise": "^4.0.1"
   }
 }

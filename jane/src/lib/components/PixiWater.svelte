@@ -1,7 +1,6 @@
 <script type="ts">
   import { onMount } from "svelte";
   import * as PIXI from "pixi.js";
-  import { base } from "$app/paths";
   import { tweened } from "svelte/motion";
   import { sineInOut } from "svelte/easing";
   import { getFilledDimensions } from "$lib/stores/your-face/store";
@@ -16,7 +15,7 @@
   });
 
   const displacementSprite = PIXI.Sprite.from(
-    `${base}/img/displacement_map.jpeg`
+    `https://raw.githubusercontent.com/j-fan/marle-images/main/jane/img/displacement_map.jpeg`
   );
   displacementSprite.texture.baseTexture.wrapMode = PIXI.WRAP_MODES.REPEAT;
   const displacementFilter = new PIXI.filters.DisplacementFilter(
