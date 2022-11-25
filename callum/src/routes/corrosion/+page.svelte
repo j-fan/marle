@@ -32,6 +32,7 @@
 
   import { onInterval } from "$lib/utils";
   import { onMount } from "svelte";
+  import { throttle } from "lodash-es";
 
   let canvas: HTMLCanvasElement;
   let ctx: CanvasRenderingContext2D;
@@ -41,15 +42,20 @@
 
   const operators = "^|&";
 
-  const handleMouseMove = (event: MouseEvent) => {
-    mousePos.x = event.clientX;
-    mousePos.y = event.clientY;
+  const handleMouseMove = (event: MouseEvent | TouchEvent) => {
+    if (event instanceof MouseEvent) {
+      mousePos.x = event.clientX;
+      mousePos.y = event.clientY;
+    } else {
+      mousePos.x = event.touches[0].clientX;
+      mousePos.y = event.touches[0].clientY;
+    }
     mask -= 0.05;
   };
 
   const setup = () => {
     if (!canvas) {
-      console.log("Canvas not initialized!");
+      console.error("Canvas not initialized!");
       return;
     }
     ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
@@ -161,27 +167,26 @@
   onMount(() => {
     setup();
     draw();
-    onInterval(() => {
-      // if (mask <= -50) {
-      //   mask = 80;
-      // } else {
-      //   mask -= 1;
-      // }
-      draw();
-    }, 100);
+    onInterval(draw, 100);
   });
 </script>
 
+<svelte:head>
+  <title>Corrosion - Callum Howard</title>
+</svelte:head>
+
 <svelte:window
   on:mousemove={handleMouseMove}
+  on:touchmove={handleMouseMove}
   on:resize={() => {
     resize();
-    draw();
+    throttle(draw, 100, { leading: true });
   }}
 />
 
 <canvas id="canvas" class="fixed" bind:this={canvas} on:click={draw} />
-<div class="absolute">
+<div class="fixed top-0 left-0 w-full h-full vignette" />
+<div class="absolute w-screen h-full">
   <div id="debug" class="hidden">
     <input
       id="mask"
@@ -193,13 +198,46 @@
     />
     <label for="mask">Mask {mask}%</label>
   </div>
-  <h2 class="relative italic font-serif text-4xl weight font-black mx-32 my-32">
+  <h2
+    class="fixed italic font-serif text-4xl weight font-black mx-32 my-32 select-none expand-text"
+  >
     I can feel my mind expanding...
   </h2>
   <img
     id="silhouette"
-    class="fixed bottom-0 m-auto left-0 right-0 opacity-70 hue-rotate-30"
+    class="fixed bottom-0 m-auto left-0 right-0 opacity-70 hue-rotate-30 select-none"
     alt="silhouette"
     src="https://raw.githubusercontent.com/CallumHoward/marle-media/main/silhouette.png"
   />
 </div>
+
+<style>
+  .vignette {
+    box-shadow: 0 0 200px rgba(0 0 0 / 30%) inset;
+  }
+
+  .expand-text {
+    animation: expand-text 30s ease-out 0s forwards,
+      slide-subtle 10s ease-out 0s forwards;
+  }
+
+  @keyframes slide-subtle {
+    0% {
+      transform: translateX(0);
+    }
+
+    100% {
+      transform: translateX(1rem);
+    }
+  }
+
+  @keyframes expand-text {
+    0% {
+      letter-spacing: 0;
+    }
+
+    100% {
+      letter-spacing: 0.3rem;
+    }
+  }
+</style>
