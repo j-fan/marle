@@ -181,9 +181,11 @@
     width: 60%;
     bottom: 6%;
     right: 7%;
-    display: flex;
+    /* display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: center; */
+    display: grid;
+    grid-template-columns: 3fr 1fr;
   }
 
   .button-wrapper {
@@ -194,6 +196,7 @@
   .pause-play-btn {
     aspect-ratio: 1;
     height: 100%;
+    width: 100%;
   }
 
   button {
@@ -219,7 +222,7 @@
   }
 
   .time-info {
-    width: 72%;
+    width: 100%;
     overflow: hidden;
   }
 
