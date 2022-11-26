@@ -226,10 +226,30 @@ export const yourFaceDialog: DialogMap<YourFaceKey> = {
   },
   end: {
     text: "I have some ideas on how to create a face, but I will need to go away for now. Perhaps we will meet again later?",
-    options: [{ text: "See you around, Marle", nextKey: "end" }]
+    options: [
+      {
+        text: "See you around, Marle",
+        nextKey: "end",
+        onClick: () => {
+          window.location.assign(
+            "https://j-fan.github.io/marle/alvin/umbrella"
+          );
+        }
+      }
+    ]
   },
   end_no_webcam: {
     text: "Oh, I didn't mean to scare you off. That is fine, perhaps we will meet again in another place.",
-    options: [{ text: "Ok...", nextKey: "end_no_webcam" }]
+    options: [
+      {
+        text: "Ok...",
+        nextKey: "end_no_webcam",
+        onClick: () => {
+          window.location.assign(
+            "https://j-fan.github.io/marle/alvin/umbrella"
+          );
+        }
+      }
+    ]
   }
 };

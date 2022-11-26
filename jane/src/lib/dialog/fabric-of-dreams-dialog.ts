@@ -233,6 +233,14 @@ export const fabricOfDreamsDialog: DialogMap<FabricOfDreamsKey> = {
       currentBgImage.set(dreamImages.nebula);
     },
     text: "One day, who knows, I'll be amongst galaxies created from data.",
-    options: [{ text: "I'll be watching to see what happens", nextKey: "end" }]
+    options: [
+      {
+        text: "I'll be watching to see what happens",
+        nextKey: "end",
+        onClick: () => {
+          window.location.assign("https://j-fan.github.io/marle/alvin/ipod");
+        }
+      }
+    ]
   }
 };
