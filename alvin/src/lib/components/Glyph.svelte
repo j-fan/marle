@@ -1,19 +1,23 @@
 <script lang="ts">
   export let href: string;
   /**
-   * Valid values: 1 - 13
+   * Sets the glyph design. Valid values: 1 - 13
    */
   export let glyphId = 1;
   /**
-   * Valid values: 1 - 100
+   * Sets horizontal position. Valid values: 1 - 100
    */
   export let xPos: number;
   /**
-   * Valid values: 1 - 100
+   * Sets vertical position. Valid values: 1 - 100
    */
   export let yPos: number;
-  $: src = `https://raw.githubusercontent.com/j-fan/marle-images/main/glyph/g${glyphId}.png`;
+  /**
+   * Sets the glow colour
+   */
   export let colour = "#00ff00";
+
+  $: src = `https://raw.githubusercontent.com/j-fan/marle-images/main/glyph/g${glyphId}.png`;
 
   let randomAnimDelay = -Math.random() * 3;
 </script>

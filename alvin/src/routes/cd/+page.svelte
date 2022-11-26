@@ -9,14 +9,14 @@
 />
 
 <Glyph
-  href="https://j-fan.github.io/marle/alvin/ipod"
+  href="https://j-fan.github.io/marle/alvin/rest-here"
   xPos={10}
   yPos={50}
   glyphId={1}
   colour="#00ff00"
 />
 <Glyph
-  href="https://j-fan.github.io/marle/alvin/rest-here"
+  href="https://j-fan.github.io/marle/alvin/ipod"
   xPos={80}
   yPos={50}
   glyphId={2}

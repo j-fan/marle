@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Glyph from "$lib/components/Glyph.svelte";
 </script>
 
 <div>
@@ -7,6 +8,22 @@
     alt="person holding a umbrella"
   />
 </div>
+
+<Glyph
+  href="https://j-fan.github.io/marle/callum/corrosion"
+  xPos={5}
+  yPos={50}
+  glyphId={10}
+  colour="#ff0062"
+/>
+
+<Glyph
+  href="https://j-fan.github.io/marle/alvin/ipod"
+  xPos={20}
+  yPos={50}
+  glyphId={12}
+  colour="#ff0062"
+/>
 
 <style>
   div {
