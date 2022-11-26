@@ -1,11 +1,10 @@
 <script lang="ts">
   export let src: string;
   export let alt: string;
-  export let aspectRatio: string;
 </script>
 
 <div>
-  <img {src} {alt} style="aspect-ratio: {aspectRatio}" />
+  <img {src} {alt} />
 </div>
 
 <style>
