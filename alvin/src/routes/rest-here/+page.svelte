@@ -181,15 +181,13 @@
     width: 60%;
     bottom: 6%;
     right: 7%;
-    /* display: flex;
-    justify-content: space-between;
-    align-items: center; */
     display: grid;
     grid-template-columns: 3fr 1fr;
+    align-items: center;
+    gap: 1rem;
   }
 
   .button-wrapper {
-    flex-shrink: 0;
     height: 100%;
   }
 
@@ -197,14 +195,16 @@
     aspect-ratio: 1;
     height: 100%;
     width: 100%;
+    object-fit: contain;
   }
 
   button {
     border: none;
     background: transparent;
     cursor: pointer;
-    height: 90%;
+    width: 100%;
     user-select: none;
+    padding: 0;
   }
 
   button:hover {
