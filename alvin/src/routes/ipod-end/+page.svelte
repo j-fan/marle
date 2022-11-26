@@ -6,6 +6,3 @@
   src="https://raw.githubusercontent.com/j-fan/marle-images/main/alvin/ipod.jpg"
   alt="ipod with a host coming out of the screen"
 />
-
-<style>
-</style>
