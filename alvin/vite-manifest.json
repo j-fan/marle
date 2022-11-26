@@ -112,12 +112,12 @@
       "src/routes/rest-here/+page.svelte"
     ]
   },
-  "src/routes/+layout.css": {
-    "file": "_app/immutable/assets/_layout-71e2f506.css",
-    "src": "src/routes/+layout.css"
-  },
   "src/routes/rest-here/+page.css": {
     "file": "_app/immutable/assets/_page-97b7aeba.css",
     "src": "src/routes/rest-here/+page.css"
+  },
+  "src/routes/+layout.css": {
+    "file": "_app/immutable/assets/_layout-71e2f506.css",
+    "src": "src/routes/+layout.css"
   }
 }
