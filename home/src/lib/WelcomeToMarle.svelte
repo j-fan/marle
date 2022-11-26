@@ -18,8 +18,7 @@
       rel="oopener noreferrer">Origin Collective</a
     >
   </span>
-  <span> ver 1.0.0 </span>
-  <p class="command">Begin your experience by choosing one of these options:</p>
+  <p class="command">Choose an option to begin:</p>
   <div class="button-wrapper">
     <Button
       href="https://j-fan.github.io/marle/jane/your-face"
@@ -67,7 +66,6 @@
   span.credit {
     font-size: 1rem;
     color: #333;
-    font-weight: bold;
   }
 
   a {
@@ -80,9 +78,9 @@
 
   p.command {
     font-weight: bold;
-    font-size: 1.25rem;
+    font-size: 1rem;
     margin-top: 4rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     text-align: center;
     max-width: 80%;
   }
