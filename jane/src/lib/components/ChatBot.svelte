@@ -5,6 +5,7 @@
   import Button from "./Button.svelte";
   import { pickOption } from "$lib/dialog/dialog";
   import type { DialogMap, Option } from "$lib/dialog/types";
+  import { prevent_default } from "svelte/internal";
 
   type T = $$Generic<string>;
 
@@ -38,7 +39,6 @@
   <div
     class="marle-icon"
     in:fly={{ y: 40, duration: 1000, easing: bounceOut }}
-    on:click={toggleChat}
     on:introend={toggleChat}
     style="background-image: url('https://raw.githubusercontent.com/j-fan/marle-images/main/jane/img/marle_green.jpg')"
   >
