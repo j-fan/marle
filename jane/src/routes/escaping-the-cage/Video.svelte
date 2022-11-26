@@ -1,54 +1,31 @@
 <script lang="ts">
-  let time = 0;
+  import { currentSegment, time, goToSegment, segments } from "./video-store";
+
   let videoRef: HTMLVideoElement;
   $: {
-    time = time;
-    handleTimeUpdate();
+    if ($currentSegment) {
+      const [_start, end] = $currentSegment;
+      if ($time >= end - epsilon) {
+        videoRef.pause();
+      }
+    }
   }
 
   const epsilon = 0.1; // seconds
-  const segments = [
-    [0, 1.3],
-    [5.2, 6.4],
-    [10.4, 11.6],
-    [15.6, 16.8],
-    [20.8, 22]
-  ];
 
   const videoSrc = "./test.mp4";
-
-  const findSegment = (t: number) => {
-    for (const segment of segments) {
-      const [start, end] = segment;
-      if (start <= t && t < end) {
-        return segment;
-      }
-    }
-  };
-
-  const handleTimeUpdate = () => {
-    const segment = findSegment(time);
-    if (!segment) {
-      return;
-    }
-
-    const [_start, end] = segment;
-    if (time >= end - epsilon) {
-      videoRef.pause();
-    }
-  };
 </script>
 
 <h1>Video Test</h1>
 <p>
-  Current timestamp: {time}s
+  Current timestamp: {$time}s
 </p>
 
-{#each segments as [start, _end], i}
+{#each segments as _segment, i}
   <button
     id="segment-{i}"
     on:click={() => {
-      time = start;
+      goToSegment(i);
       videoRef.play();
     }}>{i}</button
   >
@@ -56,7 +33,7 @@
 <video
   id="vid"
   bind:this={videoRef}
-  bind:currentTime={time}
+  bind:currentTime={$time}
   autoplay
   loop
   muted
