@@ -6,7 +6,7 @@
     if ($currentSegment) {
       const [_start, end] = $currentSegment;
       if ($time >= end - epsilon) {
-        videoRef.pause();
+        videoRef?.pause();
       }
     }
   }
@@ -16,20 +16,21 @@
   const videoSrc = "./test.mp4";
 </script>
 
-<h1>Video Test</h1>
-<p>
-  Current timestamp: {$time}s
-</p>
+<div class="debug-controls">
+  <p>
+    Current timestamp: {$time}s
+  </p>
+  {#each segments as _segment, i}
+    <button
+      id="segment-{i}"
+      on:click={() => {
+        goToSegment(i);
+        videoRef.play();
+      }}>{i}</button
+    >
+  {/each}
+</div>
 
-{#each segments as _segment, i}
-  <button
-    id="segment-{i}"
-    on:click={() => {
-      goToSegment(i);
-      videoRef.play();
-    }}>{i}</button
-  >
-{/each}
 <video
   id="vid"
   bind:this={videoRef}
@@ -46,3 +47,16 @@
   <track kind="captions" />
   <source src={videoSrc} type="video/mp4" />
 </video>
+
+<style>
+  .debug-controls {
+    position: fixed;
+    z-index: 1;
+  }
+
+  video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+</style>
