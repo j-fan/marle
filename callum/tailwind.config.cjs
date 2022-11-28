@@ -4,6 +4,7 @@ module.exports = {
   theme: {
     fontFamily: {
       serif: ["DM Serif Display", "serif"],
+      mono: ["monospace"],
     },
     extend: {},
   },
