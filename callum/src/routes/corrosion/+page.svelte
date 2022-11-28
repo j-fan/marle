@@ -199,7 +199,7 @@
     <label for="mask">Mask {mask}%</label>
   </div>
   <h2
-    class="fixed italic font-serif text-4xl weight font-black mx-32 my-32 select-none expand-text"
+    class="fixed italic font-serif text-4xl font-black mx-32 my-32 select-none expand-text"
   >
     I can feel my mind expanding...
   </h2>
