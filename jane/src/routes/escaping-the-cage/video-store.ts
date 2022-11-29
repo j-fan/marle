@@ -3,11 +3,13 @@ import { derived, writable } from "svelte/store";
 export let time = writable(0);
 
 export const segments = [
-  [0, 1.3],
-  [5.2, 6.4],
-  [10.4, 11.6],
-  [15.6, 16.8],
-  [20.8, 22]
+  [0, 1],
+  [1, 2],
+  [2, 3],
+  [3, 4],
+  [4, 5],
+  [5, 6],
+  [6, 7]
 ];
 
 export const findSegment = (time: number) => {

@@ -1,7 +1,10 @@
 <script lang="ts">
   import { currentSegment, time, goToSegment, segments } from "./video-store";
 
+  const videoSrc = "https://github.com/j-fan/marle-images/raw/main/jane/marle-escape.mp4";
+  const epsilon = 0.05; // seconds
   let videoRef: HTMLVideoElement;
+
   $: {
     if ($currentSegment) {
       const [_start, end] = $currentSegment;
@@ -11,9 +14,6 @@
     }
   }
 
-  const epsilon = 0.1; // seconds
-
-  const videoSrc = "./test.mp4";
 </script>
 
 <div class="debug-controls">
@@ -35,7 +35,6 @@
   id="vid"
   bind:this={videoRef}
   bind:currentTime={$time}
-  autoplay
   loop
   muted
   playsinline
