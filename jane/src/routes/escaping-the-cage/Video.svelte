@@ -1,10 +1,17 @@
 <script lang="ts">
   import { currentSegment, time, goToSegment, segments } from "./video-store";
+  import { tweened } from "svelte/motion";
+  import { cubicOut } from "svelte/easing";
 
   const videoSrc =
     "https://github.com/j-fan/marle-images/raw/main/jane/marle-escape.mp4";
   const epsilon = 0.05; // seconds
   let videoRef: HTMLVideoElement;
+  let greyAmount = tweened(1, {
+    delay: 1000,
+    duration: 3000,
+    easing: cubicOut
+  });
 
   $: {
     if ($currentSegment) {
@@ -26,6 +33,11 @@
       on:click={() => {
         goToSegment(i);
         videoRef.play();
+        if (i > 4) {
+          greyAmount.set(0);
+        } else {
+          greyAmount.set(1);
+        }
       }}>{i}</button
     >
   {/each}
@@ -42,6 +54,7 @@
   disablepictureinpicture
   preload="auto"
   width="1280"
+  style="--grey-amount:{$greyAmount};"
 >
   <track kind="captions" />
   <source src={videoSrc} type="video/mp4" />
@@ -57,6 +70,6 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: grayscale() contrast(1.1);
+    filter: grayscale(var(--grey-amount));
   }
 </style>
