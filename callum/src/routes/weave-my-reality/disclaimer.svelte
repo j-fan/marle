@@ -1,6 +1,9 @@
 <script lang="ts">
   export let onAccept: () => void;
   let accepted = false;
+
+  const buttonC =
+    "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full";
 </script>
 
 <div
@@ -56,7 +59,10 @@
       <a href="#">Terms and Conditions</a> and the disclaimer and agree to all of
       the above.
     </label>
-    <button disabled={accepted} on:click={onAccept}>Continue</button>
+    <br />
+    <button class={buttonC} disabled={accepted} on:click={onAccept}
+      >Continue</button
+    >
   </form>
 </div>
 
