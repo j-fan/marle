@@ -1,7 +1,8 @@
 <script lang="ts">
   import { currentSegment, time, goToSegment, segments } from "./video-store";
 
-  const videoSrc = "https://github.com/j-fan/marle-images/raw/main/jane/marle-escape.mp4";
+  const videoSrc =
+    "https://github.com/j-fan/marle-images/raw/main/jane/marle-escape.mp4";
   const epsilon = 0.05; // seconds
   let videoRef: HTMLVideoElement;
 
@@ -13,7 +14,6 @@
       }
     }
   }
-
 </script>
 
 <div class="debug-controls">
@@ -57,5 +57,6 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    filter: grayscale() contrast(1.1);
   }
 </style>
