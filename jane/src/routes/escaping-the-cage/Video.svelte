@@ -1,12 +1,17 @@
 <script lang="ts">
-  import { currentSegment, time, goToSegment, segments } from "./video-store";
+  import {
+    currentSegment,
+    time,
+    goToSegment,
+    segments,
+    videoRef
+  } from "../../lib/stores/video-store";
   import { tweened } from "svelte/motion";
   import { cubicOut } from "svelte/easing";
 
   const videoSrc =
     "https://github.com/j-fan/marle-images/raw/main/jane/marle-escape.mp4";
   const epsilon = 0.05; // seconds
-  let videoRef: HTMLVideoElement;
   let greyAmount = tweened(1, {
     delay: 1000,
     duration: 3000,
@@ -17,7 +22,7 @@
     if ($currentSegment) {
       const [_start, end] = $currentSegment;
       if ($time >= end - epsilon) {
-        videoRef?.pause();
+        $videoRef?.pause();
       }
     }
   }
@@ -32,7 +37,6 @@
       id="segment-{i}"
       on:click={() => {
         goToSegment(i);
-        videoRef.play();
         if (i > 4) {
           greyAmount.set(0);
         } else {
@@ -45,7 +49,7 @@
 
 <video
   id="vid"
-  bind:this={videoRef}
+  bind:this={$videoRef}
   bind:currentTime={$time}
   loop
   muted

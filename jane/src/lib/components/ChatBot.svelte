@@ -5,7 +5,6 @@
   import Button from "./Button.svelte";
   import { pickOption } from "$lib/dialog/dialog";
   import type { DialogMap, Option } from "$lib/dialog/types";
-  import { prevent_default } from "svelte/internal";
 
   type T = $$Generic<string>;
 
@@ -41,11 +40,13 @@
     in:fly={{ y: 40, duration: 1000, easing: bounceOut }}
     on:introend={toggleChat}
     style="background-image: url('https://raw.githubusercontent.com/j-fan/marle-images/main/jane/img/marle_green.jpg')"
+    on:click={toggleChat}
   >
     {#if isChatVisible}
       <div
         class="chat-wrapper"
         transition:fly={{ y: 20, duration: 300, delay: 500 }}
+        on:click|stopPropagation
       >
         {#key currentDialogNode}
           <div class="chat-content" in:fade={{ duration: 400 }}>

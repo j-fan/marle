@@ -1,6 +1,7 @@
-import { derived, writable } from "svelte/store";
+import { derived, get, writable } from "svelte/store";
 
 export let time = writable(0);
+export let videoRef = writable<HTMLVideoElement | null>(null);
 
 export const segments = [
   [0, 1],
@@ -26,5 +27,7 @@ export let currentSegment = derived(time, ($time) => findSegment($time));
 export const goToSegment = (segmentId: number) => {
   if (segmentId >= 0 && segmentId < segments.length) {
     time.update(() => segments[segmentId][0]);
+    console.log(get(videoRef));
+    get(videoRef)?.play();
   }
 };
