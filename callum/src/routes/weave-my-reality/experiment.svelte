@@ -1,6 +1,5 @@
 <script lang="ts">
-    import { sample } from "lodash-es";
-
+  import { sample } from "lodash-es";
   import { onDestroy } from "svelte";
   import MarleLog from "./marle-log.svelte";
 
