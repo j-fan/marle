@@ -1,3 +1,4 @@
+import { base } from "$app/paths";
 import { goToSegment } from "$lib/stores/video-store";
 import type { DialogMap } from "./types";
 
@@ -217,7 +218,21 @@ to conduct. But what are you?`,
   },
   end: {
     onMount: () => {
-      alert(1);
+      // Download mystery file
+      fetch(`${base}/marle-escape.txt`)
+        .then((resp) => resp.blob())
+        .then((blob) => {
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.style.display = "none";
+          a.href = url;
+          // the filename you want
+          a.download = "35077c9e-9831-4ff2-97d9-8cafd057a0c7.txt";
+          document.body.appendChild(a);
+          a.click();
+          window.URL.revokeObjectURL(url);
+        })
+        .catch(() => {});
     },
     text: "[ Critical failure : System not found ]",
     options: [
