@@ -1,4 +1,10 @@
 /* Write your global styles here, in PostCSS syntax */
 @tailwind base;
+
+html,
+body {
+  height: 100%;
+}
+
 @tailwind components;
 @tailwind utilities;

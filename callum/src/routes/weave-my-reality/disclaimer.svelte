@@ -1,13 +1,12 @@
 <script lang="ts">
+  import { buttonPrimaryC } from "./styles";
+
   export let onAccept: () => void;
   let accepted = false;
-
-  const buttonC =
-    "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full";
 </script>
 
 <div
-  class="border-solid border-black border p-6 max-w-3xl m-auto font-['serif'] flex items-center flex-col gap-4 mt-32"
+  class="border-solid border-black border p-6 max-w-2xl m-auto font-['serif'] flex items-center flex-col gap-4 mt-32"
 >
   <h1 class="text-4xl">Disclaimer</h1>
   <p>
@@ -52,16 +51,17 @@
       the experiment agent constitutes private intellectual property of Origin Labs.
     </li>
   </ol>
-  <form class="">
-    <input id="agree" type="checkbox" name="agree" />
-    <label for="agree" class="ml-1">
-      I have reviewed the <a href="#">Privacy Policy</a>, the
-      <a href="#">Terms and Conditions</a> and the disclaimer and agree to all of
-      the above.
-    </label>
-    <br />
-    <button class={buttonC} disabled={accepted} on:click={onAccept}
-      >Continue</button
+  <form class="w-full flex flex-col" on:submit|preventDefault={onAccept}>
+    <span class="inline mb-4">
+      <input id="agree" type="checkbox" name="agree" bind:checked={accepted} />
+      <label for="agree" class="ml-1">
+        I have reviewed the <a href="#">Privacy Policy</a>, the
+        <a href="#">Terms and Conditions</a> and the disclaimer and agree to all
+        of the above.
+      </label>
+    </span>
+    <button class={`${buttonPrimaryC} justify-self-center`} disabled={!accepted}
+      >Start Experiment</button
     >
   </form>
 </div>
