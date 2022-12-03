@@ -1,1 +1,0 @@
-import"./index-a2ffde42.js";function i(c){const n=.36363636363636365,s=8/11,t=9/10,u=4356/361,r=35442/1805,a=16061/1805,o=c*c;return c<n?7.5625*o:c<s?9.075*o-9.9*c+3.4:c<t?u*o-r*c+a:10.8*c*c-20.52*c+10.72}function b(c){const n=c-1;return n*n*n+1}function f(c){return-.5*(Math.cos(Math.PI*c)-1)}export{i as b,b as c,f as s};
