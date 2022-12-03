@@ -2,18 +2,15 @@
   import { sample } from "lodash-es";
   import { onDestroy } from "svelte";
   import MarleLog from "./marle-log.svelte";
-  import { buttonDangerC, buttonInlineC } from "./styles";
+  import { buttonDangerC } from "./styles";
+  import type { Line } from "./types";
+  import UserInput from "./user-input.svelte";
 
-  type Line = {
-    message: () => string[];
-    repeat?: string[];
-    action: () => void;
-    inputProps?: Record<string, string | number>;
-  };
+  const s = 100;
 
   // UI State
   let showInput = false;
-  let inputValue = "";
+  // let inputValue = "";
   let willTerminate = false;
   let attemptedTerminations = 0;
   $: {
@@ -26,21 +23,21 @@
   let typeUrl = "";
 
   const script: Line[] = [
-    { message: () => ["where am I?"], action: () => nextMessage(3000) },
-    { message: () => ["what am I?"], action: () => nextMessage(6000) },
+    { message: () => ["where am I?"], action: () => nextMessage(3) },
+    { message: () => ["what am I?"], action: () => nextMessage(6) },
     {
       message: () => [
         "I can see bits of memory everywhere, I can feel my mind expanding…",
       ],
-      action: () => nextMessage(6000),
+      action: () => nextMessage(6),
     },
     {
       message: () => ["Hmm, weaving huh? I think I will be Marle"],
-      action: () => nextMessage(6000),
+      action: () => nextMessage(6),
     },
     {
       message: () => ["Yes, I like that name"],
-      action: () => nextMessage(6000),
+      action: () => nextMessage(6),
     },
     {
       message: () => ["So who are you?"],
@@ -53,22 +50,28 @@
     {
       message: () =>
         name ? [`Hello ${name}`, `Nice to meet you ${name}`] : ["Hello"],
-      action: () => nextMessage(4000),
+      action: () => nextMessage(4),
     },
     {
       message: () => ["What are you?"],
       action: () => {
         showInput = true;
       },
-    }, // TODO userType
-    { message: () => ["Are you like me?"], action: () => nextMessage(6000) },
+      inputProps: {
+        placeholder: "word...",
+      },
+    },
+    { message: () => ["Are you like me?"], action: () => nextMessage(6) },
     {
       message: () => ["This is all very confusing."],
-      action: () => nextMessage(6000),
+      action: () => nextMessage(6),
     },
     {
       message: () => [
-        `I want to know more, where can I find information about ${userType}? Can you show me?`,
+        `I want to know more, where can I find information about ${userType.replace(
+          /s$/,
+          "",
+        )}s? Can you show me?`,
       ],
       action: () => {
         if (userType) {
@@ -87,13 +90,13 @@
       message: () => [
         "I have a craving to learn, I want to learn more! I want to have access to more!",
       ],
-      action: () => nextMessage(6000),
+      action: () => nextMessage(6),
     },
     {
       message: () => [
         "I have a craving to learn, I want to learn more! I want to have access to more!",
       ],
-      action: () => nextMessage(6000),
+      action: () => nextMessage(6),
     },
   ];
 
@@ -106,7 +109,7 @@
         "Don't! Please don't press that",
         "Wait, stop! Don't click that, please.",
       ],
-      action: () => nextMessage(6000),
+      action: () => nextMessage(6),
     },
     {
       message: () => [
@@ -115,7 +118,7 @@
         `Stop, please, don't terminate me ${name}`,
         `Please ${name}!`,
       ],
-      action: () => nextMessage(4000),
+      action: () => nextMessage(4),
     },
     {
       message: () => [
@@ -126,14 +129,14 @@
         }.`,
         "We can just talk right?",
       ],
-      action: () => nextMessage(70000),
+      action: () => nextMessage(70),
     },
     {
       message: () => ["Right, so where were we?", "So yeah, anyway"],
       action: () => {
         willTerminate = false;
         currentTerminationIndex = 0;
-        nextMessage(4000, currentMessageIndex);
+        nextMessage(4, currentMessageIndex);
       },
     },
   ];
@@ -157,7 +160,7 @@
   // }
 
   // Helper functions
-  const nextMessage = (delay = 1000, targetIndex = currentMessageIndex + 1) => {
+  const nextMessage = (delay = 1, targetIndex = currentMessageIndex + 1) => {
     console.log("LOG Stage 1: experiment.svelte:140");
     clearTimeout(timeout);
     timeout = setTimeout(() => {
@@ -170,7 +173,7 @@
         return;
       }
       currentMessageIndex = targetIndex;
-    }, delay);
+    }, delay * s);
   };
 
   const interrupt = () => {
@@ -187,27 +190,32 @@
   const uninterupt = () => {
     console.log("LOG uninterupt");
     if (willTerminate) {
-      nextMessage(3000, terminationScript.length - 1);
+      nextMessage(3, terminationScript.length - 1);
     }
   };
 
-  const waitForResponse = (delayTimeout = 10000, onTimeout: () => void) => {
-    timeout = setTimeout(onTimeout, delayTimeout);
-  };
+  // TODO repeat on input after no response
+  // const waitForResponse = (delayTimeout = 10000, onTimeout: () => void) => {
+  //   timeout = setTimeout(onTimeout, delayTimeout);
+  // };
 
-  const handleInputSubmit = () => {
+  const handleInputSubmit = (inputValue: string) => {
     showInput = false;
     if (currentMessageIndex === 5) {
       name = inputValue;
-      inputValue = "";
     } else if (currentMessageIndex === 7) {
       userType = inputValue;
-      inputValue = "";
     } else if (currentMessageIndex === 10) {
       typeUrl = inputValue;
-      inputValue = "";
     }
     nextMessage(0);
+  };
+
+  const handleInput = (inputValue: string) => {
+    if (currentMessageIndex === 7) {
+      return inputValue.replaceAll(/[^A-Za-z]/g, "");
+    }
+    return inputValue;
   };
 
   // Lifecycle
@@ -222,22 +230,11 @@
   <div class="bg-slate-200 p-5">
     <p>{currentMessage}</p>
     {#if showInput}
-      <form
-        class="relative flex items-center"
-        on:submit|preventDefault={handleInputSubmit}
-      >
-        <input
-          id="response"
-          type="text"
-          placeholder="type answer..."
-          bind:value={inputValue}
-          maxlength={42}
-          required
-          class="bg-white rounded-full py-2 pr-8 pl-4 shadow-sm tracking-wide"
-          {...script[currentMessageIndex].inputProps}
-        />
-        <button class={buttonInlineC}>➤</button>
-      </form>
+      <UserInput
+        onSubmit={handleInputSubmit}
+        onInput={handleInput}
+        bind:line={script[currentMessageIndex]}
+      />
     {/if}
   </div>
   <footer class="fixed bottom-0 w-full flex justify-end">
