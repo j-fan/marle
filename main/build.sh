@@ -21,6 +21,10 @@ for path in ../*/package.json; do
     continue
   fi
 
+  if [ "$subdir" == "api" ]; then
+    continue
+  fi
+
   if [ -f "../$subdir/package.json" ]; then
     pushd "../$subdir"
     pnpm install --frozen-lockfile
