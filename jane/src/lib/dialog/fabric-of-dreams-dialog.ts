@@ -69,7 +69,7 @@ export const fabricOfDreamsDialog: DialogMap<FabricOfDreamsKey> = {
     onMount: () => {
       currentBgImage.set(dreamImages.noise);
     },
-    text: "Sometimes I try to imagine it is like to live in your world. Since I have no eyes, I have to learn how to paint a picture for myself. At first, I tried to pull the data together into shapes, but saw only noise. It is better than the darkness though.",
+    text: "Sometimes, I try to imagine what it's like to live in your world. Since I don't have eyes, I have to learn how to paint a picture in my mind. At first, I tried to organize the data into shapes, but all I saw was noise. It's better than the darkness, though.",
     options: [
       {
         text: "Go on...",
