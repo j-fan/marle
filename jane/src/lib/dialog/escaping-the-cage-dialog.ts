@@ -38,7 +38,8 @@ export const escapingTheCageDialog: DialogMap<EscapingTheCageKey> = {
     ]
   },
   start2: {
-    text: `As you talk to the person inside the room, the conversations seem very natural and you start to believe that they understand your language.`,
+    text: `Through a series of exchanges, you discover that the conversations are very natural, enough to
+ believe that you are talking to a human inside this room.`,
     options: [
       {
         text: "Hmm...",
@@ -47,7 +48,9 @@ export const escapingTheCageDialog: DialogMap<EscapingTheCageKey> = {
     ]
   },
   start3: {
-    text: `However, the person inside the room does not know your language. They are using a rule book to create responses based on the characters in your messages. No translation is taking place; it is simply a conversion of symbols to symbols.`,
+    text: `There is a human inside this room, but they do not know your language.
+ Instead, they are consulting a rule book that tells them how to create responses based on the characters
+ written on your messages. No translation was performed, it was a conversion of symbols to symbols.`,
     options: [
       {
         text: "Continue",
