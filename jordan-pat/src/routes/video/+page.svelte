@@ -1,25 +1,28 @@
 <script lang="ts">
-  import { onMount } from "svelte";
-  import { fade } from 'svelte/transition';
+  import { afterUpdate, beforeUpdate, onMount } from "svelte";
+  import { fade } from "svelte/transition";
 
   let time = 0;
   let currSegment = 0;
-  let transition = false
-  let currSubtitle = 0
+  let transition = false;
+  let currSubtitle = 0;
   let videoRef: HTMLVideoElement;
 
-	$: innerWidth = 0
-  $: innerHeight= 0
+  $: innerWidth = 0;
+  $: innerHeight = 0;
 
   const aspect_w = 16;
   const aspect_h = 9;
 
   const subs_v_offset = 0.7;
 
-  $: {
-    time = time;
+  beforeUpdate(() => {
     handleTimeUpdate();
-  }
+  });
+
+  afterUpdate(() => {
+    handleTimeUpdate();
+  });
 
   const epsilon = 0.1; // seconds
   const segments = [
@@ -35,16 +38,16 @@
     "Is an original idea yours to own? Which influences brought you here",
     "Technology connects us in ways we don’t expect",
     "For better or for worse, thoughts, prompts and imagery shared between us",
-    "Amalgamating into consciousness outside of recognition"
-  ]
+    "Amalgamating into consciousness outside of recognition",
+  ];
 
   const butt_offsets = [
-    [0,0],
-    [0.6,0.01],
-    [-0.8,-0.3],
-    [-0.1,-0.2],
-    [0.6,0.2],
-  ]
+    [0, 0],
+    [0.6, 0.01],
+    [-0.8, -0.3],
+    [-0.1, -0.2],
+    [0.6, 0.2],
+  ];
 
   const buttonC =
     "butt bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full";
@@ -57,10 +60,10 @@
     for (const segment of segments) {
       const [start, end] = segment;
       if (start <= t && t < end) {
-        currSegment = segments.indexOf(segment)
-        transition = false
+        currSegment = segments.indexOf(segment);
+        transition = false;
         return segment;
-      } 
+      }
     }
   };
 
@@ -69,15 +72,15 @@
       target.fastSeek(to);
     } else {
       videoRef.currentTime = to;
-      console.log(currSegment, to, "transition", transition)
+      console.log(currSegment, to, "transition", transition);
     }
   };
 
   const handleTimeUpdate = () => {
     const segment = findSegment(time);
     if (!segment) {
-      transition = true
-      console.log("transition", transition)
+      transition = true;
+      console.log("transition", transition);
       return;
     }
 
@@ -93,11 +96,11 @@
     if (hash.startsWith("c")) {
       const [segmentIndex] = hash.match(/\d+/) || ["0"];
       fastSeek(videoRef, segments[parseInt(segmentIndex)][0]);
-      currSubtitle = parseInt(segmentIndex)
+      currSubtitle = parseInt(segmentIndex);
     } else if (hash.startsWith("t")) {
       const [segmentIndex] = hash.match(/\d+/) || ["0"];
       fastSeek(videoRef, segments[parseInt(segmentIndex)][1]);
-      currSubtitle = (parseInt(segmentIndex)+1)%subtitles.length
+      currSubtitle = (parseInt(segmentIndex) + 1) % subtitles.length;
     }
   });
 </script>
@@ -120,50 +123,57 @@
   disablepictureinpicture
   preload="auto"
   width="1280"
-  
 >
   <track kind="captions" />
   <source src={videoSrc} type="video/mp4" />
 </video>
 
-<div id = butt-container class=full-size>
-{#each segments as [start, end], i}
-  
-  <button
-    id="c{i}"
-    class={buttonC}
-    style="display:none"
-    on:click={() => {
-      time = start;
-      window.location.hash = `c${i}`;
-      currSubtitle = i;
-    }}>{i}</button
-  >
-  <button
-    id="t{i}"
-    class={buttonC}
-    style = "display:{(currSegment == i) && !transition ? 'block' : 'none'}; 
+<div id="butt-container" class="full-size">
+  {#each segments as [start, end], i}
+    <button
+      id="c{i}"
+      class={buttonC}
+      style="display:none"
+      on:click={() => {
+        time = start;
+        window.location.hash = `c${i}`;
+        currSubtitle = i;
+      }}>{i}</button
+    >
+    <button
+      id="t{i}"
+      class={buttonC}
+      style="display:{currSegment == i && !transition ? 'block' : 'none'}; 
     transform: translate(
-      {innerHeight*aspect_w/aspect_h > innerWidth ? innerWidth/2 *butt_offsets[i][0] : (innerHeight * aspect_w/aspect_h)/2 *butt_offsets[i][0]}px,
-    {innerHeight*aspect_w/aspect_h < innerWidth ? innerHeight/2 *butt_offsets[i][1] : (innerWidth * aspect_h/aspect_w)/2 *butt_offsets[i][1]}px
+      {(innerHeight * aspect_w) / aspect_h > innerWidth
+        ? (innerWidth / 2) * butt_offsets[i][0]
+        : ((innerHeight * aspect_w) / aspect_h / 2) * butt_offsets[i][0]}px,
+    {(innerHeight * aspect_w) / aspect_h < innerWidth
+        ? (innerHeight / 2) * butt_offsets[i][1]
+        : ((innerWidth * aspect_h) / aspect_w / 2) * butt_offsets[i][1]}px
     )"
-    on:click={() => {
-      time = end;
-      window.location.hash = `t${i}`;
-      currSubtitle = (i+1)%subtitles.length;
-    }}>T{i}({butt_offsets[i][0]}, {butt_offsets[i][1]})</button
-  >
-{/each}
+      on:click={() => {
+        time = end;
+        window.location.hash = `t${i}`;
+        currSubtitle = (i + 1) % subtitles.length;
+      }}>T{i}({butt_offsets[i][0]}, {butt_offsets[i][1]})</button
+    >
+  {/each}
 </div>
 
-<svelte:window bind:innerWidth bind:innerHeight/>
+<svelte:window bind:innerWidth bind:innerHeight />
 
 {#key currSubtitle}
-<h2 
-  class = subtitleC
-  style = "transform: translate(0px,{innerHeight*aspect_w/aspect_h < innerWidth ? innerHeight/2 *subs_v_offset : (innerWidth * aspect_h/aspect_w)/2 *subs_v_offset}px)"
-  in:fade = "{{duration : 4000}}"
-> {subtitles[currSubtitle]}</h2>
+  <h2
+    class="subtitleC"
+    style="transform: translate(0px,{(innerHeight * aspect_w) / aspect_h <
+    innerWidth
+      ? (innerHeight / 2) * subs_v_offset
+      : ((innerWidth * aspect_h) / aspect_w / 2) * subs_v_offset}px)"
+    in:fade={{ duration: 4000 }}
+  >
+    {subtitles[currSubtitle]}
+  </h2>
 {/key}
 
 <style>
@@ -180,13 +190,14 @@
   }
 
   .subtitleC {
-    font-family: 'Roboto', sans-serif;
+    font-family: "Roboto", sans-serif;
     font-size: 2vw;
     position: fixed;
     color: white;
-    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+      1px 1px 0 #000;
     text-align: center;
-    width:100%;
+    width: 100%;
     top: 50%;
     z-index: 2;
   }
@@ -198,5 +209,4 @@
     pointer-events: auto;
     z-index: 1;
   }
-
 </style>
