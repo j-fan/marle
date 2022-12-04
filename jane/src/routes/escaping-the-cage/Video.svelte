@@ -8,7 +8,7 @@
   } from "../../lib/stores/video-store";
 
   const videoSrc =
-    "https://github.com/j-fan/marle-images/raw/main/jane/marle-escape.mp4";
+    "https://github.com/j-fan/marle-images/raw/main/jane/marle-escape.mp4#t=0.1";
   const epsilon = 0.05; // seconds
 
   $: {
