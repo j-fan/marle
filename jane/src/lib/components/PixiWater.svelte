@@ -3,7 +3,6 @@
   import * as PIXI from "pixi.js";
   import { tweened } from "svelte/motion";
   import { sineInOut } from "svelte/easing";
-  import { getFilledDimensions } from "$lib/stores/your-face/store";
 
   export let imageSrc: PIXI.SpriteSource;
   export let displacePower = 20;
@@ -45,27 +44,12 @@
     const container = new PIXI.Container();
     app.stage.addChild(container);
 
-    const dreamTexture = PIXI.Sprite.from(imageSrc);
-    if (typeof imageSrc === "object" && "clientHeight" in imageSrc) {
-      const { width, height } = getFilledDimensions(
-        imageSrc.clientWidth,
-        imageSrc.clientHeight,
-        window.innerWidth,
-        window.innerHeight
-      );
-      dreamTexture.width = width;
-      dreamTexture.height = height;
-    } else if (typeof imageSrc === "string") {
-      // assume that all images are 16:9 ratio for simplicity
-      const { width, height } = getFilledDimensions(
-        16,
-        9,
-        window.innerWidth,
-        window.innerHeight
-      );
-      dreamTexture.width = width;
-      dreamTexture.height = height;
-    }
+    const dreamTexture = PIXI.TilingSprite.from(imageSrc, {
+      height: window.innerHeight,
+      width: window.innerWidth,
+      wrapMode: PIXI.WRAP_MODES.REPEAT
+    });
+
     container.addChild(dreamTexture);
 
     app.stage.addChild(displacementSprite);
