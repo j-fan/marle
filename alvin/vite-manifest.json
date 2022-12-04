@@ -228,12 +228,12 @@
     "file": "_app/immutable/assets/_page-769e1804.css",
     "src": "src/routes/umbrella/+page.css"
   },
-  "CenteredImage.css": {
-    "file": "_app/immutable/assets/CenteredImage-5943586e.css",
-    "src": "CenteredImage.css"
-  },
   "RestHere.css": {
     "file": "_app/immutable/assets/RestHere-8cc01f1a.css",
     "src": "RestHere.css"
+  },
+  "CenteredImage.css": {
+    "file": "_app/immutable/assets/CenteredImage-5943586e.css",
+    "src": "CenteredImage.css"
   }
 }
