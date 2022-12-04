@@ -131,13 +131,13 @@
       "src/routes/weave-my-reality/+page.svelte"
     ]
   },
-  "src/routes/+layout.css": {
-    "file": "_app/immutable/assets/_layout-8d43bf82.css",
-    "src": "src/routes/+layout.css"
-  },
   "src/routes/corrosion/+page.css": {
     "file": "_app/immutable/assets/_page-29eaebe5.css",
     "src": "src/routes/corrosion/+page.css"
+  },
+  "src/routes/+layout.css": {
+    "file": "_app/immutable/assets/_layout-8d43bf82.css",
+    "src": "src/routes/+layout.css"
   },
   "src/routes/weave-my-reality/+page.css": {
     "file": "_app/immutable/assets/_page-baaf7bf0.css",

@@ -112,12 +112,12 @@
       "src/routes/video/+page.svelte"
     ]
   },
-  "src/routes/video/+page.css": {
-    "file": "_app/immutable/assets/_page-7f663543.css",
-    "src": "src/routes/video/+page.css"
-  },
   "src/routes/+layout.css": {
     "file": "_app/immutable/assets/_layout-01cb62c3.css",
     "src": "src/routes/+layout.css"
+  },
+  "src/routes/video/+page.css": {
+    "file": "_app/immutable/assets/_page-7f663543.css",
+    "src": "src/routes/video/+page.css"
   }
 }
