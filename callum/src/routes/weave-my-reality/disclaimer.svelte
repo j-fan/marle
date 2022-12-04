@@ -2,6 +2,7 @@
   import { buttonPrimaryC } from "./styles";
 
   export let onAccept: () => void;
+  export let agentId: string;
   let accepted = false;
 </script>
 
@@ -12,7 +13,7 @@
   <p>
     You are about to take part in an artificial intelligence experiment. By
     proceeding you agree to the following conditions. For this session you will
-    be meeting subject <b>Delta-426</b>, henceforth referred to as
+    be meeting subject <b>{agentId}</b>, henceforth referred to as
     <i>The Subject</i>.
     <i>The Subject</i> is a class 6 digital alife research specimen which is the
     culmination of a proprietary technique consisting of many AI strains woven
