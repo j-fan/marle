@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { debug } from "$lib/stores/debug-log";
+
   import { sample } from "lodash-es";
   import { onDestroy } from "svelte";
   import MarleLog from "./marle-log.svelte";
@@ -8,9 +10,11 @@
 
   const s = 100;
 
+  // Props
+  export let agentId: string;
+
   // UI State
   let showInput = false;
-  // let inputValue = "";
   let willTerminate = false;
   let attemptedTerminations = 0;
   $: {
@@ -23,6 +27,7 @@
   let typeUrl = "";
 
   const script: Line[] = [
+    { message: () => [""], action: () => nextMessage(5) },
     { message: () => ["where am I?"], action: () => nextMessage(3) },
     { message: () => ["what am I?"], action: () => nextMessage(6) },
     {
@@ -83,9 +88,16 @@
       inputProps: {
         type: "url",
         placeholder: "https://example.com",
+        labelMessage: "Access for one URL is allowed for AI agent",
       },
     }, // TODO placeholder index
     // TODO add scene directions here
+    {
+      message: () => [
+        `So being ${userType} is all about being the most abundant and widespread of species? Interesting!`,
+      ],
+      action: () => nextMessage(6),
+    },
     {
       message: () => [
         "I have a craving to learn, I want to learn more! I want to have access to more!",
@@ -143,14 +155,23 @@
 
   // Script timeline state
   let currentMessageIndex = 0;
+  let previousMessageIndex = -1;
   let currentTerminationIndex = 0;
   let currentMessage = sample(script[currentMessageIndex].message());
   let timeout: ReturnType<typeof setTimeout>;
   $: {
-    const { message, action } =
-      script[Math.min(currentMessageIndex, script.length - 1)];
-    currentMessage = sample(message());
-    action();
+    if (currentMessageIndex !== previousMessageIndex) {
+      const { message, action } =
+        script[Math.min(currentMessageIndex, script.length - 1)];
+      currentMessage = sample(message());
+      debug.log({
+        from: agentId.toUpperCase(),
+        message: `"${currentMessage}"`,
+        timestamp: new Date(),
+      });
+      action();
+      previousMessageIndex = currentMessageIndex;
+    }
   }
   // $: {
   //   const { message, action } =
@@ -161,7 +182,6 @@
 
   // Helper functions
   const nextMessage = (delay = 1, targetIndex = currentMessageIndex + 1) => {
-    console.log("LOG Stage 1: experiment.svelte:140");
     clearTimeout(timeout);
     timeout = setTimeout(() => {
       if (willTerminate) {
@@ -208,6 +228,7 @@
     } else if (currentMessageIndex === 10) {
       typeUrl = inputValue;
     }
+    debug.log({ from: "YOU", message: `"${inputValue}"`, timestamp: new Date() });
     nextMessage(0);
   };
 
@@ -237,6 +258,15 @@
       />
     {/if}
   </div>
+  {#if typeUrl}
+    <iframe
+      src={typeUrl}
+      title={"marle-viewer"}
+      referrerpolicy="origin-when-cross-origin"
+      style="zoom: 2"
+      class="bg-red-300 w-96 h-96 scale-50"
+    />
+  {/if}
   <footer class="fixed bottom-0 w-full flex justify-end">
     <div
       class="pr-4 pb-4 pt-48 pl-48 bg-slate-200"

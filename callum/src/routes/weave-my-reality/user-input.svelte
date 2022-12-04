@@ -28,4 +28,7 @@
     {...line.inputProps}
   />
   <button class={buttonInlineC}>➤</button>
+  {#if line.inputProps?.labelMessage}
+    <p class="w-full">{line.inputProps.labelMessage}</p>
+  {/if}
 </form>

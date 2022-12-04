@@ -29,5 +29,5 @@
     }}
   />
 {:else}
-  <Experiment />
+  <Experiment {agentId} />
 {/if}
