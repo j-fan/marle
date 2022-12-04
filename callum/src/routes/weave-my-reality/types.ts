@@ -1,4 +1,5 @@
 export type Line = {
+  id?: string;
   message: () => string[];
   repeat?: string[];
   action: () => void;

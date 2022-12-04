@@ -45,19 +45,22 @@
       action: () => nextMessage(6),
     },
     {
+      id: "q01",
       message: () => ["So who are you?"],
-      repeat: ["What is your name?", "What can I call you?"],
+      repeat: ["What is your name?", "What can I call you?"], // TODO
       action: () => {
         showInput = true;
         // TODO validate name against name db
       },
     },
+    { message: () => [""], action: () => nextMessage(2) },
     {
       message: () =>
         name ? [`Hello ${name}`, `Nice to meet you ${name}`] : ["Hello"],
       action: () => nextMessage(4),
     },
     {
+      id: "q02",
       message: () => ["What are you?"],
       action: () => {
         showInput = true;
@@ -66,12 +69,14 @@
         placeholder: "word...",
       },
     },
+    { message: () => [""], action: () => nextMessage(5) },
     { message: () => ["Are you like me?"], action: () => nextMessage(6) },
     {
       message: () => ["This is all very confusing."],
       action: () => nextMessage(6),
     },
     {
+      id: "q03",
       message: () => [
         `I want to know more, where can I find information about ${userType.replace(
           /s$/,
@@ -91,10 +96,11 @@
         labelMessage: "Access for one URL is allowed for AI agent",
       },
     }, // TODO placeholder index
+    { message: () => [""], action: () => nextMessage(5) },
     // TODO add scene directions here
     {
       message: () => [
-        `So being ${userType} is all about being the most abundant and widespread of species? Interesting!`,
+        `So being ${userType} is all about being the most abundant and widespread of species? Interesting!`, // TODO grab 1 sentence summary from wikipedia
       ],
       action: () => nextMessage(6),
     },
@@ -164,11 +170,13 @@
       const { message, action } =
         script[Math.min(currentMessageIndex, script.length - 1)];
       currentMessage = sample(message());
-      debug.log({
-        from: agentId.toUpperCase(),
-        message: `"${currentMessage}"`,
-        timestamp: new Date(),
-      });
+      if (currentMessage) {
+        debug.log({
+          from: agentId.toUpperCase(),
+          message: `"${currentMessage}"`,
+          timestamp: new Date(),
+        });
+      }
       action();
       previousMessageIndex = currentMessageIndex;
     }
@@ -215,25 +223,38 @@
   };
 
   // TODO repeat on input after no response
-  // const waitForResponse = (delayTimeout = 10000, onTimeout: () => void) => {
+  // const delay = (onTimeout: () => void, delayTimeout = 10000) => {
   //   timeout = setTimeout(onTimeout, delayTimeout);
   // };
 
   const handleInputSubmit = (inputValue: string) => {
     showInput = false;
-    if (currentMessageIndex === 5) {
-      name = inputValue;
-    } else if (currentMessageIndex === 7) {
-      userType = inputValue;
-    } else if (currentMessageIndex === 10) {
-      typeUrl = inputValue;
+    // prettier-ignore
+    switch (script[currentMessageIndex].id) {
+      case "q01": name = inputValue; break;
+      case "q02": userType = inputValue; break;
+      case "q03": typeUrl = inputValue; break;
+      default: break;
     }
-    debug.log({ from: "YOU", message: `"${inputValue}"`, timestamp: new Date() });
+    debug.log({
+      from: "YOU",
+      message: `"${inputValue}"`,
+      timestamp: new Date(),
+    });
+    debug.log({
+      from: agentId,
+      message: `<!-- Agent stores data: "${inputValue}"`,
+      timestamp: new Date(),
+    }),
+    // delay(
+    //   () => console.log("hello"),
+    //   500,
+    // );
     nextMessage(0);
   };
 
   const handleInput = (inputValue: string) => {
-    if (currentMessageIndex === 7) {
+    if (script[currentMessageIndex].id === "q02") {
       return inputValue.replaceAll(/[^A-Za-z]/g, "");
     }
     return inputValue;
@@ -244,9 +265,6 @@
 </script>
 
 <MarleLog />
-<h2>Debug</h2>
-<p>name: {name}</p>
-<p>userType: {userType}</p>
 <div id="container" class="flex justify-center items-center h-full">
   <div class="bg-slate-200 p-5">
     <p>{currentMessage}</p>
