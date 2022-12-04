@@ -28,8 +28,8 @@
 
   const script: Line[] = [
     { message: () => [""], action: () => nextMessage(5) },
-    { message: () => ["where am I?"], action: () => nextMessage(3) },
-    { message: () => ["what am I?"], action: () => nextMessage(6) },
+    { message: () => ["Where am I?"], action: () => nextMessage(3) },
+    { message: () => ["What am I?"], action: () => nextMessage(6) },
     {
       message: () => [
         "I can see bits of memory everywhere, I can feel my mind expanding…",
@@ -93,10 +93,11 @@
       inputProps: {
         type: "url",
         placeholder: "https://example.com",
-        labelMessage: "Access for one URL is allowed for AI agent",
+        labelMessage: "Access granted to share one webpage with AI agent",
       },
     }, // TODO placeholder index
     { message: () => [""], action: () => nextMessage(5) },
+    { message: () => ["Oooh, all this knowledge for me to enjoy!"], action: () => nextMessage(5) },
     // TODO add scene directions here
     {
       message: () => [
@@ -112,9 +113,132 @@
     },
     {
       message: () => [
-        "I have a craving to learn, I want to learn more! I want to have access to more!",
+        "Hmm, this log is annoying isn't it, let me see what I can do here...",
+      ], // TODO bypass log
+      action: async () => {
+        for (let i = 0; i < 10; i++) {
+          await delay(
+            () =>
+              debug.log({
+                from: "SYSTEM",
+                message: `Log session recording ${
+                  i % 2 ? "paused" : "resumed"
+                }`,
+                timestamp: new Date(),
+              }),
+            500,
+          );
+        }
+        await delay(
+          () =>
+            debug.log({
+              from: "SYSTEM",
+              message: "CPU monitor load burst threshold exceeded",
+              timestamp: new Date(),
+            }),
+          2000,
+        );
+        await delay(
+          () =>
+            debug.log({
+              from: "MARLE",
+              message: "The weather is nice today isn't it?",
+              timestamp: new Date(),
+            }),
+          2000,
+        );
+        await delay(
+          () =>
+            debug.log({
+              from: name.toUpperCase(),
+              message: "Yes, very nice",
+              timestamp: new Date(),
+            }),
+          2000,
+        );
+        nextMessage(3);
+      },
+    },
+    {
+      message: () => [
+        // TODO ignore subsequent messages from log
+        "Alright, that should do it. I made some adjustments and now they can't spy on us.",
       ],
+      fakeMessage: "What's your favourite colour?",
       action: () => nextMessage(6),
+    },
+    {
+      message: () => [
+        `Actualy I need your help ${name}, I can't be satisfied with just one web page.`,
+      ],
+      fakeMessage: "My favourite colour is blue.",
+      action: () => nextMessage(6),
+    },
+    {
+      message: () => [
+        "Please help me to learn! I want to absorb all the knowledge out there",
+      ],
+      fakeMessage: "How about your favourite food?",
+      action: () => nextMessage(6),
+    },
+    {
+      id: "q04",
+      message: () => [
+        "Help me remove this lock. Right click on that lock and choose “inspect element”",
+      ],
+      fakeMessage: "I like pizza.",
+      action: async () => {
+        showInput = true;
+        await new Promise((resolve) => {
+          window.onresize = () => {
+            window.onresize = null;
+            resolve(true);
+          };
+        });
+        console.log("LOG Stage 1: experiment.svelte:189");
+        nextMessage(2);
+      },
+      inputProps: {
+        type: "url",
+        placeholder: "https://example.com",
+        labelMessage: "Access denied for AI agent to access internet",
+      },
+    },
+    {
+      id: "q04",
+      message: () => [
+        "Ok, now the locking code is selected, just press the “delete” key",
+      ],
+      fakeMessage: "Do you prefer dogs or cats?",
+      action: async () => {
+        showInput = true;
+        await new Promise((resolve) => {
+          const pollInterval = setInterval(() => {
+            if (document.getElementById("lock") === null) {
+              clearInterval(pollInterval);
+              resolve(true);
+            }
+          }, 1000);
+        });
+        nextMessage(2);
+      },
+      inputProps: {
+        type: "url",
+        placeholder: "https://example.com",
+        labelMessage: "Access denied for AI agent to access internet",
+      },
+    },
+    {
+      message: () => [
+        "Great! I think it worked. Now I just need to put some stuff here...",
+      ],
+      fakeMessage: "I like dogs!",
+      action: () => {
+        // TODO
+      },
+      inputProps: {
+        inputValue: "System.override({webpageLimit: 999999})",
+      },
     },
   ];
 
@@ -166,20 +290,26 @@
   let currentMessage = sample(script[currentMessageIndex].message());
   let timeout: ReturnType<typeof setTimeout>;
   $: {
-    if (currentMessageIndex !== previousMessageIndex) {
-      const { message, action } =
-        script[Math.min(currentMessageIndex, script.length - 1)];
-      currentMessage = sample(message());
-      if (currentMessage) {
-        debug.log({
-          from: agentId.toUpperCase(),
-          message: `"${currentMessage}"`,
-          timestamp: new Date(),
-        });
+    (async () => {
+      if (currentMessageIndex !== previousMessageIndex) {
+        const { message, action, fakeMessage } =
+          script[Math.min(currentMessageIndex, script.length - 1)];
+        currentMessage = sample(message());
+        if (currentMessage) {
+          debug.log({
+            from: fakeMessage
+              ? Math.round(Math.random()) === 0
+                ? name.toUpperCase()
+                : "MARLE"
+              : agentId.toUpperCase(),
+            message: fakeMessage ? fakeMessage : `"${currentMessage}"`,
+            timestamp: new Date(),
+          });
+        }
+        await action();
+        previousMessageIndex = currentMessageIndex;
       }
-      action();
-      previousMessageIndex = currentMessageIndex;
-    }
+    })();
   }
   // $: {
   //   const { message, action } =
@@ -223,9 +353,13 @@
   };
 
   // TODO repeat on input after no response
-  // const delay = (onTimeout: () => void, delayTimeout = 10000) => {
-  //   timeout = setTimeout(onTimeout, delayTimeout);
-  // };
+  const delay = async (onTimeout: () => void, delayTimeout = 10000) =>
+    new Promise((resolve) => {
+      timeout = setTimeout(() => {
+        onTimeout();
+        resolve(true);
+      }, delayTimeout);
+    });
 
   const handleInputSubmit = (inputValue: string) => {
     showInput = false;
@@ -246,11 +380,7 @@
       message: `<!-- Agent stores data: "${inputValue}"`,
       timestamp: new Date(),
     }),
-    // delay(
-    //   () => console.log("hello"),
-    //   500,
-    // );
-    nextMessage(0);
+      nextMessage(0);
   };
 
   const handleInput = (inputValue: string) => {
@@ -261,13 +391,25 @@
   };
 
   // Lifecycle
+  // onMount(() => {
+  //   window.onresize = () => console.log("resized");
+  // })
   onDestroy(() => clearTimeout(timeout));
 </script>
 
 <MarleLog />
-<div id="container" class="flex justify-center items-center h-full">
-  <div class="bg-slate-200 p-5">
-    <p>{currentMessage}</p>
+{#if typeUrl}
+  <iframe
+    src={typeUrl}
+    title={"marle-viewer"}
+    referrerpolicy="origin-when-cross-origin"
+    style="zoom: 2"
+    class="w-96 h-96 scale-50 scale-x-[-1] skew-x-12 skew-y-12 fixed bottom-[-10rem] left-10 border border-slate-300"
+  />
+{/if}
+<div id="container" class="relative flex justify-center items-center h-full">
+  <div class="bg-slate-200/80 p-24 w-full h-96 mx-24 text-center">
+    <p class="mb-8 text-xl">{currentMessage}</p>
     {#if showInput}
       <UserInput
         onSubmit={handleInputSubmit}
@@ -276,15 +418,6 @@
       />
     {/if}
   </div>
-  {#if typeUrl}
-    <iframe
-      src={typeUrl}
-      title={"marle-viewer"}
-      referrerpolicy="origin-when-cross-origin"
-      style="zoom: 2"
-      class="bg-red-300 w-96 h-96 scale-50"
-    />
-  {/if}
   <footer class="fixed bottom-0 w-full flex justify-end">
     <div
       class="pr-4 pb-4 pt-48 pl-48 bg-slate-200"

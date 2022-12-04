@@ -29,8 +29,10 @@
 
 <div id="debug-output" class="fixed font-mono">
   <ul>
-    {#each $debug as { timestamp, from, message }}
-      <li>[{timestamp.toISOString()}] {from}: {message}</li>
+    {#each $debug.slice(-15, -1) as { timestamp, from, message }}
+      <li class="text-slate-700">
+        [{timestamp.toISOString()}] {from}: {message}
+      </li>
     {/each}
   </ul>
 </div>
