@@ -3,8 +3,6 @@
   import { fade } from "svelte/transition";
 
   let time = 0;
-  let currSegment = 0;
-  let transition = false;
   let currSubtitle = 0;
   let videoRef: HTMLVideoElement;
 
@@ -24,7 +22,9 @@
     handleTimeUpdate();
   });
 
-  const epsilon = 0.1; // seconds
+  const epsilon = 0.1; // seconds - time threshold for detecting segment boundaries
+  const epsilon2 = 0.5; // seconds - extra time buffer around segment boundaries
+
   const segments = [
     [0, 1.3],
     [5.3, 6.4],
@@ -60,8 +60,6 @@
     for (const segment of segments) {
       const [start, end] = segment;
       if (start <= t && t < end) {
-        currSegment = segments.indexOf(segment);
-        transition = false;
         return segment;
       }
     }
@@ -72,15 +70,12 @@
       target.fastSeek(to);
     } else {
       videoRef.currentTime = to;
-      console.log(currSegment, to, "transition", transition);
     }
   };
 
   const handleTimeUpdate = () => {
     const segment = findSegment(time);
     if (!segment) {
-      transition = true;
-      console.log("transition", transition);
       return;
     }
 
@@ -143,7 +138,9 @@
     <button
       id="t{i}"
       class={buttonC}
-      style="display:{currSegment == i && !transition ? 'block' : 'none'}; 
+      style="display:{time >= start - epsilon2 && time <= end + epsilon2
+        ? 'block'
+        : 'none'}; 
     transform: translate(
       {(innerHeight * aspect_w) / aspect_h > innerWidth
         ? (innerWidth / 2) * butt_offsets[i][0]
@@ -153,7 +150,7 @@
         : ((innerWidth * aspect_h) / aspect_w / 2) * butt_offsets[i][1]}px
     )"
       on:click={() => {
-        time = end;
+        time = end + epsilon2;
         window.location.hash = `t${i}`;
         currSubtitle = (i + 1) % subtitles.length;
       }}>T{i}({butt_offsets[i][0]}, {butt_offsets[i][1]})</button
