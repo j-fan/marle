@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "concurrently --names hmr,tsc,lnt -c green.bold,yellow.bold,blue.bold --kill-others \"yarn dev\" \"yarn check:watch\" \"yarn lint:watch\"",
-    "dev": "export NODE_ENV=development && vite dev",
+    "dev": "set NODE_ENV=development && vite dev",
     "build": "vite build",
     "preview": "vite preview",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
