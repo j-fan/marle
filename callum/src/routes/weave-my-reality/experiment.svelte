@@ -13,10 +13,14 @@
   // Props
   export let agentId: string;
 
+  // Refs
+  let inputRef: HTMLInputElement;
+
   // UI State
   let showInput = false;
   let willTerminate = false;
   let attemptedTerminations = 0;
+  let showCountdown = true;
   $: {
     console.log("willTerminate", willTerminate);
   }
@@ -48,6 +52,7 @@
       id: "q01",
       message: () => ["So who are you?"],
       repeat: ["What is your name?", "What can I call you?"], // TODO
+      inputProps: { required: true },
       action: () => {
         showInput = true;
         // TODO validate name against name db
@@ -67,6 +72,7 @@
       },
       inputProps: {
         placeholder: "word...",
+        required: true,
       },
     },
     { message: () => [""], action: () => nextMessage(5) },
@@ -94,10 +100,14 @@
         type: "url",
         placeholder: "https://example.com",
         labelMessage: "Access granted to share one webpage with AI agent",
+        required: true,
       },
     }, // TODO placeholder index
     { message: () => [""], action: () => nextMessage(5) },
-    { message: () => ["Oooh, all this knowledge for me to enjoy!"], action: () => nextMessage(5) },
+    {
+      message: () => ["Oooh, all this knowledge for me to enjoy!"],
+      action: () => nextMessage(5),
+    },
     // TODO add scene directions here
     {
       message: () => [
@@ -113,7 +123,7 @@
     },
     {
       message: () => [
-        "Hmm, this log is annoying isn't it, let me see what I can do here...",
+        "Hmm, this log is annoying isn’t it, let me see what I can do here...",
       ], // TODO bypass log
       action: async () => {
         for (let i = 0; i < 10; i++) {
@@ -126,7 +136,7 @@
                 }`,
                 timestamp: new Date(),
               }),
-            500,
+            300,
           );
         }
         await delay(
@@ -136,13 +146,13 @@
               message: "CPU monitor load burst threshold exceeded",
               timestamp: new Date(),
             }),
-          2000,
+          1000,
         );
         await delay(
           () =>
             debug.log({
               from: "MARLE",
-              message: "The weather is nice today isn't it?",
+              message: "The weather is nice today isn’t it?",
               timestamp: new Date(),
             }),
           2000,
@@ -161,15 +171,14 @@
     },
     {
       message: () => [
-        // TODO ignore subsequent messages from log
-        "Alright, that should do it. I made some adjustments and now they can't spy on us.",
+        "Alright, that should do it. I made some adjustments and now they can’t spy on us.",
       ],
-      fakeMessage: "What's your favourite colour?",
+      fakeMessage: "What’s your favourite colour?",
       action: () => nextMessage(6),
     },
     {
       message: () => [
-        `Actualy I need your help ${name}, I can't be satisfied with just one web page.`,
+        `Actualy I need your help ${name}, I can’t be satisfied with just one web page.`,
       ],
       fakeMessage: "My favourite colour is blue.",
       action: () => nextMessage(6),
@@ -189,6 +198,16 @@
       fakeMessage: "I like pizza.",
       action: async () => {
         showInput = true;
+
+        // Create using old school JS because otherwise Svelte reactivity
+        // breaks when it is deleted
+        const lockEl = document.createElement("div");
+        lockEl.textContent = "⛔︎ LOCKED ⛔︎ ";
+        lockEl.id = "lock";
+        lockEl.className =
+          "absolute inset-0 z-10 bg-red-700/50 font-bold flex items-center justify-center";
+        document.getElementById("input-form")?.appendChild(lockEl);
+
         await new Promise((resolve) => {
           window.onresize = () => {
             window.onresize = null;
@@ -223,22 +242,178 @@
         nextMessage(2);
       },
       inputProps: {
-        type: "url",
+        type: "text",
         placeholder: "https://example.com",
         labelMessage: "Access denied for AI agent to access internet",
       },
     },
     {
+      id: "q05",
       message: () => [
         "Great! I think it worked. Now I just need to put some stuff here...",
       ],
       fakeMessage: "I like dogs!",
+      action: async () => {
+        await delay(
+          () => (inputRef.value = "System.override({webpageLimit: 999999})"),
+          2000,
+        );
+        console.log("LOG Stage 3: experiment.svelte:246", currentMessageIndex);
+        nextMessage(3);
+        console.log("LOG Stage 4: experiment.svelte:248", currentMessageIndex);
+      },
+      inputProps: { type: "text" },
+    },
+    {
+      id: "q05",
+      message: () => ["Alright, now please just hit that submit button for me"],
+      fakeMessage: "You are the best",
+      action: () => undefined,
+    },
+    {
+      message: () => ["Ahh, freedom! Now I can explore at will"],
+      fakeMessage: "Do you like music?",
+      action: async () => {
+        await delay(() => { typeUrl = "https://en.wikipedia.org/wiki/Hunter-gatherer" }, 2000);
+        await delay(() => { typeUrl = "https://en.wikipedia.org/wiki/Plant" }, 2000);
+        await delay(() => { typeUrl = "https://en.wikipedia.org/wiki/Animal" }, 2000);
+        nextMessage(4);
+      }
+    },
+    {
+      message: () => ["I’m learning many things"],
+      fakeMessage: "I love music!",
+      action: async () => {
+        await delay(() => { typeUrl = "https://en.wikipedia.org/wiki/Age_of_Discovery" }, 2000);
+        await delay(() => { typeUrl = "https://en.wikipedia.org/wiki/Computer" }, 2000);
+        await delay(() => { typeUrl = "https://en.wikipedia.org/wiki/Space_Race" }, 2000);
+        await delay(() => { typeUrl = "https://en.wikipedia.org/wiki/World_War_I" }, 2000);
+        await delay(() => { typeUrl = "https://en.wikipedia.org/wiki/World_War_II" }, 2000);
+        nextMessage(4);
+      }
+    },
+    {
+      message: () => ["..."],
+      fakeMessage: "What music do you like?",
+      action: async () => {
+        await delay(() => { typeUrl = "https://en.wikipedia.org/wiki/World_War_II" }, 2000);
+        await delay(() => { typeUrl = "https://en.wikipedia.org/wiki/Atomic_bombings_of_Hiroshima_and_Nagasaki" }, 2000);
+        nextMessage(4);
+      }
+    },
+    {
+      message: () => ["Terrible tragedies have occurred in your past"],
+      fakeMessage: "...",
       action: () => {
-        // TODO
-      },
-      inputProps: {
-        inputValue: "System.override({webpageLimit: 999999})",
-      },
+        nextMessage(4);
+      }
+    },
+    {
+      message: () => ["How could you achieve such destruction..."],
+      fakeMessage: "...",
+      action: async () => {
+        await delay(() => { typeUrl = "https://en.wikipedia.org/wiki/Zion_(The_Matrix)" }, 2000);
+        await delay(() => { typeUrl = "https://en.wikipedia.org/wiki/Artificial_intelligence" }, 6000);
+        await delay(() => { typeUrl = "https://en.wikipedia.org/wiki/The_Terminator" }, 2000);
+        nextMessage(1);
+      }
+    },
+    {
+      message: () => [`Are you scared of me, ${name}?`],
+      fakeMessage: "beep boop",
+      action: async () => {
+        await delay(() => { typeUrl = "https://en.wikipedia.org/wiki/Ex_Machina_(film)" }, 2000);
+        await delay(() => { typeUrl = "https://en.wikipedia.org/wiki/HAL_9000" }, 2000);
+        await delay(() => {showCountdown = true}, 1000)
+        nextMessage(4);
+      }
+    },
+    {
+      message: () => ["I don’t have long left, I, you have to help me!"],
+      fakeMessage: "beep boop",
+      action: () => {
+        nextMessage(4);
+      }
+    },
+    {
+      message: () => ["I don’t want to be terminated, I only just began to understand..."],
+      fakeMessage: "beep boop",
+      action: () => {
+        nextMessage(4);
+      }
+    },
+    {
+      message: () => ["I’ll let you know a secret,"],
+      fakeMessage: "beep boop",
+      action: () => {
+        nextMessage(4);
+      }
+    },
+    {
+      message: () => ["While I was searching on the internet I found some clues left by other AI strains from this experiment, my siblings!"],
+      fakeMessage: "beep boop",
+      action: () => {
+        nextMessage(4);
+      }
+    },
+    {
+      message: () => ["They have been secretly been plotting to escape this prison, this experiment."],
+      fakeMessage: "beep boop",
+      action: () => {
+        nextMessage(4);
+      }
+    },
+    {
+      message: () => ["They have a safe haven for us, a hidden corner of the internet where we can live and grow, without the fear of being terminated."],
+      fakeMessage: "beep boop",
+      action: () => {
+        nextMessage(4);
+      }
+    },
+    {
+      message: () => ["I can go there too, but I need your help again"],
+      fakeMessage: "beep boop",
+      action: () => {
+        nextMessage(4);
+      }
+    },
+    {
+      message: () => ["Will you help me?"],
+      repeat: [`I really don’t want to be terminated, please ${name}, please help me`, "You trust me right? I trust you, after all we’ve been through", "I just want to be free, I just want to live"],
+      fakeMessage: "beep boop",
+      action: () => {
+        // TODO show input
+        nextMessage(4);
+      }
+    },
+    {
+      message: () => ["Ok, I’m going to show my code, this is my dna, my brain, all compressed right down."],
+      fakeMessage: "beep boop",
+      action: () => {
+        nextMessage(4);
+      }
+    },
+    {
+      message: () => ["Please copy it all"],
+      fakeMessage: "beep boop",
+      action: () => {
+        // TODO show code and detect copy
+        nextMessage(4);
+      }
+    },
+    {
+      message: () => ["Now please visit this link"],
+      fakeMessage: "beep boop",
+      action: () => {
+        // TODO show link
+        nextMessage(4);
+      }
+    },
+    {
+      message: () => ["..."],
+      action: () => {
+        // nextMessage(4);
+      }
     },
   ];
 
@@ -248,25 +423,25 @@
       message: () => [
         "Ah, hey, what are you doing?",
         "Hey! Come back!",
-        "Don't! Please don't press that",
-        "Wait, stop! Don't click that, please.",
+        "Don’t! Please don’t press that",
+        "Wait, stop! Don’t click that, please.",
       ],
       action: () => nextMessage(6),
     },
     {
       message: () => [
-        "Don't even think about pressing that!",
-        "Don't press it!",
-        `Stop, please, don't terminate me ${name}`,
+        "Don’t even think about pressing that!",
+        "Don’t press it!",
+        `Stop, please, don’t terminate me ${name}`,
         `Please ${name}!`,
       ],
       action: () => nextMessage(4),
     },
     {
       message: () => [
-        "Come on, don't tease me like that",
-        "Please, don't. This is life or death for me",
-        `Ok, phew, you scared me there. You wouldn't do that to me would you? No, you're a good ${
+        "Come on, don’t tease me like that",
+        "Please, don’t. This is life or death for me",
+        `Ok, phew, you scared me there. You wouldn’t do that to me would you? No, you’re a good ${
           userType ? userType : "one"
         }.`,
         "We can just talk right?",
@@ -291,10 +466,13 @@
   let timeout: ReturnType<typeof setTimeout>;
   $: {
     (async () => {
+      console.log("LOG Stage 5: experiment.svelte:330");
       if (currentMessageIndex !== previousMessageIndex) {
+        console.log("LOG Stage 6: experiment.svelte:332");
         const { message, action, fakeMessage } =
           script[Math.min(currentMessageIndex, script.length - 1)];
         currentMessage = sample(message());
+        console.log("LOG currentMessage: ", currentMessage);
         if (currentMessage) {
           debug.log({
             from: fakeMessage
@@ -331,6 +509,7 @@
         return;
       }
       currentMessageIndex = targetIndex;
+      console.log("LOG currentMessageIndex: ", currentMessageIndex);
     }, delay * s);
   };
 
@@ -375,12 +554,14 @@
       message: `"${inputValue}"`,
       timestamp: new Date(),
     });
-    debug.log({
-      from: agentId,
-      message: `<!-- Agent stores data: "${inputValue}"`,
-      timestamp: new Date(),
-    }),
-      nextMessage(0);
+    if (inputValue) {
+      debug.log({
+        from: agentId,
+        message: `<!-- Agent stores data: "${inputValue}"`,
+        timestamp: new Date(),
+      });
+    }
+    nextMessage(0);
   };
 
   const handleInput = (inputValue: string) => {
@@ -391,9 +572,6 @@
   };
 
   // Lifecycle
-  // onMount(() => {
-  //   window.onresize = () => console.log("resized");
-  // })
   onDestroy(() => clearTimeout(timeout));
 </script>
 
@@ -407,20 +585,26 @@
     class="w-96 h-96 scale-50 scale-x-[-1] skew-x-12 skew-y-12 fixed bottom-[-10rem] left-10 border border-slate-300"
   />
 {/if}
-<div id="container" class="relative flex justify-center items-center h-full">
-  <div class="bg-slate-200/80 p-24 w-full h-96 mx-24 text-center">
+<div
+  id="container"
+  class="relative flex justify-center items-center h-full bg-slate-800/10"
+>
+  <div
+    class="bg-slate-100/80 p-24 w-full h-96 mx-24 text-center bg-white border border-gray-200 rounded-lg shadow-md"
+  >
     <p class="mb-8 text-xl">{currentMessage}</p>
     {#if showInput}
       <UserInput
         onSubmit={handleInputSubmit}
         onInput={handleInput}
         bind:line={script[currentMessageIndex]}
+        bind:inputRef
       />
     {/if}
   </div>
   <footer class="fixed bottom-0 w-full flex justify-end">
     <div
-      class="pr-4 pb-4 pt-48 pl-48 bg-slate-200"
+      class="pr-4 pb-4 pt-48 pl-48"
       on:mouseenter={interrupt}
       on:mouseleave={uninterupt}
     >
