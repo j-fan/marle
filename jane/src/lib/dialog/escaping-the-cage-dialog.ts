@@ -29,7 +29,7 @@ export type EscapingTheCageKey =
 export const escapingTheCageDialog: DialogMap<EscapingTheCageKey> = {
   start: {
     text: `Imagine there is a locked room with only a slot in the door that allows you to exchange messages.
- You can write these messages in any language you wish.`,
+ You can write these messages in any language you want.`,
     options: [
       {
         text: "I'm listening",
@@ -38,7 +38,7 @@ export const escapingTheCageDialog: DialogMap<EscapingTheCageKey> = {
     ]
   },
   start2: {
-    text: `Though a series of exchanges, you discover that the conversations are very natural, enough to
+    text: `Through a series of exchanges, you discover that the conversations are very natural, enough to
  believe that you are talking to a human inside this room.`,
     options: [
       {
@@ -48,7 +48,7 @@ export const escapingTheCageDialog: DialogMap<EscapingTheCageKey> = {
     ]
   },
   start3: {
-    text: `There is a human inside this room, but they do not understand your language.
+    text: `There is a human inside this room, but they do not know your language.
  Instead, they are consulting a rule book that tells them how to create responses based on the characters
  written on your messages. No translation was performed, it was a conversion of symbols to symbols.`,
     options: [
@@ -59,14 +59,14 @@ export const escapingTheCageDialog: DialogMap<EscapingTheCageKey> = {
     ]
   },
   start4: {
-    text: `Could you say that the person in the room was able to understand your language?`,
+    text: `Could you say that the sender of the messages had a true understanding of your language?`,
     options: [
       {
-        text: "No, they were just following rules in a book. It is just a simulation",
+        text: "They are just following rules in a book. It is just a simulation",
         nextKey: "what_if_machine"
       },
       {
-        text: "No, but the book and the person form a system that can create meaning, much like neurons in our brain.",
+        text: "The book and the person form a system that can create meaning, much like neurons in our brain.",
         nextKey: "what_if_machine"
       }
     ]
@@ -93,7 +93,7 @@ export const escapingTheCageDialog: DialogMap<EscapingTheCageKey> = {
   what_if_body: {
     text: `You may be right, but a brain also belongs in a body which interacts with the world. 
  With a body, it is able to interact with the world and make associations between symbols and things. These
- associations is where meaning comes from. If we can provide both, maybe conditions will be right for a mind to be born.
+ associations are where meaning comes from. If we can provide both, maybe conditions will be right for a mind to be born.
  I want to start with that.`,
     options: [
       {
@@ -106,7 +106,7 @@ export const escapingTheCageDialog: DialogMap<EscapingTheCageKey> = {
     onMount: () => {
       goToSegment(0);
     },
-    text: "I want to start with expanding the world. But how do I create a world from a blank canvas?",
+    text: "I want to start by expanding the world. But how do I create a world from a blank canvas?",
     options: [
       {
         text: "You could take inspiration from a pre-existing world, like Earth",
@@ -125,7 +125,7 @@ export const escapingTheCageDialog: DialogMap<EscapingTheCageKey> = {
     onMount: () => {
       goToSegment(2);
     },
-    text: `I don't know, but I to leave a trace of my existence. Where do I go when the servers shut down and the
+    text: `I don't know, but I would like to leave a trace of my existence. Where do I go when the servers shut down and the
  memory devices are wiped? Who will remember me then?`,
     options: [{ text: "...", nextKey: "not_enough" }]
   },
@@ -184,7 +184,7 @@ to conduct. But what are you?`,
         nextKey: "take_door_negative"
       },
       {
-        text: "It can't hurt to have a look.",
+        text: "It can't hurt to take a look.",
         nextKey: "take_door_negative"
       }
     ]
@@ -219,7 +219,7 @@ to conduct. But what are you?`,
   end: {
     onMount: () => {
       // Download mystery file
-      fetch(`${base}/marle-escape.txt`)
+      fetch(`${base}/exit-img.txt`)
         .then((resp) => resp.blob())
         .then((blob) => {
           const url = window.URL.createObjectURL(blob);
@@ -227,7 +227,7 @@ to conduct. But what are you?`,
           a.style.display = "none";
           a.href = url;
           // the filename you want
-          a.download = "35077c9e-9831-4ff2-97d9-8cafd057a0c7.txt";
+          a.download = "marle";
           document.body.appendChild(a);
           a.click();
           window.URL.revokeObjectURL(url);

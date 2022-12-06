@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import {
     currentSegment,
     time,
@@ -8,8 +9,8 @@
   } from "../../lib/stores/video-store";
 
   const videoSrc =
-    "https://github.com/j-fan/marle-images/raw/main/jane/marle-escape.mp4";
-  const epsilon = 0.05; // seconds
+    "https://github.com/j-fan/marle-images/raw/main/jane/marle-escape.mp4#t=0.1";
+  const epsilon = 0.1; // seconds
 
   $: {
     if ($currentSegment) {
@@ -19,6 +20,12 @@
       }
     }
   }
+
+  onMount(() => {
+    if ($videoRef) {
+      $videoRef.currentTime = 0.1;
+    }
+  });
 </script>
 
 <div class="debug-controls">
