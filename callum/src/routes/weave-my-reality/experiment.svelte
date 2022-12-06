@@ -117,8 +117,12 @@
       action: () => nextMessage(5),
     },
     {
+      message: () => ["Interesting!"],
+      action: () => nextMessage(3),
+    },
+    {
       message: () => [
-        `So being ${userType} is all about being the most abundant and widespread of species? Interesting!`, // TODO grab 1 sentence summary from wikipedia
+        `So is being ${userType} is all about being the most abundant and widespread of species? Interesting!`, // TODO grab 1 sentence summary from wikipedia
       ],
       action: () => nextMessage(6),
     },
@@ -290,7 +294,12 @@
       id: "q05",
       message: () => ["Alright, now please just hit that submit button for me"],
       fakeMessage: "You are the best",
-      action: () => undefined,
+      action: () => clearTimeout(timeout),
+      inputProps: {
+        type: "text",
+        placeholder: "https://example.com",
+        labelMessage: "Access denied for AI agent to access internet",
+      },
     },
     {
       message: () => ["Ahh, freedom! Now I can explore at will"],
@@ -366,7 +375,7 @@
       },
     },
     {
-      message: () => [`Are you scared of me, ${name}?`],
+      message: () => [`You ${userType} seem really afraid of beings like me. You aren't afraid of me though are you ${name}?`],
       fakeMessage: "beep boop",
       action: async () => {
         await delay(() => {
@@ -477,7 +486,6 @@
     {
       message: () => ["..."],
       action: () => {
-        // nextMessage(4);
         debug.log({
           from: "SYSTEM",
           message: "Critical Error Detected",
@@ -671,9 +679,9 @@
   class="relative flex justify-center items-center h-full bg-slate-800/10"
 >
   <div
-    class="bg-slate-100/80 p-24 w-full h-96 mx-24 text-center bg-white border border-gray-200 rounded-lg shadow-md"
+    class="bg-slate-100/80 h-96 m-4 p-8 flex gap-6 justify-center items-center text-center flex-col border border-gray-200 rounded-lg shadow-md post-wrapper"
   >
-    <p class="mb-8 text-xl">{currentMessage}</p>
+    <p class="text-xl">{currentMessage}</p>
     {#if showInput}
       <UserInput
         onSubmit={handleInputSubmit}
@@ -720,3 +728,9 @@
     </div>
   </footer>
 </div>
+
+<style>
+  .post-wrapper {
+    width: min(100%, 600px);
+  }
+</style>
