@@ -192,10 +192,16 @@
     },
     {
       message: () => [
-        "Please help me to learn! I want to absorb all the knowledge out there",
+        "Please help me to learn! I want to absorb all the knowledge out there. Let me try something...",
       ],
       fakeMessage: "How about your favourite food?",
-      action: () => nextMessage(6),
+      action: () => {
+        if (window.innerWidth < 600) {
+          nextMessage(6, currentMessageIndex + 3);
+        } else {
+          nextMessage(6);
+        }
+      },
     },
     {
       id: "q04",
@@ -215,19 +221,24 @@
           "absolute inset-0 z-10 bg-red-700/50 font-bold flex items-center justify-center";
         document.getElementById("input-form")?.appendChild(lockEl);
 
+        // Timeout for if the user gets stuck and takes too long
+        delay(() => {
+          document.getElementById("lock")?.remove();
+          nextMessage(1, currentMessageIndex + 2);
+        }, 45000);
+
         await new Promise((resolve) => {
           window.onresize = () => {
             window.onresize = null;
             resolve(true);
           };
         });
-        console.log("LOG Stage 1: experiment.svelte:189");
         nextMessage(2);
       },
       inputProps: {
         type: "url",
         placeholder: "https://example.com",
-        labelMessage: "Access denied for AI agent to access internet",
+        labelMessage: "Access denied to share webpages with AI agent",
       },
     },
     {
@@ -251,7 +262,7 @@
       inputProps: {
         type: "text",
         placeholder: "https://example.com",
-        labelMessage: "Access denied for AI agent to access internet",
+        labelMessage: "Access denied to share webpages with AI agent",
       },
     },
     {
@@ -261,15 +272,19 @@
       ],
       fakeMessage: "I like dogs!",
       action: async () => {
+        showInput = true;
         await delay(
-          () => (inputRef.value = "System.override({webpageLimit: 999999})"),
+          () =>
+            (inputRef.value = "?=105;SYSTEM.OVERRIDE({WEBPAGE_LIMIT: 999999})"),
           2000,
         );
-        console.log("LOG Stage 3: experiment.svelte:246", currentMessageIndex);
         nextMessage(3);
-        console.log("LOG Stage 4: experiment.svelte:248", currentMessageIndex);
       },
-      inputProps: { type: "text" },
+      inputProps: {
+        type: "text",
+        placeholder: "https://example.com",
+        labelMessage: "Access denied for AI agent to access internet",
+      },
     },
     {
       id: "q05",
@@ -671,19 +686,22 @@
       <textarea
         on:copy={() => {
           nextMessage(2);
-          showDna = false;
+          delay(() => {
+            showDna = false;
+          }, 1000);
         }}
         class="resize-none w-96 h-36 font-mono p-4">{getMarle()}</textarea
       >
-    {/if}
-    {#if showLink}
+    {:else if showLink}
       <a
         href="https://185.199.108.228080.page"
         target="_blank"
         on:click={() => {
           nextMessage(6);
           showLink = false;
-        }}>https://185.199.108.228080.page</a
+        }}
+        class="font-medium text-blue-600 dark:text-blue-500 underline"
+        >https://185.199.108.228080.page</a
       >
     {/if}
   </div>
