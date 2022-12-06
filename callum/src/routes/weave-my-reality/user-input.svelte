@@ -27,7 +27,10 @@
   class:border-red-500={line.inputProps?.labelMessage}
   on:submit|preventDefault={() => onSubmit(inputValue)}
 >
-  <div class="relative flex items-center my-6">
+  <div
+    class="relative flex items-center"
+    class:my-6={line.inputProps?.labelMessage}
+  >
     <input
       bind:this={inputRef}
       id="response"

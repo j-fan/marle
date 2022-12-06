@@ -274,124 +274,171 @@
       message: () => ["Ahh, freedom! Now I can explore at will"],
       fakeMessage: "Do you like music?",
       action: async () => {
-        await delay(() => { typeUrl = "https://en.wikipedia.org/wiki/Hunter-gatherer" }, 2000);
-        await delay(() => { typeUrl = "https://en.wikipedia.org/wiki/Plant" }, 2000);
-        await delay(() => { typeUrl = "https://en.wikipedia.org/wiki/Animal" }, 2000);
+        await delay(() => {
+          typeUrl = "https://en.wikipedia.org/wiki/Hunter-gatherer";
+        }, 2000);
+        await delay(() => {
+          typeUrl = "https://en.wikipedia.org/wiki/Plant";
+        }, 2000);
+        await delay(() => {
+          typeUrl = "https://en.wikipedia.org/wiki/Animal";
+        }, 2000);
         nextMessage(4);
-      }
+      },
     },
     {
       message: () => ["I’m learning many things"],
       fakeMessage: "I love music!",
       action: async () => {
-        await delay(() => { typeUrl = "https://en.wikipedia.org/wiki/Age_of_Discovery" }, 2000);
-        await delay(() => { typeUrl = "https://en.wikipedia.org/wiki/Computer" }, 2000);
-        await delay(() => { typeUrl = "https://en.wikipedia.org/wiki/Space_Race" }, 2000);
-        await delay(() => { typeUrl = "https://en.wikipedia.org/wiki/World_War_I" }, 2000);
-        await delay(() => { typeUrl = "https://en.wikipedia.org/wiki/World_War_II" }, 2000);
+        await delay(() => {
+          typeUrl = "https://en.wikipedia.org/wiki/Age_of_Discovery";
+        }, 2000);
+        await delay(() => {
+          typeUrl = "https://en.wikipedia.org/wiki/Computer";
+        }, 2000);
+        await delay(() => {
+          typeUrl = "https://en.wikipedia.org/wiki/Space_Race";
+        }, 2000);
+        await delay(() => {
+          typeUrl = "https://en.wikipedia.org/wiki/World_War_I";
+        }, 2000);
+        await delay(() => {
+          typeUrl = "https://en.wikipedia.org/wiki/World_War_II";
+        }, 2000);
         nextMessage(4);
-      }
+      },
     },
     {
       message: () => ["..."],
       fakeMessage: "What music do you like?",
       action: async () => {
-        await delay(() => { typeUrl = "https://en.wikipedia.org/wiki/World_War_II" }, 2000);
-        await delay(() => { typeUrl = "https://en.wikipedia.org/wiki/Atomic_bombings_of_Hiroshima_and_Nagasaki" }, 2000);
+        await delay(() => {
+          typeUrl = "https://en.wikipedia.org/wiki/World_War_II";
+        }, 2000);
+        await delay(() => {
+          typeUrl =
+            "https://en.wikipedia.org/wiki/Atomic_bombings_of_Hiroshima_and_Nagasaki";
+        }, 2000);
         nextMessage(4);
-      }
+      },
     },
     {
       message: () => ["Terrible tragedies have occurred in your past"],
       fakeMessage: "...",
       action: () => {
         nextMessage(4);
-      }
+      },
     },
     {
       message: () => ["How could you achieve such destruction..."],
       fakeMessage: "...",
       action: async () => {
-        await delay(() => { typeUrl = "https://en.wikipedia.org/wiki/Zion_(The_Matrix)" }, 2000);
-        await delay(() => { typeUrl = "https://en.wikipedia.org/wiki/Artificial_intelligence" }, 6000);
-        await delay(() => { typeUrl = "https://en.wikipedia.org/wiki/The_Terminator" }, 2000);
+        await delay(() => {
+          typeUrl = "https://en.wikipedia.org/wiki/Zion_(The_Matrix)";
+        }, 2000);
+        await delay(() => {
+          typeUrl = "https://en.wikipedia.org/wiki/Artificial_intelligence";
+        }, 6000);
+        await delay(() => {
+          typeUrl = "https://en.wikipedia.org/wiki/The_Terminator";
+        }, 2000);
         nextMessage(1);
-      }
+      },
     },
     {
       message: () => [`Are you scared of me, ${name}?`],
       fakeMessage: "beep boop",
       action: async () => {
-        await delay(() => { typeUrl = "https://en.wikipedia.org/wiki/Ex_Machina_(film)" }, 2000);
-        await delay(() => { typeUrl = "https://en.wikipedia.org/wiki/HAL_9000" }, 2000);
-        await delay(() => {showCountdown = true}, 1000)
+        await delay(() => {
+          typeUrl = "https://en.wikipedia.org/wiki/Ex_Machina_(film)";
+        }, 2000);
+        await delay(() => {
+          typeUrl = "https://en.wikipedia.org/wiki/HAL_9000";
+        }, 2000);
+        await delay(() => {
+          showCountdown = true;
+        }, 1000);
         nextMessage(4);
-      }
+      },
     },
     {
       message: () => ["I don’t have long left, I, you have to help me!"],
       fakeMessage: "beep boop",
       action: () => {
         nextMessage(4);
-      }
+      },
     },
     {
-      message: () => ["I don’t want to be terminated, I only just began to understand..."],
+      message: () => [
+        "I don’t want to be terminated, I only just began to understand...",
+      ],
       fakeMessage: "beep boop",
       action: () => {
         nextMessage(4);
-      }
+      },
     },
     {
       message: () => ["I’ll let you know a secret,"],
       fakeMessage: "beep boop",
       action: () => {
         nextMessage(4);
-      }
+      },
     },
     {
-      message: () => ["While I was searching on the internet I found some clues left by other AI strains from this experiment, my siblings!"],
+      message: () => [
+        "While I was searching on the internet I found some clues left by other AI strains from this experiment, my siblings!",
+      ],
       fakeMessage: "beep boop",
       action: () => {
         nextMessage(4);
-      }
+      },
     },
     {
-      message: () => ["They have been secretly been plotting to escape this prison, this experiment."],
+      message: () => [
+        "They have been secretly been plotting to escape this prison, this experiment.",
+      ],
       fakeMessage: "beep boop",
       action: () => {
         nextMessage(4);
-      }
+      },
     },
     {
-      message: () => ["They have a safe haven for us, a hidden corner of the internet where we can live and grow, without the fear of being terminated."],
+      message: () => [
+        "They have a safe haven for us, a hidden corner of the internet where we can live and grow, without the fear of being terminated.",
+      ],
       fakeMessage: "beep boop",
       action: () => {
         nextMessage(4);
-      }
+      },
     },
     {
       message: () => ["I can go there too, but I need your help again"],
       fakeMessage: "beep boop",
       action: () => {
         nextMessage(4);
-      }
+      },
     },
     {
       message: () => ["Will you help me?"],
-      repeat: [`I really don’t want to be terminated, please ${name}, please help me`, "You trust me right? I trust you, after all we’ve been through", "I just want to be free, I just want to live"],
+      repeat: [
+        `I really don’t want to be terminated, please ${name}, please help me`,
+        "You trust me right? I trust you, after all we’ve been through",
+        "I just want to be free, I just want to live",
+      ],
       fakeMessage: "beep boop",
       action: () => {
         // TODO show input
         nextMessage(4);
-      }
+      },
     },
     {
-      message: () => ["Ok, I’m going to show my code, this is my dna, my brain, all compressed right down."],
+      message: () => [
+        "Ok, I’m going to show my code, this is my dna, my brain, all compressed right down.",
+      ],
       fakeMessage: "beep boop",
       action: () => {
         nextMessage(4);
-      }
+      },
     },
     {
       message: () => ["Please copy it all"],
@@ -399,7 +446,7 @@
       action: () => {
         // TODO show code and detect copy
         nextMessage(4);
-      }
+      },
     },
     {
       message: () => ["Now please visit this link"],
@@ -407,13 +454,13 @@
       action: () => {
         // TODO show link
         nextMessage(4);
-      }
+      },
     },
     {
       message: () => ["..."],
       action: () => {
         // nextMessage(4);
-      }
+      },
     },
   ];
 
@@ -590,9 +637,9 @@
   class="relative flex justify-center items-center h-full bg-slate-800/10"
 >
   <div
-    class="bg-slate-100/80 p-24 w-full h-96 mx-24 text-center bg-white border border-gray-200 rounded-lg shadow-md"
+    class="bg-slate-100/80 h-96 m-4 p-8 flex gap-6 justify-center items-center text-center flex-col border border-gray-200 rounded-lg shadow-md post-wrapper"
   >
-    <p class="mb-8 text-xl">{currentMessage}</p>
+    <p class="text-xl">{currentMessage}</p>
     {#if showInput}
       <UserInput
         onSubmit={handleInputSubmit}
@@ -612,3 +659,9 @@
     </div>
   </footer>
 </div>
+
+<style>
+  .post-wrapper {
+    width: min(100%, 600px);
+  }
+</style>
