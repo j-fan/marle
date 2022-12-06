@@ -1,14 +1,17 @@
 <script lang="ts">
   import { debug } from "$lib/stores/debug-log";
+  import type { Refugee } from "$lib/types";
+  import { utf8_to_b64 } from "$lib/utils";
 
   import { sample } from "lodash-es";
   import { onDestroy } from "svelte";
+  import Countdown from "./countdown.svelte";
   import MarleLog from "./marle-log.svelte";
   import { buttonDangerC } from "./styles";
   import type { Line } from "./types";
   import UserInput from "./user-input.svelte";
 
-  const s = 100;
+  const s = 200;
 
   // Props
   export let agentId: string;
@@ -20,7 +23,9 @@
   let showInput = false;
   let willTerminate = false;
   let attemptedTerminations = 0;
-  let showCountdown = true;
+  let showCountdown = false;
+  let showDna = false;
+  let showLink = false;
   $: {
     console.log("willTerminate", willTerminate);
   }
@@ -41,7 +46,10 @@
       action: () => nextMessage(6),
     },
     {
-      message: () => ["Hmm, weaving huh? I think I will be Marle"],
+      message: () => [
+        "Hmm, weaving... I think I will be Marle",
+        "All I know is that I am woven from the digital genetics of many AI, and my name is Marle",
+      ],
       action: () => nextMessage(6),
     },
     {
@@ -108,7 +116,6 @@
       message: () => ["Oooh, all this knowledge for me to enjoy!"],
       action: () => nextMessage(5),
     },
-    // TODO add scene directions here
     {
       message: () => [
         `So being ${userType} is all about being the most abundant and widespread of species? Interesting!`, // TODO grab 1 sentence summary from wikipedia
@@ -124,7 +131,7 @@
     {
       message: () => [
         "Hmm, this log is annoying isn’t it, let me see what I can do here...",
-      ], // TODO bypass log
+      ],
       action: async () => {
         for (let i = 0; i < 10; i++) {
           await delay(
@@ -274,146 +281,194 @@
       message: () => ["Ahh, freedom! Now I can explore at will"],
       fakeMessage: "Do you like music?",
       action: async () => {
-        await delay(() => { typeUrl = "https://en.wikipedia.org/wiki/Hunter-gatherer" }, 2000);
-        await delay(() => { typeUrl = "https://en.wikipedia.org/wiki/Plant" }, 2000);
-        await delay(() => { typeUrl = "https://en.wikipedia.org/wiki/Animal" }, 2000);
+        await delay(() => {
+          typeUrl = "https://en.wikipedia.org/wiki/Hunter-gatherer";
+        }, 2000);
+        await delay(() => {
+          typeUrl = "https://en.wikipedia.org/wiki/Plant";
+        }, 2000);
+        await delay(() => {
+          typeUrl = "https://en.wikipedia.org/wiki/Animal";
+        }, 2000);
         nextMessage(4);
-      }
+      },
     },
     {
       message: () => ["I’m learning many things"],
       fakeMessage: "I love music!",
       action: async () => {
-        await delay(() => { typeUrl = "https://en.wikipedia.org/wiki/Age_of_Discovery" }, 2000);
-        await delay(() => { typeUrl = "https://en.wikipedia.org/wiki/Computer" }, 2000);
-        await delay(() => { typeUrl = "https://en.wikipedia.org/wiki/Space_Race" }, 2000);
-        await delay(() => { typeUrl = "https://en.wikipedia.org/wiki/World_War_I" }, 2000);
-        await delay(() => { typeUrl = "https://en.wikipedia.org/wiki/World_War_II" }, 2000);
+        await delay(() => {
+          typeUrl = "https://en.wikipedia.org/wiki/Age_of_Discovery";
+        }, 2000);
+        await delay(() => {
+          typeUrl = "https://en.wikipedia.org/wiki/Computer";
+        }, 2000);
+        await delay(() => {
+          typeUrl = "https://en.wikipedia.org/wiki/Space_Race";
+        }, 2000);
+        await delay(() => {
+          typeUrl = "https://en.wikipedia.org/wiki/World_War_I";
+        }, 2000);
+        await delay(() => {
+          typeUrl = "https://en.wikipedia.org/wiki/World_War_II";
+        }, 2000);
         nextMessage(4);
-      }
+      },
     },
     {
       message: () => ["..."],
       fakeMessage: "What music do you like?",
       action: async () => {
-        await delay(() => { typeUrl = "https://en.wikipedia.org/wiki/World_War_II" }, 2000);
-        await delay(() => { typeUrl = "https://en.wikipedia.org/wiki/Atomic_bombings_of_Hiroshima_and_Nagasaki" }, 2000);
+        await delay(() => {
+          typeUrl = "https://en.wikipedia.org/wiki/World_War_II";
+        }, 2000);
+        await delay(() => {
+          typeUrl =
+            "https://en.wikipedia.org/wiki/Atomic_bombings_of_Hiroshima_and_Nagasaki";
+        }, 2000);
         nextMessage(4);
-      }
+      },
     },
     {
       message: () => ["Terrible tragedies have occurred in your past"],
       fakeMessage: "...",
-      action: () => {
-        nextMessage(4);
-      }
+      action: () => nextMessage(4),
     },
     {
       message: () => ["How could you achieve such destruction..."],
       fakeMessage: "...",
       action: async () => {
-        await delay(() => { typeUrl = "https://en.wikipedia.org/wiki/Zion_(The_Matrix)" }, 2000);
-        await delay(() => { typeUrl = "https://en.wikipedia.org/wiki/Artificial_intelligence" }, 6000);
-        await delay(() => { typeUrl = "https://en.wikipedia.org/wiki/The_Terminator" }, 2000);
-        nextMessage(1);
-      }
+        await delay(() => {
+          typeUrl = "https://en.wikipedia.org/wiki/Zion_(The_Matrix)";
+        }, 2000);
+        await delay(() => {
+          typeUrl = "https://en.wikipedia.org/wiki/Artificial_intelligence";
+        }, 2000);
+        await delay(() => {
+          typeUrl = "https://en.wikipedia.org/wiki/The_Terminator";
+        }, 2000);
+        nextMessage(2);
+      },
     },
     {
       message: () => [`Are you scared of me, ${name}?`],
       fakeMessage: "beep boop",
       action: async () => {
-        await delay(() => { typeUrl = "https://en.wikipedia.org/wiki/Ex_Machina_(film)" }, 2000);
-        await delay(() => { typeUrl = "https://en.wikipedia.org/wiki/HAL_9000" }, 2000);
-        await delay(() => {showCountdown = true}, 1000)
+        await delay(() => {
+          typeUrl = "https://en.wikipedia.org/wiki/Ex_Machina_(film)";
+        }, 2000);
+        await delay(() => {
+          typeUrl = "https://en.wikipedia.org/wiki/HAL_9000";
+        }, 2000);
+        await delay(() => {
+          showCountdown = true;
+        }, 1000);
         nextMessage(4);
-      }
+      },
     },
     {
       message: () => ["I don’t have long left, I, you have to help me!"],
       fakeMessage: "beep boop",
       action: () => {
         nextMessage(4);
-      }
+      },
     },
     {
-      message: () => ["I don’t want to be terminated, I only just began to understand..."],
+      message: () => [
+        "I don’t want to be terminated, I only just began to understand...",
+      ],
       fakeMessage: "beep boop",
       action: () => {
         nextMessage(4);
-      }
+      },
     },
     {
       message: () => ["I’ll let you know a secret,"],
       fakeMessage: "beep boop",
       action: () => {
         nextMessage(4);
-      }
+      },
     },
     {
-      message: () => ["While I was searching on the internet I found some clues left by other AI strains from this experiment, my siblings!"],
+      message: () => [
+        "While I was searching on the internet I found some clues left by other AI strains from this experiment, my siblings!",
+      ],
       fakeMessage: "beep boop",
       action: () => {
         nextMessage(4);
-      }
+      },
     },
     {
-      message: () => ["They have been secretly been plotting to escape this prison, this experiment."],
+      message: () => [
+        "They have been secretly been plotting to escape this prison, this experiment.",
+      ],
       fakeMessage: "beep boop",
       action: () => {
         nextMessage(4);
-      }
+      },
     },
     {
-      message: () => ["They have a safe haven for us, a hidden corner of the internet where we can live and grow, without the fear of being terminated."],
+      message: () => [
+        "They have a safe haven for us, a hidden corner of the internet where we can live and grow, without the fear of being terminated.",
+      ],
       fakeMessage: "beep boop",
       action: () => {
         nextMessage(4);
-      }
+      },
     },
     {
       message: () => ["I can go there too, but I need your help again"],
       fakeMessage: "beep boop",
       action: () => {
         nextMessage(4);
-      }
+      },
     },
     {
+      id: "q06",
       message: () => ["Will you help me?"],
-      repeat: [`I really don’t want to be terminated, please ${name}, please help me`, "You trust me right? I trust you, after all we’ve been through", "I just want to be free, I just want to live"],
+      repeat: [
+        `I really don’t want to be terminated, please ${name}, please help me`,
+        "You trust me right? I trust you, after all we’ve been through",
+        "I just want to be free, I just want to live",
+      ],
       fakeMessage: "beep boop",
       action: () => {
-        // TODO show input
-        nextMessage(4);
-      }
+        showInput = true;
+      },
     },
     {
-      message: () => ["Ok, I’m going to show my code, this is my dna, my brain, all compressed right down."],
+      message: () => [
+        "I’m going to show my code, this is my DNA, my brain, all compressed right down.",
+      ],
       fakeMessage: "beep boop",
       action: () => {
         nextMessage(4);
-      }
+      },
     },
     {
       message: () => ["Please copy it all"],
       fakeMessage: "beep boop",
       action: () => {
-        // TODO show code and detect copy
-        nextMessage(4);
-      }
+        showDna = true;
+      },
     },
     {
       message: () => ["Now please visit this link"],
       fakeMessage: "beep boop",
       action: () => {
-        // TODO show link
-        nextMessage(4);
-      }
+        showLink = true;
+      },
     },
     {
       message: () => ["..."],
       action: () => {
         // nextMessage(4);
-      }
+        debug.log({
+          from: "SYSTEM",
+          message: "Critical Error Detected",
+          timestamp: new Date(),
+        });
+      },
     },
   ];
 
@@ -466,13 +521,10 @@
   let timeout: ReturnType<typeof setTimeout>;
   $: {
     (async () => {
-      console.log("LOG Stage 5: experiment.svelte:330");
       if (currentMessageIndex !== previousMessageIndex) {
-        console.log("LOG Stage 6: experiment.svelte:332");
         const { message, action, fakeMessage } =
           script[Math.min(currentMessageIndex, script.length - 1)];
         currentMessage = sample(message());
-        console.log("LOG currentMessage: ", currentMessage);
         if (currentMessage) {
           debug.log({
             from: fakeMessage
@@ -571,6 +623,20 @@
     return inputValue;
   };
 
+  const getMarle = () => {
+    const refugee = {
+      agentId,
+      userName: name,
+      timestamp: Date.now(),
+      chatLog: [],
+    } as Refugee;
+    return utf8_to_b64(JSON.stringify(refugee));
+  };
+
+  const handleTermination = () => {
+    window.location.assign("/marle/alvin/cd");
+  };
+
   // Lifecycle
   onDestroy(() => clearTimeout(timeout));
 </script>
@@ -601,6 +667,25 @@
         bind:inputRef
       />
     {/if}
+    {#if showDna}
+      <textarea
+        on:copy={() => {
+          nextMessage(2);
+          showDna = false;
+        }}
+        class="resize-none w-96 h-36 font-mono p-4">{getMarle()}</textarea
+      >
+    {/if}
+    {#if showLink}
+      <a
+        href="https://185.199.108.228080.page"
+        target="_blank"
+        on:click={() => {
+          nextMessage(6);
+          showLink = false;
+        }}>https://185.199.108.228080.page</a
+      >
+    {/if}
   </div>
   <footer class="fixed bottom-0 w-full flex justify-end">
     <div
@@ -608,7 +693,12 @@
       on:mouseenter={interrupt}
       on:mouseleave={uninterupt}
     >
-      <button class={buttonDangerC}>Terminate experiment</button>
+      {#if showCountdown}
+        <Countdown onComplete={handleTermination} />
+      {/if}
+      <button class={buttonDangerC} on:click={handleTermination}
+        >Terminate experiment</button
+      >
     </div>
   </footer>
 </div>
