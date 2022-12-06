@@ -242,7 +242,7 @@ to conduct. But what are you?`,
         onClick: () => {
           // TODO: Replace with section 1 of Jordan/Pat's artwork
           window.location.assign(
-            "https://j-fan.github.io/marle/jordan-pat/video#c1"
+            "https://j-fan.github.io/marle/jordan-pat/video"
           );
         }
       }
