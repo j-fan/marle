@@ -21,6 +21,9 @@
   )}${Math.ceil(Math.random() * 10)}`;
 </script>
 
+<svelte:head>
+  <title>Origin:Marle - Weave My Reality - Callum Howard</title>
+</svelte:head>
 {#if !accepted}
   <Disclaimer
     {agentId}
