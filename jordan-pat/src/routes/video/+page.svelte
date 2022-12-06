@@ -71,8 +71,9 @@
     "butt" // bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full";
   // const videoSrc =
   //   "https://firebasestorage.googleapis.com/v0/b/marle-5d8ad.appspot.com/o/Marle_VideoTest.mp4?alt=media&token=fbf1ef92-57c9-4d8d-b9fa-5831c4b010c5";
-  const videoSrc =
-    "https://github.com/jordaneast1/marle-media/raw/main/SEQ_Marle_draft.mp4";
+  const videoSrc = "https://user-images.githubusercontent.com/42902875/205775420-8627df1c-395a-47af-af4e-95810e9b9813.mp4"
+
+  //const videoSrc =  "https://github.com/jordaneast1/marle-media/raw/main/SEQ_Marle_draft.mp4";
 
   const findSegment = (t: number) => {
     for (const segment of segments) {
