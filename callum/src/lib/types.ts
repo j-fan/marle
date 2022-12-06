@@ -3,3 +3,10 @@ export type MessageRecord = {
   message: string;
   timestamp: Date;
 };
+
+export type Refugee = {
+  agentId: string;
+  userName: string;
+  timestamp: number;
+  chatLog: MessageRecord[];
+};
