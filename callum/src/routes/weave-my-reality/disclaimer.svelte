@@ -8,7 +8,7 @@
 
 <main class="flex justify-center items-center w-full min-h-full">
   <div
-    class="border-solid border-black border p-6 max-w-2xl font-['serif'] flex items-center flex-col gap-4 m-4"
+    class="border-solid border-black border p-6 max-w-2xl font-['serif'] flex items-center flex-col gap-4 m-8"
   >
     <h1 class="text-4xl">Disclaimer</h1>
     <p>
@@ -87,5 +87,9 @@
   a {
     text-decoration: underline;
     color: blue;
+  }
+
+  main {
+    filter: drop-shadow(0px 0px 1px rgba(0, 0, 0, 0.3));
   }
 </style>

@@ -31,7 +31,7 @@
   onDestroy(() => clearInterval(interval));
 </script>
 
-<div id="debug-output" class="fixed font-mono">
+<div id="debug-output" class="fixed font-mono p-8">
   <ul>
     {#each $debug.slice(-logLength, -1) as { timestamp, from, message }}
       <li class="text-slate-700 whitespace-nowrap overflow-hidden">

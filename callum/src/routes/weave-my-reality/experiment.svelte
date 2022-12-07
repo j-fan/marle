@@ -675,83 +675,93 @@
   // Lifecycle
   onMount(() => {
     isMobile = window.innerWidth < 600;
-  })
+  });
   onDestroy(() => clearTimeout(timeout));
 </script>
 
-<MarleLog />
-{#if typeUrl}
-  <iframe
-    src={typeUrl}
-    title={"marle-viewer"}
-    referrerpolicy="origin-when-cross-origin"
-    style="zoom: 2"
-    class={isMobile ? iframeMobileC : iframeFullC}
-  />
-{/if}
-<div
-  id="container"
-  class="relative flex justify-center items-center h-full bg-slate-800/10"
->
+<main class="w-full h-full overflow-hidden">
+  <MarleLog />
+  {#if typeUrl}
+    <iframe
+      src={typeUrl}
+      title={"marle-viewer"}
+      referrerpolicy="origin-when-cross-origin"
+      style="zoom: 2"
+      class={isMobile ? iframeMobileC : iframeFullC}
+    />
+  {/if}
   <div
-    class="bg-slate-100/80 h-96 m-4 p-8 flex gap-6 justify-center items-center text-center flex-col border border-gray-200 rounded-lg shadow-md post-wrapper"
+    id="container"
+    class="relative flex justify-center items-center h-full bg-slate-800/10"
   >
-    {#if showCountdown}
-      <div class="w-full bg-red-100 border border-red-500 text-red-700 px-4 py-3">
-        <p>Experiment termination in:</p>
-        <Countdown onComplete={handleTermination} />
-      </div>
-    {/if}
-    <p class="text-xl">{currentMessage}</p>
-    {#if showInput}
-      <UserInput
-        onSubmit={handleInputSubmit}
-        onInput={handleInput}
-        bind:line={script[currentMessageIndex]}
-        bind:inputRef
-      />
-    {/if}
-    {#if showDna}
-      <textarea
-        on:copy={() => {
-          nextMessage(2);
-          delay(() => {
-            showDna = false;
-          }, 1000);
-        }}
-        class="resize-none w-96 h-36 font-mono p-4">{getMarle()}</textarea
-      >
-    {:else if showLink}
-      <a
-        href="https://185.199.108.228080.page"
-        target="_blank"
-        on:click={() => {
-          nextMessage(6);
-          showLink = false;
-        }}
-        class="font-medium text-blue-600 dark:text-blue-500 underline"
-        >https://185.199.108.228080.page</a
-      >
-    {/if}
-  </div>
-  <footer class="fixed bottom-0 w-full flex justify-end">
     <div
-      class="pr-4 pb-4 pt-48 pl-48"
-      on:mouseenter={interrupt}
-      on:mouseleave={uninterupt}
+      class="bg-slate-100/80 h-96 m-4 p-8 flex gap-6 justify-center items-center text-center flex-col border border-gray-200 rounded-lg shadow-md post-wrapper"
     >
       {#if showCountdown}
-        <Countdown onComplete={handleTermination} />
+        <div
+          class="w-full bg-red-100 border border-red-500 text-red-700 px-4 py-3"
+        >
+          <p>Experiment termination in:</p>
+          <Countdown onComplete={handleTermination} />
+        </div>
       {/if}
-      <button class={buttonDangerC} on:click={handleTermination}
-        >Terminate experiment</button
-      >
+      <p class="text-xl">{currentMessage}</p>
+      {#if showInput}
+        <UserInput
+          onSubmit={handleInputSubmit}
+          onInput={handleInput}
+          bind:line={script[currentMessageIndex]}
+          bind:inputRef
+        />
+      {/if}
+      {#if showDna}
+        <textarea
+          on:copy={() => {
+            nextMessage(2);
+            delay(() => {
+              showDna = false;
+            }, 1000);
+          }}
+          class="resize-none w-96 h-36 font-mono p-4">{getMarle()}</textarea
+        >
+      {:else if showLink}
+        <a
+          href="https://185.199.108.228080.page"
+          target="_blank"
+          on:click={() => {
+            nextMessage(6);
+            showLink = false;
+          }}
+          class="font-medium text-blue-600 dark:text-blue-500 underline"
+          >https://185.199.108.228080.page</a
+        >
+      {/if}
     </div>
-  </footer>
-</div>
+    <footer class="fixed bottom-0 w-full flex justify-end">
+      <div
+        class="pr-8 pb-8 pt-48 pl-48"
+        on:mouseenter={interrupt}
+        on:mouseleave={uninterupt}
+      >
+        {#if showCountdown}
+          <Countdown onComplete={handleTermination} />
+        {/if}
+        <button class={buttonDangerC} on:click={handleTermination}
+          >Terminate experiment</button
+        >
+      </div>
+    </footer>
+  </div>
+</main>
 
 <style>
   .post-wrapper {
     width: min(100%, 600px);
+  }
+
+  p,
+  main,
+  button {
+    filter: drop-shadow(0px 0px 1px rgba(0, 0, 0, 0.3));
   }
 </style>
