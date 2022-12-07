@@ -4,10 +4,10 @@
   import { utf8_to_b64 } from "$lib/utils";
 
   import { sample } from "lodash-es";
-  import { onDestroy } from "svelte";
+  import { onDestroy, onMount } from "svelte";
   import Countdown from "./countdown.svelte";
   import MarleLog from "./marle-log.svelte";
-  import { buttonDangerC } from "./styles";
+  import { buttonDangerC, iframeFullC, iframeMobileC } from "./styles";
   import type { Line } from "./types";
   import UserInput from "./user-input.svelte";
 
@@ -23,6 +23,7 @@
   let showInput = false;
   let willTerminate = false;
   let attemptedTerminations = 0;
+  let isMobile = false;
   let showCountdown = false;
   let showDna = false;
   let showLink = false;
@@ -60,7 +61,10 @@
       id: "q01",
       message: () => ["So who are you?"],
       repeat: ["What is your name?", "What can I call you?"], // TODO
-      inputProps: { required: true },
+      inputProps: {
+        placeholder: "type name...",
+        required: true,
+      },
       action: () => {
         showInput = true;
         // TODO validate name against name db
@@ -79,7 +83,7 @@
         showInput = true;
       },
       inputProps: {
-        placeholder: "word...",
+        placeholder: "type word...",
         required: true,
       },
     },
@@ -669,6 +673,9 @@
   };
 
   // Lifecycle
+  onMount(() => {
+    isMobile = window.innerWidth < 600;
+  })
   onDestroy(() => clearTimeout(timeout));
 </script>
 
@@ -679,7 +686,7 @@
     title={"marle-viewer"}
     referrerpolicy="origin-when-cross-origin"
     style="zoom: 2"
-    class="w-96 h-96 scale-50 scale-x-[-1] skew-x-12 skew-y-12 fixed bottom-[-10rem] left-10 border border-slate-300"
+    class={isMobile ? iframeMobileC : iframeFullC}
   />
 {/if}
 <div
@@ -690,8 +697,10 @@
     class="bg-slate-100/80 h-96 m-4 p-8 flex gap-6 justify-center items-center text-center flex-col border border-gray-200 rounded-lg shadow-md post-wrapper"
   >
     {#if showCountdown}
-      <p>Experiment completion and termination in:</p>
-      <Countdown onComplete={handleTermination} />
+      <div class="w-full bg-red-100 border border-red-500 text-red-700 px-4 py-3">
+        <p>Experiment termination in:</p>
+        <Countdown onComplete={handleTermination} />
+      </div>
     {/if}
     <p class="text-xl">{currentMessage}</p>
     {#if showInput}
