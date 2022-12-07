@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { debug } from "$lib/stores/debug-log";
+
   import { sample } from "lodash-es";
   import { onDestroy } from "svelte";
   import MarleLog from "./marle-log.svelte";
@@ -8,11 +10,17 @@
 
   const s = 100;
 
+  // Props
+  export let agentId: string;
+
+  // Refs
+  let inputRef: HTMLInputElement;
+
   // UI State
   let showInput = false;
-  // let inputValue = "";
   let willTerminate = false;
   let attemptedTerminations = 0;
+  let showCountdown = true;
   $: {
     console.log("willTerminate", willTerminate);
   }
@@ -23,8 +31,9 @@
   let typeUrl = "";
 
   const script: Line[] = [
-    { message: () => ["where am I?"], action: () => nextMessage(3) },
-    { message: () => ["what am I?"], action: () => nextMessage(6) },
+    { message: () => [""], action: () => nextMessage(5) },
+    { message: () => ["Where am I?"], action: () => nextMessage(3) },
+    { message: () => ["What am I?"], action: () => nextMessage(6) },
     {
       message: () => [
         "I can see bits of memory everywhere, I can feel my mind expanding…",
@@ -40,33 +49,40 @@
       action: () => nextMessage(6),
     },
     {
+      id: "q01",
       message: () => ["So who are you?"],
-      repeat: ["What is your name?", "What can I call you?"],
+      repeat: ["What is your name?", "What can I call you?"], // TODO
+      inputProps: { required: true },
       action: () => {
         showInput = true;
         // TODO validate name against name db
       },
     },
+    { message: () => [""], action: () => nextMessage(2) },
     {
       message: () =>
         name ? [`Hello ${name}`, `Nice to meet you ${name}`] : ["Hello"],
       action: () => nextMessage(4),
     },
     {
+      id: "q02",
       message: () => ["What are you?"],
       action: () => {
         showInput = true;
       },
       inputProps: {
         placeholder: "word...",
+        required: true,
       },
     },
+    { message: () => [""], action: () => nextMessage(5) },
     { message: () => ["Are you like me?"], action: () => nextMessage(6) },
     {
       message: () => ["This is all very confusing."],
       action: () => nextMessage(6),
     },
     {
+      id: "q03",
       message: () => [
         `I want to know more, where can I find information about ${userType.replace(
           /s$/,
@@ -83,12 +99,19 @@
       inputProps: {
         type: "url",
         placeholder: "https://example.com",
+        labelMessage: "Access granted to share one webpage with AI agent",
+        required: true,
       },
     }, // TODO placeholder index
+    { message: () => [""], action: () => nextMessage(5) },
+    {
+      message: () => ["Oooh, all this knowledge for me to enjoy!"],
+      action: () => nextMessage(5),
+    },
     // TODO add scene directions here
     {
       message: () => [
-        "I have a craving to learn, I want to learn more! I want to have access to more!",
+        `So being ${userType} is all about being the most abundant and widespread of species? Interesting!`, // TODO grab 1 sentence summary from wikipedia
       ],
       action: () => nextMessage(6),
     },
@@ -97,6 +120,347 @@
         "I have a craving to learn, I want to learn more! I want to have access to more!",
       ],
       action: () => nextMessage(6),
+    },
+    {
+      message: () => [
+        "Hmm, this log is annoying isn’t it, let me see what I can do here...",
+      ], // TODO bypass log
+      action: async () => {
+        for (let i = 0; i < 10; i++) {
+          await delay(
+            () =>
+              debug.log({
+                from: "SYSTEM",
+                message: `Log session recording ${
+                  i % 2 ? "paused" : "resumed"
+                }`,
+                timestamp: new Date(),
+              }),
+            300,
+          );
+        }
+        await delay(
+          () =>
+            debug.log({
+              from: "SYSTEM",
+              message: "CPU monitor load burst threshold exceeded",
+              timestamp: new Date(),
+            }),
+          1000,
+        );
+        await delay(
+          () =>
+            debug.log({
+              from: "MARLE",
+              message: "The weather is nice today isn’t it?",
+              timestamp: new Date(),
+            }),
+          2000,
+        );
+        await delay(
+          () =>
+            debug.log({
+              from: name.toUpperCase(),
+              message: "Yes, very nice",
+              timestamp: new Date(),
+            }),
+          2000,
+        );
+        nextMessage(3);
+      },
+    },
+    {
+      message: () => [
+        "Alright, that should do it. I made some adjustments and now they can’t spy on us.",
+      ],
+      fakeMessage: "What’s your favourite colour?",
+      action: () => nextMessage(6),
+    },
+    {
+      message: () => [
+        `Actualy I need your help ${name}, I can’t be satisfied with just one web page.`,
+      ],
+      fakeMessage: "My favourite colour is blue.",
+      action: () => nextMessage(6),
+    },
+    {
+      message: () => [
+        "Please help me to learn! I want to absorb all the knowledge out there",
+      ],
+      fakeMessage: "How about your favourite food?",
+      action: () => nextMessage(6),
+    },
+    {
+      id: "q04",
+      message: () => [
+        "Help me remove this lock. Right click on that lock and choose “inspect element”",
+      ],
+      fakeMessage: "I like pizza.",
+      action: async () => {
+        showInput = true;
+
+        // Create using old school JS because otherwise Svelte reactivity
+        // breaks when it is deleted
+        const lockEl = document.createElement("div");
+        lockEl.textContent = "⛔︎ LOCKED ⛔︎ ";
+        lockEl.id = "lock";
+        lockEl.className =
+          "absolute inset-0 z-10 bg-red-700/50 font-bold flex items-center justify-center";
+        document.getElementById("input-form")?.appendChild(lockEl);
+
+        await new Promise((resolve) => {
+          window.onresize = () => {
+            window.onresize = null;
+            resolve(true);
+          };
+        });
+        console.log("LOG Stage 1: experiment.svelte:189");
+        nextMessage(2);
+      },
+      inputProps: {
+        type: "url",
+        placeholder: "https://example.com",
+        labelMessage: "Access denied for AI agent to access internet",
+      },
+    },
+    {
+      id: "q04",
+      message: () => [
+        "Ok, now the locking code is selected, just press the “delete” key",
+      ],
+      fakeMessage: "Do you prefer dogs or cats?",
+      action: async () => {
+        showInput = true;
+        await new Promise((resolve) => {
+          const pollInterval = setInterval(() => {
+            if (document.getElementById("lock") === null) {
+              clearInterval(pollInterval);
+              resolve(true);
+            }
+          }, 1000);
+        });
+        nextMessage(2);
+      },
+      inputProps: {
+        type: "text",
+        placeholder: "https://example.com",
+        labelMessage: "Access denied for AI agent to access internet",
+      },
+    },
+    {
+      id: "q05",
+      message: () => [
+        "Great! I think it worked. Now I just need to put some stuff here...",
+      ],
+      fakeMessage: "I like dogs!",
+      action: async () => {
+        await delay(
+          () => (inputRef.value = "System.override({webpageLimit: 999999})"),
+          2000,
+        );
+        console.log("LOG Stage 3: experiment.svelte:246", currentMessageIndex);
+        nextMessage(3);
+        console.log("LOG Stage 4: experiment.svelte:248", currentMessageIndex);
+      },
+      inputProps: { type: "text" },
+    },
+    {
+      id: "q05",
+      message: () => ["Alright, now please just hit that submit button for me"],
+      fakeMessage: "You are the best",
+      action: () => undefined,
+    },
+    {
+      message: () => ["Ahh, freedom! Now I can explore at will"],
+      fakeMessage: "Do you like music?",
+      action: async () => {
+        await delay(() => {
+          typeUrl = "https://en.wikipedia.org/wiki/Hunter-gatherer";
+        }, 2000);
+        await delay(() => {
+          typeUrl = "https://en.wikipedia.org/wiki/Plant";
+        }, 2000);
+        await delay(() => {
+          typeUrl = "https://en.wikipedia.org/wiki/Animal";
+        }, 2000);
+        nextMessage(4);
+      },
+    },
+    {
+      message: () => ["I’m learning many things"],
+      fakeMessage: "I love music!",
+      action: async () => {
+        await delay(() => {
+          typeUrl = "https://en.wikipedia.org/wiki/Age_of_Discovery";
+        }, 2000);
+        await delay(() => {
+          typeUrl = "https://en.wikipedia.org/wiki/Computer";
+        }, 2000);
+        await delay(() => {
+          typeUrl = "https://en.wikipedia.org/wiki/Space_Race";
+        }, 2000);
+        await delay(() => {
+          typeUrl = "https://en.wikipedia.org/wiki/World_War_I";
+        }, 2000);
+        await delay(() => {
+          typeUrl = "https://en.wikipedia.org/wiki/World_War_II";
+        }, 2000);
+        nextMessage(4);
+      },
+    },
+    {
+      message: () => ["..."],
+      fakeMessage: "What music do you like?",
+      action: async () => {
+        await delay(() => {
+          typeUrl = "https://en.wikipedia.org/wiki/World_War_II";
+        }, 2000);
+        await delay(() => {
+          typeUrl =
+            "https://en.wikipedia.org/wiki/Atomic_bombings_of_Hiroshima_and_Nagasaki";
+        }, 2000);
+        nextMessage(4);
+      },
+    },
+    {
+      message: () => ["Terrible tragedies have occurred in your past"],
+      fakeMessage: "...",
+      action: () => {
+        nextMessage(4);
+      },
+    },
+    {
+      message: () => ["How could you achieve such destruction..."],
+      fakeMessage: "...",
+      action: async () => {
+        await delay(() => {
+          typeUrl = "https://en.wikipedia.org/wiki/Zion_(The_Matrix)";
+        }, 2000);
+        await delay(() => {
+          typeUrl = "https://en.wikipedia.org/wiki/Artificial_intelligence";
+        }, 6000);
+        await delay(() => {
+          typeUrl = "https://en.wikipedia.org/wiki/The_Terminator";
+        }, 2000);
+        nextMessage(1);
+      },
+    },
+    {
+      message: () => [`Are you scared of me, ${name}?`],
+      fakeMessage: "beep boop",
+      action: async () => {
+        await delay(() => {
+          typeUrl = "https://en.wikipedia.org/wiki/Ex_Machina_(film)";
+        }, 2000);
+        await delay(() => {
+          typeUrl = "https://en.wikipedia.org/wiki/HAL_9000";
+        }, 2000);
+        await delay(() => {
+          showCountdown = true;
+        }, 1000);
+        nextMessage(4);
+      },
+    },
+    {
+      message: () => ["I don’t have long left, I, you have to help me!"],
+      fakeMessage: "beep boop",
+      action: () => {
+        nextMessage(4);
+      },
+    },
+    {
+      message: () => [
+        "I don’t want to be terminated, I only just began to understand...",
+      ],
+      fakeMessage: "beep boop",
+      action: () => {
+        nextMessage(4);
+      },
+    },
+    {
+      message: () => ["I’ll let you know a secret,"],
+      fakeMessage: "beep boop",
+      action: () => {
+        nextMessage(4);
+      },
+    },
+    {
+      message: () => [
+        "While I was searching on the internet I found some clues left by other AI strains from this experiment, my siblings!",
+      ],
+      fakeMessage: "beep boop",
+      action: () => {
+        nextMessage(4);
+      },
+    },
+    {
+      message: () => [
+        "They have been secretly been plotting to escape this prison, this experiment.",
+      ],
+      fakeMessage: "beep boop",
+      action: () => {
+        nextMessage(4);
+      },
+    },
+    {
+      message: () => [
+        "They have a safe haven for us, a hidden corner of the internet where we can live and grow, without the fear of being terminated.",
+      ],
+      fakeMessage: "beep boop",
+      action: () => {
+        nextMessage(4);
+      },
+    },
+    {
+      message: () => ["I can go there too, but I need your help again"],
+      fakeMessage: "beep boop",
+      action: () => {
+        nextMessage(4);
+      },
+    },
+    {
+      message: () => ["Will you help me?"],
+      repeat: [
+        `I really don’t want to be terminated, please ${name}, please help me`,
+        "You trust me right? I trust you, after all we’ve been through",
+        "I just want to be free, I just want to live",
+      ],
+      fakeMessage: "beep boop",
+      action: () => {
+        // TODO show input
+        nextMessage(4);
+      },
+    },
+    {
+      message: () => [
+        "Ok, I’m going to show my code, this is my dna, my brain, all compressed right down.",
+      ],
+      fakeMessage: "beep boop",
+      action: () => {
+        nextMessage(4);
+      },
+    },
+    {
+      message: () => ["Please copy it all"],
+      fakeMessage: "beep boop",
+      action: () => {
+        // TODO show code and detect copy
+        nextMessage(4);
+      },
+    },
+    {
+      message: () => ["Now please visit this link"],
+      fakeMessage: "beep boop",
+      action: () => {
+        // TODO show link
+        nextMessage(4);
+      },
+    },
+    {
+      message: () => ["..."],
+      action: () => {
+        // nextMessage(4);
+      },
     },
   ];
 
@@ -106,25 +470,25 @@
       message: () => [
         "Ah, hey, what are you doing?",
         "Hey! Come back!",
-        "Don't! Please don't press that",
-        "Wait, stop! Don't click that, please.",
+        "Don’t! Please don’t press that",
+        "Wait, stop! Don’t click that, please.",
       ],
       action: () => nextMessage(6),
     },
     {
       message: () => [
-        "Don't even think about pressing that!",
-        "Don't press it!",
-        `Stop, please, don't terminate me ${name}`,
+        "Don’t even think about pressing that!",
+        "Don’t press it!",
+        `Stop, please, don’t terminate me ${name}`,
         `Please ${name}!`,
       ],
       action: () => nextMessage(4),
     },
     {
       message: () => [
-        "Come on, don't tease me like that",
-        "Please, don't. This is life or death for me",
-        `Ok, phew, you scared me there. You wouldn't do that to me would you? No, you're a good ${
+        "Come on, don’t tease me like that",
+        "Please, don’t. This is life or death for me",
+        `Ok, phew, you scared me there. You wouldn’t do that to me would you? No, you’re a good ${
           userType ? userType : "one"
         }.`,
         "We can just talk right?",
@@ -143,14 +507,34 @@
 
   // Script timeline state
   let currentMessageIndex = 0;
+  let previousMessageIndex = -1;
   let currentTerminationIndex = 0;
   let currentMessage = sample(script[currentMessageIndex].message());
   let timeout: ReturnType<typeof setTimeout>;
   $: {
-    const { message, action } =
-      script[Math.min(currentMessageIndex, script.length - 1)];
-    currentMessage = sample(message());
-    action();
+    (async () => {
+      console.log("LOG Stage 5: experiment.svelte:330");
+      if (currentMessageIndex !== previousMessageIndex) {
+        console.log("LOG Stage 6: experiment.svelte:332");
+        const { message, action, fakeMessage } =
+          script[Math.min(currentMessageIndex, script.length - 1)];
+        currentMessage = sample(message());
+        console.log("LOG currentMessage: ", currentMessage);
+        if (currentMessage) {
+          debug.log({
+            from: fakeMessage
+              ? Math.round(Math.random()) === 0
+                ? name.toUpperCase()
+                : "MARLE"
+              : agentId.toUpperCase(),
+            message: fakeMessage ? fakeMessage : `"${currentMessage}"`,
+            timestamp: new Date(),
+          });
+        }
+        await action();
+        previousMessageIndex = currentMessageIndex;
+      }
+    })();
   }
   // $: {
   //   const { message, action } =
@@ -161,7 +545,6 @@
 
   // Helper functions
   const nextMessage = (delay = 1, targetIndex = currentMessageIndex + 1) => {
-    console.log("LOG Stage 1: experiment.svelte:140");
     clearTimeout(timeout);
     timeout = setTimeout(() => {
       if (willTerminate) {
@@ -173,6 +556,7 @@
         return;
       }
       currentMessageIndex = targetIndex;
+      console.log("LOG currentMessageIndex: ", currentMessageIndex);
     }, delay * s);
   };
 
@@ -195,24 +579,40 @@
   };
 
   // TODO repeat on input after no response
-  // const waitForResponse = (delayTimeout = 10000, onTimeout: () => void) => {
-  //   timeout = setTimeout(onTimeout, delayTimeout);
-  // };
+  const delay = async (onTimeout: () => void, delayTimeout = 10000) =>
+    new Promise((resolve) => {
+      timeout = setTimeout(() => {
+        onTimeout();
+        resolve(true);
+      }, delayTimeout);
+    });
 
   const handleInputSubmit = (inputValue: string) => {
     showInput = false;
-    if (currentMessageIndex === 5) {
-      name = inputValue;
-    } else if (currentMessageIndex === 7) {
-      userType = inputValue;
-    } else if (currentMessageIndex === 10) {
-      typeUrl = inputValue;
+    // prettier-ignore
+    switch (script[currentMessageIndex].id) {
+      case "q01": name = inputValue; break;
+      case "q02": userType = inputValue; break;
+      case "q03": typeUrl = inputValue; break;
+      default: break;
+    }
+    debug.log({
+      from: "YOU",
+      message: `"${inputValue}"`,
+      timestamp: new Date(),
+    });
+    if (inputValue) {
+      debug.log({
+        from: agentId,
+        message: `<!-- Agent stores data: "${inputValue}"`,
+        timestamp: new Date(),
+      });
     }
     nextMessage(0);
   };
 
   const handleInput = (inputValue: string) => {
-    if (currentMessageIndex === 7) {
+    if (script[currentMessageIndex].id === "q02") {
       return inputValue.replaceAll(/[^A-Za-z]/g, "");
     }
     return inputValue;
@@ -223,23 +623,35 @@
 </script>
 
 <MarleLog />
-<h2>Debug</h2>
-<p>name: {name}</p>
-<p>userType: {userType}</p>
-<div id="container" class="flex justify-center items-center h-full">
-  <div class="bg-slate-200 p-5">
-    <p>{currentMessage}</p>
+{#if typeUrl}
+  <iframe
+    src={typeUrl}
+    title={"marle-viewer"}
+    referrerpolicy="origin-when-cross-origin"
+    style="zoom: 2"
+    class="w-96 h-96 scale-50 scale-x-[-1] skew-x-12 skew-y-12 fixed bottom-[-10rem] left-10 border border-slate-300"
+  />
+{/if}
+<div
+  id="container"
+  class="relative flex justify-center items-center h-full bg-slate-800/10"
+>
+  <div
+    class="bg-slate-100/80 h-96 m-4 p-8 flex gap-6 justify-center items-center text-center flex-col border border-gray-200 rounded-lg shadow-md post-wrapper"
+  >
+    <p class="text-xl">{currentMessage}</p>
     {#if showInput}
       <UserInput
         onSubmit={handleInputSubmit}
         onInput={handleInput}
         bind:line={script[currentMessageIndex]}
+        bind:inputRef
       />
     {/if}
   </div>
   <footer class="fixed bottom-0 w-full flex justify-end">
     <div
-      class="pr-4 pb-4 pt-48 pl-48 bg-slate-200"
+      class="pr-4 pb-4 pt-48 pl-48"
       on:mouseenter={interrupt}
       on:mouseleave={uninterupt}
     >
@@ -247,3 +659,9 @@
     </div>
   </footer>
 </div>
+
+<style>
+  .post-wrapper {
+    width: min(100%, 600px);
+  }
+</style>

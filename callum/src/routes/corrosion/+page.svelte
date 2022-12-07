@@ -33,12 +33,14 @@
   import { onInterval } from "$lib/utils";
   import { onMount } from "svelte";
   import { throttle } from "lodash-es";
+  import Glyph from "./Glyph.svelte";
 
   let canvas: HTMLCanvasElement;
   let ctx: CanvasRenderingContext2D;
   let w: number, h: number;
   let mask = 80;
   let mousePos = { x: 0, y: 0 };
+  let showGlyph = false;
 
   const operators = "^|&";
 
@@ -167,12 +169,15 @@
   onMount(() => {
     setup();
     draw();
+    setTimeout(() => {
+      showGlyph = true;
+    }, 30000);
     onInterval(draw, 100);
   });
 </script>
 
 <svelte:head>
-  <title>Corrosion - Callum Howard</title>
+  <title>Origin:Marle - Corrosion - Callum Howard</title>
 </svelte:head>
 
 <svelte:window
@@ -210,6 +215,16 @@
     src="https://raw.githubusercontent.com/CallumHoward/marle-media/main/silhouette.png"
   />
 </div>
+
+{#if showGlyph}
+  <Glyph
+    href="https://j-fan.github.io/marle/jordan-pat/video"
+    xPos={3}
+    yPos={50}
+    glyphId={4}
+    colour="#9EA9E9"
+  />
+{/if}
 
 <style>
   .vignette {

@@ -23,7 +23,7 @@
 </script>
 
 <svelte:head>
-  <title>Your Face - Jane Fan</title>
+  <title>Origin:Marle - Your Face - Jane Fan</title>
 </svelte:head>
 <div class="container">
   <video

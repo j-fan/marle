@@ -1,19 +1,26 @@
 <script lang="ts">
+  import { debug } from "$lib/stores/debug-log";
+
   import { onDestroy, onMount } from "svelte";
 
   let interval: ReturnType<typeof setInterval>;
   let currentLog = 0;
   let log = [
-    "Loading...\n",
-    "initialising experiment...",
-    "done\n",
-    "allocating memory resource table...",
-    "done\n",
+    "Loading...",
+    "Initialising experiment...",
+    "Allocating memory resource table...",
   ];
 
   onMount(() => {
     interval = setInterval(() => {
-      currentLog += 1;
+      if (currentLog < log.length) {
+        debug.log({
+          from: "SYSTEM",
+          message: log[currentLog],
+          timestamp: new Date(),
+        });
+        currentLog += 1;
+      }
     }, Math.random() * 2000 + 200);
   });
 
@@ -21,9 +28,11 @@
 </script>
 
 <div id="debug-output" class="fixed font-mono">
-  <pre>
-    {#each log.slice(0, currentLog) as logMessage}
-      {logMessage}
+  <ul>
+    {#each $debug.slice(-15, -1) as { timestamp, from, message }}
+      <li class="text-slate-700">
+        [{timestamp.toISOString()}] {from}: {message}
+      </li>
     {/each}
-  </pre>
+  </ul>
 </div>
