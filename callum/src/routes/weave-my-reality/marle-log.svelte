@@ -5,6 +5,7 @@
 
   let interval: ReturnType<typeof setInterval>;
   let currentLog = 0;
+  let logLength = 15;
   let log = [
     "Loading...",
     "Initialising experiment...",
@@ -12,6 +13,7 @@
   ];
 
   onMount(() => {
+    logLength = window.innerWidth < 600 ? 6 : 15;
     interval = setInterval(() => {
       if (currentLog < log.length) {
         debug.log({
@@ -29,7 +31,7 @@
 
 <div id="debug-output" class="fixed font-mono">
   <ul>
-    {#each $debug.slice(-15, -1) as { timestamp, from, message }}
+    {#each $debug.slice(-logLength, -1) as { timestamp, from, message }}
       <li class="text-slate-700">
         [{timestamp.toISOString()}] {from}: {message}
       </li>

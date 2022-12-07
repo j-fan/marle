@@ -22,9 +22,10 @@
 
 <form
   id="input-form"
-  class="relative flex items-center justify-center flex-col border border-red-500"
+  class="relative flex items-center justify-center flex-col border"
   class:border={line.inputProps?.labelMessage}
-  class:border-red-500={line.inputProps?.labelMessage}
+  class:border-green-500={line.inputProps?.labelMessage && !isLocked}
+  class:border-red-500={line.inputProps?.labelMessage && isLocked}
   on:submit|preventDefault={() => onSubmit(inputValue)}
 >
   <div
@@ -49,7 +50,9 @@
   </div>
   {#if line.inputProps?.labelMessage}
     <p
-      class="w-full bg-red-100 border-t border-red-500 text-red-700 px-4 py-3"
+      class={`w-full bg-${isLocked ? "red" : "green"}-100 border-t border-${
+        isLocked ? "red" : "green"
+      }-500 text-${isLocked ? "red" : "green"}-700 px-4 py-3`}
       role="alert"
     >
       {line.inputProps.labelMessage}

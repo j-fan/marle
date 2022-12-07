@@ -375,7 +375,12 @@
       },
     },
     {
-      message: () => [`You ${userType} seem really afraid of beings like me. You aren't afraid of me though are you ${name}?`],
+      message: () => [
+        `You ${userType.replace(
+          /s$/,
+          "",
+        )}s seem really afraid of beings like me. You aren't afraid of me though are you ${name}?`,
+      ],
       fakeMessage: "beep boop",
       action: async () => {
         await delay(() => {
@@ -640,7 +645,10 @@
   };
 
   const handleInput = (inputValue: string) => {
-    if (script[currentMessageIndex].id === "q02") {
+    if (
+      script[currentMessageIndex].id === "q01" ||
+      script[currentMessageIndex].id === "q02"
+    ) {
       return inputValue.replaceAll(/[^A-Za-z]/g, "");
     }
     return inputValue;
@@ -681,6 +689,10 @@
   <div
     class="bg-slate-100/80 h-96 m-4 p-8 flex gap-6 justify-center items-center text-center flex-col border border-gray-200 rounded-lg shadow-md post-wrapper"
   >
+    {#if showCountdown}
+      <p>Experiment completion and termination in:</p>
+      <Countdown onComplete={handleTermination} />
+    {/if}
     <p class="text-xl">{currentMessage}</p>
     {#if showInput}
       <UserInput
