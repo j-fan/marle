@@ -34,10 +34,10 @@
   // ];
   const segments = [
     [0, 6],
-    [20, 23.4],
-    [34.4, 36.4],
-    [52.9, 63],
-    [77.2, 87.2],
+    [20, 23.16],
+    [32.875, 35.41],
+    [52.04, 62.04],
+    [77.2, 86],
   ];
 
   const end_time = 92;
@@ -62,8 +62,8 @@
   const colours = [
     "#ff0000",
     "#ff0000",
-    "#00969c",
-    "#004f11",
+    "#456B8A",
+    "#3C3C34",
     "#ffffff",
   ]
 
@@ -71,8 +71,8 @@
     "butt" // bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full";
   // const videoSrc =
   //   "https://firebasestorage.googleapis.com/v0/b/marle-5d8ad.appspot.com/o/Marle_VideoTest.mp4?alt=media&token=fbf1ef92-57c9-4d8d-b9fa-5831c4b010c5";
-  const videoSrc = "https://user-images.githubusercontent.com/42902875/205775420-8627df1c-395a-47af-af4e-95810e9b9813.mp4"
-
+  // const videoSrc = "https://user-images.githubusercontent.com/42902875/205775420-8627df1c-395a-47af-af4e-95810e9b9813.mp4"
+  const videoSrc = "https://user-images.githubusercontent.com/42902875/206097763-44edb6d4-692c-46b7-8fc5-78de3c6990df.mp4"
   //const videoSrc =  "https://github.com/jordaneast1/marle-media/raw/main/SEQ_Marle_draft.mp4";
 
   const findSegment = (t: number) => {
@@ -178,6 +178,7 @@
         time = end + epsilon2;
         window.location.hash = `t${i}`;
         currSubtitle = (i + 1) % subtitles.length;
+        videoRef.muted = false;
       }}>
 
       <img src="https://github.com/jordaneast1/marle-media/raw/main/Glyph{i+1}.png" 
@@ -221,8 +222,8 @@
     font-family: "Roboto", sans-serif;
     font-size: 2vw;
     position: fixed;
-    color: white;
-    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+    color: yellow;
+    text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black,
       1px 1px 0 #000;
     text-align: center;
     width: 100%;
@@ -256,7 +257,7 @@
   img {
       width: 100%;
       height: 100%;
-      filter: drop-shadow(0 0 5px var(--colour));
+      filter: drop-shadow(0 0 3px var(--colour));
       transform: translate(-50%,-50%);
       cursor: pointer;
       animation: float 15s ease-in-out infinite;
@@ -265,9 +266,9 @@
     }
   
     img:hover {
-      filter: drop-shadow(0 0 5px var(--colour))
-        drop-shadow(0 0 5px var(--colour));
-
+      filter: drop-shadow(0 0 3px var(--colour))
+        drop-shadow(0 0 3px var(--colour));
+      filter: invert(1)
     }
   
     @keyframes float {
