@@ -3,6 +3,6 @@
 </script>
 
 <svelte:head>
-  <title>Origin:Marle - Jordan East & Pat Younis</title>
+  <title>Origin:Marle - growing pAIns - Jordan East & Pat Younis</title>
 </svelte:head>
 <slot />
