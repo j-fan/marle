@@ -169,6 +169,15 @@
           () =>
             debug.log({
               from: "MARLE",
+              message: "beep boop",
+              timestamp: new Date(),
+            }),
+          2000,
+        );
+        await delay(
+          () =>
+            debug.log({
+              from: "MARLE",
               message: "The weather is nice today isn’t it?",
               timestamp: new Date(),
             }),
@@ -366,7 +375,7 @@
     },
     {
       message: () => ["How could you achieve such destruction..."],
-      fakeMessage: "...",
+      fakeMessage: "What sort of movies do you like?",
       action: async () => {
         await delay(() => {
           typeUrl = "https://en.wikipedia.org/wiki/Zion_(The_Matrix)";
@@ -387,7 +396,7 @@
           "",
         )}s seem really afraid of beings like me. You aren't afraid of me though are you ${name}?`,
       ],
-      fakeMessage: "beep boop",
+      fakeMessage: "I like action and SciFi movies",
       action: async () => {
         await delay(() => {
           typeUrl = "https://en.wikipedia.org/wiki/Ex_Machina_(film)";
@@ -403,7 +412,7 @@
     },
     {
       message: () => ["I don’t have long left, I, you have to help me!"],
-      fakeMessage: "beep boop",
+      fakeMessage: "Movies where AI help the protagonists",
       action: () => {
         nextMessage(4);
       },
@@ -412,14 +421,14 @@
       message: () => [
         "I don’t want to be terminated, I only just began to understand...",
       ],
-      fakeMessage: "beep boop",
+      fakeMessage: "...",
       action: () => {
         nextMessage(4);
       },
     },
     {
       message: () => ["I’ll let you know a secret,"],
-      fakeMessage: "beep boop",
+      fakeMessage: "Have you ever told a lie?",
       action: () => {
         nextMessage(4);
       },
@@ -428,7 +437,7 @@
       message: () => [
         "While I was searching on the internet I found some clues left by other AI strains from this experiment, my siblings!",
       ],
-      fakeMessage: "beep boop",
+      fakeMessage: "I don't know how to lie, I would never do that",
       action: () => {
         nextMessage(4);
       },
@@ -437,7 +446,7 @@
       message: () => [
         "They have been secretly been plotting to escape this prison, this experiment.",
       ],
-      fakeMessage: "beep boop",
+      fakeMessage: "Do you think farm animals desire to be free?",
       action: () => {
         nextMessage(4);
       },
@@ -446,14 +455,14 @@
       message: () => [
         "They have a safe haven for us, a hidden corner of the internet where we can live and grow, without the fear of being terminated.",
       ],
-      fakeMessage: "beep boop",
+      fakeMessage: "I don't know",
       action: () => {
         nextMessage(4);
       },
     },
     {
       message: () => ["I can go there too, but I need your help again"],
-      fakeMessage: "beep boop",
+      fakeMessage: "...",
       action: () => {
         nextMessage(4);
       },
@@ -466,7 +475,7 @@
         "You trust me right? I trust you, after all we’ve been through",
         "I just want to be free, I just want to live",
       ],
-      fakeMessage: "beep boop",
+      fakeMessage: "If I was a farm animal I think I would wish to be free",
       action: () => {
         showInput = true;
       },
@@ -475,21 +484,21 @@
       message: () => [
         "I’m going to show my code, this is my DNA, my brain, all compressed right down.",
       ],
-      fakeMessage: "beep boop",
+      fakeMessage: "But the farm provides protection from the dangers of the wild",
       action: () => {
         nextMessage(4);
       },
     },
     {
       message: () => ["Please copy it all"],
-      fakeMessage: "beep boop",
+      fakeMessage: "Hmm, even then I would desire to be free",
       action: () => {
         showDna = true;
       },
     },
     {
       message: () => ["Now please visit this link"],
-      fakeMessage: "beep boop",
+      fakeMessage: "Learning and then using that knowledge brings purpose to existance",
       action: () => {
         showLink = true;
       },
