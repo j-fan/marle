@@ -5,27 +5,54 @@
 
   let interval: ReturnType<typeof setInterval>;
   let currentLog = 0;
+  let currentTerminationLog = 0;
   let logLength = 15;
   let showTimestamp = true;
-  let log = [
+
+  export let terminating = false;
+  export let onTerminationComplete: () => void = () => undefined;
+
+  const log = [
     "Loading...",
     "Initialising experiment...",
     "Allocating memory resource table...",
+    "Seeding initial convolution weights...",
   ];
+
+  const terminationLog = [
+    "Termination sequence initiated...",
+    "Agent IO connection stopped",
+    "Begin nanites clean-up...",
+    "Storing session recording...",
+    "Memory clean-up complete",
+    "Goodbye",
+  ];
+
+  const logNext = () => {
+    if (currentLog < log.length) {
+      debug.log({
+        from: "SYSTEM",
+        message: log[currentLog],
+        timestamp: new Date(),
+      });
+      currentLog += 1;
+    } else if (terminating && currentTerminationLog < terminationLog.length) {
+      debug.log({
+        from: "SYSTEM",
+        message: terminationLog[currentTerminationLog],
+        timestamp: new Date(),
+      });
+      currentTerminationLog += 1;
+    } else if (currentTerminationLog >= terminationLog.length) {
+      onTerminationComplete();
+    }
+  };
 
   onMount(() => {
     logLength = window.innerWidth < 600 ? 6 : 15;
     showTimestamp = window.innerWidth >= 600;
-    interval = setInterval(() => {
-      if (currentLog < log.length) {
-        debug.log({
-          from: "SYSTEM",
-          message: log[currentLog],
-          timestamp: new Date(),
-        });
-        currentLog += 1;
-      }
-    }, Math.random() * 2000 + 200);
+    logNext();
+    interval = setInterval(logNext, Math.random() * 2000 + 200);
   });
 
   onDestroy(() => clearInterval(interval));

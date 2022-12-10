@@ -23,6 +23,7 @@
   // UI State
   let showInput = false;
   let willTerminate = false;
+  let terminating = false;
   let attemptedTerminations = 0;
   let isMobile = false;
   let showCountdown = false;
@@ -110,11 +111,12 @@
       },
       inputProps: {
         type: "url",
+        pattern: ".+\\..+",
         placeholder: "https://example.com",
         labelMessage: "Access granted to share one webpage with AI agent",
         required: true,
       },
-    }, // TODO placeholder index
+    },
     { message: () => [""], action: () => nextMessage(5) },
     {
       message: () => ["Oooh, all this knowledge for me to enjoy!"],
@@ -126,7 +128,7 @@
     },
     {
       message: () => [
-        `So is being ${userType} is all about being the most abundant and widespread of species? Interesting!`, // TODO grab 1 sentence summary from wikipedia
+        `So is being ${userType} is all about being the most abundant and widespread of species? I see.`, // TODO grab 1 sentence summary from wikipedia
       ],
       action: () => nextMessage(6),
     },
@@ -527,7 +529,7 @@
     },
     {
       message: () => [
-        "Come on, don’t tease me like that",
+        "Come on, don’t scare me like that",
         "Please, don’t. This is life or death for me",
         `Ok, phew, you scared me there. You wouldn’t do that to me would you? No, you’re a good ${
           userType ? userType : "one"
@@ -615,7 +617,12 @@
   };
 
   const interrupt = () => {
-    if (attemptedTerminations < 4 && currentMessageIndex > 6) {
+    if (
+      attemptedTerminations < 4 &&
+      currentMessageIndex > 6 &&
+      currentMessage.id !== "q04" &&
+      !isMobile
+    ) {
       clearTimeout(timeout);
       attemptedTerminations += 1;
       willTerminate = true;
@@ -655,7 +662,7 @@
     });
     if (inputValue) {
       debug.log({
-        from: agentId,
+        from: agentId.toUpperCase(),
         message: `<!-- Agent stores data: "${inputValue}"`,
         timestamp: new Date(),
       });
@@ -678,13 +685,14 @@
       agentId,
       userName: name,
       timestamp: Date.now(),
-      chatLog: [],
+      chatLog: $debug,
     } as Refugee;
     return utf8_to_b64(JSON.stringify(refugee));
   };
 
   const handleTermination = () => {
-    window.location.assign("/marle/alvin/cd");
+    clearTimeout(timeout);
+    terminating = true;
   };
 
   // Lifecycle
@@ -695,7 +703,10 @@
 </script>
 
 <main class="w-full h-full overflow-hidden">
-  <MarleLog />
+  <MarleLog
+    bind:terminating
+    onTerminationComplete={() => window.location.assign("/marle/alvin/cd")}
+  />
   {#if typeUrl}
     <iframe
       src={typeUrl}
@@ -761,9 +772,17 @@
         {#if showCountdown}
           <Countdown onComplete={handleTermination} />
         {/if}
-        <button class={buttonDangerC} on:click={handleTermination}
-          >Terminate experiment</button
+        <button
+          class={buttonDangerC}
+          on:click={handleTermination}
+          disabled={terminating}
         >
+          {#if terminating}
+            Terminating...
+          {:else}
+            Terminate experiment
+          {/if}
+        </button>
       </div>
     </footer>
   </div>
