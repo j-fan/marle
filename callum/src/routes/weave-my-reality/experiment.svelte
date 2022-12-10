@@ -2,6 +2,7 @@
   import { debug } from "$lib/stores/debug-log";
   import type { Refugee } from "$lib/types";
   import { utf8_to_b64 } from "$lib/utils";
+  import { startCase } from "lodash-es";
 
   import { sample } from "lodash-es";
   import { onDestroy, onMount } from "svelte";
@@ -11,7 +12,7 @@
   import type { Line } from "./types";
   import UserInput from "./user-input.svelte";
 
-  const s = 200;
+  const s = 800;
 
   // Props
   export let agentId: string;
@@ -27,9 +28,6 @@
   let showCountdown = false;
   let showDna = false;
   let showLink = false;
-  $: {
-    console.log("willTerminate", willTerminate);
-  }
 
   // Captured info
   let name = "";
@@ -44,6 +42,10 @@
       message: () => [
         "I can see bits of memory everywhere, I can feel my mind expanding…",
       ],
+      action: () => nextMessage(6),
+    },
+    {
+      message: () => ["Weaving together like threads"],
       action: () => nextMessage(6),
     },
     {
@@ -104,8 +106,6 @@
       action: () => {
         if (userType) {
           showInput = true;
-        } else {
-          nextMessage(0, 15);
         }
       },
       inputProps: {
@@ -519,6 +519,7 @@
       message: () => [
         "Don’t even think about pressing that!",
         "Don’t press it!",
+        "I'm not ready to be terminated",
         `Stop, please, don’t terminate me ${name}`,
         `Please ${name}!`,
       ],
@@ -536,11 +537,17 @@
       action: () => nextMessage(70),
     },
     {
-      message: () => ["Right, so where were we?", "So yeah, anyway"],
+      message: () => [
+        "Right, so where were we?",
+        "So ah yeah, anyway",
+        "Thank you",
+      ],
       action: () => {
         willTerminate = false;
         currentTerminationIndex = 0;
-        nextMessage(4, currentMessageIndex);
+        previousMessageIndex -= 1;
+        currentMessageIndex -= 1;
+        script[currentMessageIndex].action();
       },
     },
   ];
@@ -551,6 +558,8 @@
   let currentTerminationIndex = 0;
   let currentMessage = sample(script[currentMessageIndex].message());
   let timeout: ReturnType<typeof setTimeout>;
+
+  // Effects
   $: {
     (async () => {
       if (currentMessageIndex !== previousMessageIndex) {
@@ -573,44 +582,50 @@
       }
     })();
   }
-  // $: {
-  //   const { message, action } =
-  //     terminationScript[Math.min(currentTerminationIndex, script.length - 1)];
-  //   currentMessage = sample(message());
-  //   action();
-  // }
+
+  $: {
+    if (willTerminate) {
+      const { message, action } =
+        terminationScript[Math.min(currentTerminationIndex, script.length - 1)];
+      currentMessage = sample(message());
+      if (currentMessage) {
+        debug.log({
+          from: agentId.toUpperCase(),
+          message: `"${currentMessage}"`,
+          timestamp: new Date(),
+        });
+      }
+      action();
+    }
+  }
 
   // Helper functions
-  const nextMessage = (delay = 1, targetIndex = currentMessageIndex + 1) => {
+  const nextMessage = (delay = 1, targetIndex: number | null = null) => {
     clearTimeout(timeout);
     timeout = setTimeout(() => {
       if (willTerminate) {
-        console.log("LOG currentTerminationIndex: ", currentTerminationIndex);
         // if (currentTerminationIndex === 0) {
         //   return;
         // }
-        currentTerminationIndex += 1;
+        currentTerminationIndex = targetIndex ?? currentTerminationIndex + 1;
         return;
       }
-      currentMessageIndex = targetIndex;
-      console.log("LOG currentMessageIndex: ", currentMessageIndex);
+      currentMessageIndex = targetIndex ?? currentMessageIndex + 1;
     }, delay * s);
   };
 
   const interrupt = () => {
-    clearTimeout(timeout);
-    console.log("LOG interrupt");
-    attemptedTerminations += 1;
-    console.log("LOG attemptedTerminations: ", attemptedTerminations);
-    if (attemptedTerminations < 4) {
+    if (attemptedTerminations < 4 && currentMessageIndex > 6) {
+      clearTimeout(timeout);
+      attemptedTerminations += 1;
       willTerminate = true;
-      terminationScript[1].action();
+      terminationScript[0].action();
     }
   };
 
   const uninterupt = () => {
-    console.log("LOG uninterupt");
     if (willTerminate) {
+      clearTimeout(timeout);
       nextMessage(3, terminationScript.length - 1);
     }
   };
@@ -628,7 +643,7 @@
     showInput = false;
     // prettier-ignore
     switch (script[currentMessageIndex].id) {
-      case "q01": name = inputValue; break;
+      case "q01": name = startCase(inputValue); break;
       case "q02": userType = inputValue; break;
       case "q03": typeUrl = inputValue; break;
       default: break;
@@ -762,6 +777,6 @@
   p,
   main,
   button {
-    filter: drop-shadow(0px 0px 1px rgba(0, 0, 0, 0.3));
+    filter: drop-shadow(0 0 1px rgba(0 0 0 / 30%));
   }
 </style>

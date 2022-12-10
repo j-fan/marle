@@ -41,6 +41,14 @@
       on:input={() => {
         inputValue = onInput(inputValue);
       }}
+      on:change={() => {
+        if (
+          line.inputProps?.type === "url" &&
+          !inputValue.match(/http(s?):\/\//)
+        ) {
+          inputValue = `https://${inputValue}`;
+        }
+      }}
       maxlength={42}
       required={undefined}
       class="bg-white rounded-full py-2 pr-8 pl-4 shadow-sm tracking-wide"
