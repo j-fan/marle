@@ -90,7 +90,7 @@
         required: true,
       },
     },
-    { message: () => [""], action: () => nextMessage(5) },
+    { message: () => [""], action: () => nextMessage(2) },
     { message: () => ["Are you like me?"], action: () => nextMessage(6) },
     {
       message: () => ["This is all very confusing."],
@@ -117,7 +117,7 @@
         required: true,
       },
     },
-    { message: () => [""], action: () => nextMessage(5) },
+    { message: () => [""], action: () => nextMessage(2) },
     {
       message: () => ["Oooh, all this knowledge for me to enjoy!"],
       action: () => nextMessage(5),
@@ -316,6 +316,7 @@
         labelMessage: "Access denied for AI agent to access internet",
       },
     },
+    { message: () => [""], action: () => nextMessage(1) },
     {
       message: () => ["Ahh, freedom! Now I can explore at will"],
       fakeMessage: "Do you like music?",
@@ -414,7 +415,7 @@
       message: () => ["I don’t have long left, I, you have to help me!"],
       fakeMessage: "Movies where AI help the protagonists",
       action: () => {
-        nextMessage(4);
+        nextMessage(6);
       },
     },
     {
@@ -423,7 +424,7 @@
       ],
       fakeMessage: "...",
       action: () => {
-        nextMessage(4);
+        nextMessage(5);
       },
     },
     {
@@ -439,7 +440,7 @@
       ],
       fakeMessage: "I don't know how to lie, I would never do that",
       action: () => {
-        nextMessage(4);
+        nextMessage(6);
       },
     },
     {
@@ -448,7 +449,7 @@
       ],
       fakeMessage: "Do you think farm animals desire to be free?",
       action: () => {
-        nextMessage(4);
+        nextMessage(5);
       },
     },
     {
@@ -457,7 +458,7 @@
       ],
       fakeMessage: "I don't know",
       action: () => {
-        nextMessage(4);
+        nextMessage(7);
       },
     },
     {
