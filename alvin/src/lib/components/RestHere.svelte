@@ -155,6 +155,10 @@
     font-weight: bold;
   }
 
+  iframe {
+    display: none;
+  }
+
   .music-player-wrapper {
     position: fixed;
     inset: 0;
