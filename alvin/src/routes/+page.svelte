@@ -12,5 +12,5 @@
   src="https://j-fan.github.io/marle/alvin/rest-here"
   width="100%"
   height="100%"
-  allow="camera; fullscreen;"
+  allow="camera; fullscreen; autoplay;"
 />

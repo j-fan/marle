@@ -38,11 +38,7 @@
   });
 
   const toggleAudio = () => {
-    if (paused) {
-      soundCloudWidget.play();
-    } else {
-      soundCloudWidget.pause();
-    }
+    soundCloudWidget.toggle();
     paused = !paused;
   };
 </script>
@@ -156,8 +152,7 @@
   }
 
   iframe {
-    width: 1px;
-    height: 1px;
+    display: none;
   }
 
   .music-player-wrapper {
