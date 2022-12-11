@@ -156,7 +156,8 @@
   }
 
   iframe {
-    display: none;
+    width: 1px;
+    height: 1px;
   }
 
   .music-player-wrapper {
