@@ -38,7 +38,11 @@
   });
 
   const toggleAudio = () => {
-    soundCloudWidget.toggle();
+    if (paused) {
+      soundCloudWidget.play();
+    } else {
+      soundCloudWidget.pause();
+    }
     paused = !paused;
   };
 </script>
@@ -149,10 +153,6 @@
   .container {
     font-family: "DM Serif Display", serif;
     font-weight: bold;
-  }
-
-  iframe {
-    display: none;
   }
 
   .music-player-wrapper {
