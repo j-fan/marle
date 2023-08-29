@@ -1,0 +1,9 @@
+{
+    "theme_color": "#000000",
+    "background_color": "#000000",
+    "display": "standalone",
+    "scope": "/marle/",
+    "start_url": "/marle/home/",
+    "name": "Origin: Marle",
+    "short_name": "Origin: Marle"
+  }
