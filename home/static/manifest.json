@@ -8,7 +8,7 @@
     "short_name": "Origin: Marle",
     "icons": [
         {
-          "src": "/favicon.png",
+          "src": "/marle/home/favicon.png",
           "sizes": "192x192",
           "type": "image/png"
         }
