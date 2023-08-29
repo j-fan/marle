@@ -220,9 +220,9 @@
     "file": "_app/immutable/assets/_layout-71e2f506.css",
     "src": "src/routes/+layout.css"
   },
-  "CenteredImage.css": {
-    "file": "_app/immutable/assets/CenteredImage-5943586e.css",
-    "src": "CenteredImage.css"
+  "Glyph.css": {
+    "file": "_app/immutable/assets/Glyph-2e641cdb.css",
+    "src": "Glyph.css"
   },
   "RestHere.css": {
     "file": "_app/immutable/assets/RestHere-8cc01f1a.css",
@@ -232,8 +232,8 @@
     "file": "_app/immutable/assets/_page-769e1804.css",
     "src": "src/routes/umbrella/+page.css"
   },
-  "Glyph.css": {
-    "file": "_app/immutable/assets/Glyph-2e641cdb.css",
-    "src": "Glyph.css"
+  "CenteredImage.css": {
+    "file": "_app/immutable/assets/CenteredImage-5943586e.css",
+    "src": "CenteredImage.css"
   }
 }
