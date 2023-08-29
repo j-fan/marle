@@ -7,8 +7,6 @@
 
 <svelte:head>
   <title>Origin:Marle</title>
-  <link rel="manifest" crossorigin="use-credentials" href="/marle/manifest.json" />
-  <meta name="mobile-web-app-capable" content="yes">
   <link
     rel="preload"
     as="image"
