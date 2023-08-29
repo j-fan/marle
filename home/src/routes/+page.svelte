@@ -7,6 +7,7 @@
 
 <svelte:head>
   <title>Origin:Marle</title>
+  <meta name="mobile-web-app-capable" content="yes">
   <link
     rel="preload"
     as="image"
