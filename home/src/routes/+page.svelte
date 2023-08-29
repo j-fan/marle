@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { base } from "$app/paths";
   import VortexCanvas from "$lib/VortexCanvas.svelte";
   import WelcomeToMarle from "$lib/WelcomeToMarle.svelte";
 
@@ -7,6 +8,7 @@
 
 <svelte:head>
   <title>Origin:Marle</title>
+  <link rel="manifest" crossorigin="use-credentials" href="{base}/manifest.json" />
   <link
     rel="preload"
     as="image"

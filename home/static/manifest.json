@@ -5,5 +5,12 @@
     "scope": "/marle/",
     "start_url": "/marle/home/",
     "name": "Origin: Marle",
-    "short_name": "Origin: Marle"
+    "short_name": "Origin: Marle",
+    "icons": [
+        {
+          "src": "/favicon.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
   }
