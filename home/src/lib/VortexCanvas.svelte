@@ -77,7 +77,7 @@
 
     const NOISE_POWER = 0.004; // How much noise contributes to particle movement
     const ROTATION_POWER = 0.2; // Speed of spin
-    const ATTRACTION_POWER = -0.01; // power of the atracttive force to the center. Positive values push outwards
+    const ATTRACTION_POWER = -0.07; // power of the atracttive force to the center. Positive values push outwards
     const ATTRACTION_DELAY = 200;
 
     const randomVelocity: Array<BABYLON.Vector3> = [];
@@ -109,7 +109,7 @@
           );
         }
 
-        if (particle.age >= 1500) {
+        if (particle.age >= 700) {
           if (!animationCompleted) {
             animationCompleted = true;
             onAnimationComplete?.();
