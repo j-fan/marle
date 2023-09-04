@@ -244,7 +244,7 @@
         delay(() => {
           document.getElementById("lock")?.remove();
           nextMessage(1, currentMessageIndex + 2);
-        }, 45000);
+        }, 5000);
 
         await new Promise((resolve) => {
           window.onresize = () => {
