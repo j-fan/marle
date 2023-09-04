@@ -777,7 +777,7 @@
     </div>
     <footer class="fixed bottom-0 w-full flex justify-end">
       <div
-        class="pr-8 pb-8 pt-48 pl-48"
+        class="pr-8 pb-8 pl-48"
         on:mouseenter={interrupt}
         on:mouseleave={uninterupt}
       >
