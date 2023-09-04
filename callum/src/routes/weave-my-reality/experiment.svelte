@@ -485,7 +485,8 @@
       message: () => [
         "I’m going to show my code, this is my DNA, my brain, all compressed right down.",
       ],
-      fakeMessage: "But the farm provides protection from the dangers of the wild",
+      fakeMessage:
+        "But the farm provides protection from the dangers of the wild",
       action: () => {
         nextMessage(4);
       },
@@ -499,7 +500,8 @@
     },
     {
       message: () => ["Now please visit this link"],
-      fakeMessage: "Learning and then using that knowledge brings purpose to existance",
+      fakeMessage:
+        "Learning and then using that knowledge brings purpose to existance",
       action: () => {
         showLink = true;
       },
@@ -707,7 +709,7 @@
 
   // Lifecycle
   onMount(() => {
-    isMobile = window.innerWidth < 600;
+    isMobile = window.innerWidth < 1180;
   });
   onDestroy(() => clearTimeout(timeout));
 </script>
