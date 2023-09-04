@@ -709,7 +709,7 @@
 
   // Lifecycle
   onMount(() => {
-    isMobile = window.innerWidth < 1180;
+    isMobile = window.innerWidth < 1200;
   });
   onDestroy(() => clearTimeout(timeout));
 </script>
