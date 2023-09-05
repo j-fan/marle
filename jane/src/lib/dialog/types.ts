@@ -2,6 +2,7 @@ export type Option<KeyT> = {
   text: string;
   nextKey: KeyT;
   onClick?: () => void;
+  href?: string;
 };
 
 export type DialogNode<KeyT> = {

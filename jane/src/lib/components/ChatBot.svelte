@@ -61,8 +61,10 @@
                 <h4>YOU</h4>
               {/if}
               {#each currentDialogNode.options as option}
-                <Button isFullWidth on:click={answerClick(option)}
-                  >{option.text}</Button
+                <Button
+                  isFullWidth
+                  on:click={answerClick(option)}
+                  href={option.href}>{option.text}</Button
                 >
               {/each}
             </div>
