@@ -228,12 +228,12 @@
     "file": "_app/immutable/assets/Glyph-2e641cdb.css",
     "src": "Glyph.css"
   },
-  "src/routes/umbrella/+page.css": {
-    "file": "_app/immutable/assets/_page-769e1804.css",
-    "src": "src/routes/umbrella/+page.css"
-  },
   "RestHere.css": {
     "file": "_app/immutable/assets/RestHere-8cc01f1a.css",
     "src": "RestHere.css"
+  },
+  "src/routes/umbrella/+page.css": {
+    "file": "_app/immutable/assets/_page-769e1804.css",
+    "src": "src/routes/umbrella/+page.css"
   }
 }
