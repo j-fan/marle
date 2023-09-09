@@ -145,12 +145,12 @@
     "file": "_app/immutable/assets/_page-5c87b797.css",
     "src": "src/routes/corrosion/+page.css"
   },
-  "src/routes/+layout.css": {
-    "file": "_app/immutable/assets/_layout-cd1ad36c.css",
-    "src": "src/routes/+layout.css"
-  },
   "src/routes/weave-my-reality/+page.css": {
     "file": "_app/immutable/assets/_page-b2609fa0.css",
     "src": "src/routes/weave-my-reality/+page.css"
+  },
+  "src/routes/+layout.css": {
+    "file": "_app/immutable/assets/_layout-cd1ad36c.css",
+    "src": "src/routes/+layout.css"
   }
 }
