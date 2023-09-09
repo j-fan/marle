@@ -16,7 +16,7 @@
 {#if mounted}
   <div
     class="fixed-top-right"
-    transition:fly={{ y: 20, delay: 1000, duration: 1000 }}
+    transition:fly={{ y: 20, delay: 1000 * 60 * 5, duration: 1000 }}
   >
     <a href="https://j-fan.github.io/marle/home/">
       <button class="restart-button">Restart journey</button>
