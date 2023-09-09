@@ -21,7 +21,7 @@
   <p class="command">Choose an option to begin:</p>
   <div class="button-wrapper">
     <Button
-      href="https://j-fan.github.io/marle/jane/your-face"
+      href="https://j-fan.github.io/marle/jane/your-face-qr"
       imgSrc="https://github.com/j-fan/marle-images/raw/main/home/glyph-1-red.png"
       alt="option 1"
     />
