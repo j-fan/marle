@@ -219,32 +219,28 @@ to conduct. But what are you?`,
   end: {
     onMount: () => {
       // Download mystery file
-      // fetch(`${base}/exit-img.txt`)
-      //   .then((resp) => resp.blob())
-      //   .then((blob) => {
-      //     const url = window.URL.createObjectURL(blob);
-      //     const a = document.createElement("a");
-      //     a.style.display = "none";
-      //     a.href = url;
-      //     // the filename you want
-      //     a.download = "marle";
-      //     document.body.appendChild(a);
-      //     a.click();
-      //     window.URL.revokeObjectURL(url);
-      //   })
-      //   .catch(() => {});
+      if (window.innerWidth > 1200) {
+        fetch(`${base}/exit-img.txt`)
+          .then((resp) => resp.blob())
+          .then((blob) => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.style.display = "none";
+            a.href = url;
+            // the filename you want
+            a.download = "marle";
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+          })
+          .catch(() => {});
+      }
     },
     text: "[ Critical failure : System not found ]",
     options: [
       {
         text: "End experiment",
         nextKey: "end",
-        // onClick: () => {
-        //   // TODO: Replace with section 1 of Jordan/Pat's artwork
-        //   window.location.assign(
-        //     "https://j-fan.github.io/marle/jordan-pat/video"
-        //   );
-        // }
         href: "https://j-fan.github.io/marle/jordan-pat/video"
       }
     ]
